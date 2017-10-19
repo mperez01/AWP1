@@ -1,0 +1,50 @@
+body{
+    font-family: "GloriaHallelujah";
+    margin:0;
+    background-image: url(img/Fondo.jpg);
+}
+@font-face {
+    font-family: "GloriaHallelujah";
+    src: url("fonts/GloriaHallelujah.ttf");
+}
+#top{
+    overflow: inherit;
+}
+#top >div{
+   margin-left:10%;
+   margin-top:0.5%;
+}
+#top >div >a{
+    font-family: "GloriaHallelujah";
+    font-weight: bold;
+    color:white;
+    text-decoration: none;
+    padding: 20px;
+    font-size: 160%;
+}
+#LogoImg{
+    display: block;
+    margin: auto;
+    width:600px;
+}
+#login{
+    margin-top:10%;
+}
+#login >p{
+    text-align: center;
+    font-size: 30px;
+}
+
+#login >div{
+    font-family: sans-serif;
+    display:block;
+    margin: auto;
+    background-color: purple;
+    color:white;
+    border-radius: 10px;
+    width:600px;
+}
+#login >div > ul >li{
+    padding-top: 20px;
+    list-style: none;
+}
