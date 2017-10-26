@@ -6,26 +6,31 @@
 		<meta charset="utf-8"/>
 	</head>
 	<body>
-		<div id="top">
+		<div class="top">
             <img id="LogoImg" src="img/Logo.png" alt="logo">
             <div >
                 <a href="">Entrar</a>
                 <a href="">Nuevo Usuario</a>
             </div>   
         </div>
-        <div id="login">
-            <p><b>Entrar</b></p>
+        <div class="login">
+            <p>Entrar</p>
             <!--Seria mejor directamente form? -->
             <div>
                 <ul>
                     <li>
-                        Email
-                        <form>
-                        
+                        <form class=email method="post" action="procesar_formulario.html"> 
+                            <!-- Contenido del formulario -->
+                            Email <input type="text" name="nombre">
                         </form>
                     </li>
                     <li>
-                        Contraseña
+                        <form method="post" action="procesar_formulario.html"> 
+                            <!-- Contenido del formulario -->
+                            Contraseña <input type="text" name="contraseña">
+                        </form>
+                        
+                        <input class="botones" type="submit" value="Conectar">
                     </li>
                 </ul>
             </div>
