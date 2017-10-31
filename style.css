@@ -1,36 +1,40 @@
-body{
+body {
     font-family: "GloriaHallelujah";
-    margin:0;
+    margin: 0;
     background-image: url(img/Fondo.jpg);
 }
+
 @font-face {
     font-family: "GloriaHallelujah";
     src: url("fonts/GloriaHallelujah.ttf");
 }
-div.top{
+
+div.top {
     overflow: inherit;
 }
-.botonesArriba{
-    margin-left:10%;
-    margin-top:0.5%;
+
+.botonesArriba {
+    margin-left: 10%;
+    margin-top: 0.5%;
 }
 
-.botonesArriba > a {   
+.botonesArriba > a {
     font-family: "GloriaHallelujah";
     font-weight: bold;
-    color:white;
+    color: white;
     text-decoration: none;
     padding: 20px;
     font-size: 160%;
 }
 
-#LogoImg{
+#LogoImg {
     display: block;
     margin: auto;
-    width:600px;
+    width: 600px;
 }
-div.login{
-    margin-top:1%;
+
+div.login {
+    margin-top: 1%;
 }
 
 label {
@@ -38,22 +42,22 @@ label {
 }
 
 .recuadro {
-     
+
     /*¿Para que el display?*/
-    display:block;
-    margin:auto;
+    display: block;
+    margin: auto;
     background-color: purple;
-    color:white;
+    color: white;
     border-radius: 10px;
     max-width: 550px;
     padding: 40px;
-    
+
 }
 
-div.login >p{
+div.login > p {
     text-align: center;
     font-size: 30px;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 .rellenar {
@@ -63,17 +67,11 @@ div.login >p{
     float: right;
 }
 
-
-/*form.email {
-    padding-top: 5%;
-}*/
-
-/* No esta en el centro completamente*/
 input.botones {
     width: 150px;
     height: 50px;
     left: 50%;
-    position:relative;
+    position: relative;
     margin-left: -75px;
     margin-top: 5%;
     font-family: "GloriaHallelujah";
