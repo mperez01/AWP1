@@ -1,40 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
 	<head>
-        <title>	Facebluff	</title>
-        <link rel="stylesheet" href="main.css" media="screen">
-		<meta charset="utf-8"/>
-	</head>
-	<body>
-		<div class="top">
-            <img id="LogoImg" src="img/Logo.png" alt="logo">
-            <div >
-                <a href="">Entrar</a>
-                <a href="">Nuevo Usuario</a>
-            </div>   
-        </div>
-        <div class="login">
-            <p>Entrar</p>
-            <!--Seria mejor directamente form? -->
-            <div>
-                <ul>
-                    <li>
-                        <form class=email method="post" action="procesar_formulario.html"> 
-                            <!-- Contenido del formulario -->
-                            Email <input type="text" name="nombre">
-                        </form>
-                    </li>
-                    <li>
-                        <form method="post" action="procesar_formulario.html"> 
-                            <!-- Contenido del formulario -->
-                            Contraseña <input type="text" name="contraseña">
-                        </form>
-                        
-                        <input class="botones" type="submit" value="Conectar">
-                    </li>
-                </ul>
-            </div>
+    <title> Facebluff </title>
+    <link rel="stylesheet" href="main.css" media="screen">
+    <meta charset="utf-8" />
+</head>
 
+<body>
+    <div class="top">
+        <img id="LogoImg" src="img/Logo.png" alt="logo">
+        <div class = "botonesArriba">
+            <a href="">Entrar</a>
+            <a href="">Nuevo Usuario</a>
         </div>
-    	</body>
+    </div>
+    <div class="login">
+        <p>Entrar</p>
+        <!--Seria mejor directamente form? -->
+        <div class="recuadro">
+            <form method="post" action="procesar_formulario.html">
+                <!-- Contenido del formulario -->
+                <div>
+                    <label>Email </label>
+                    <input class = "rellenar" type="text" name="nombre">
+                </div>
+                <div>
+                    <label>Contraseña </label>
+                    <input class = "rellenar" type="password" name="conteaseña">
+                </div>
+                <input class="botones" type="submit" value="Conectar">
+            </form>
+        </div>
+
+    </div>
+</body>
 </html>

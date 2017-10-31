@@ -10,12 +10,12 @@ body{
 div.top{
     overflow: inherit;
 }
-div.top >div{
+.botonesArriba{
     margin-left:10%;
     margin-top:0.5%;
 }
 
-div.top >div >a{
+.botonesArriba > a {   
     font-family: "GloriaHallelujah";
     font-weight: bold;
     color:white;
@@ -23,6 +23,7 @@ div.top >div >a{
     padding: 20px;
     font-size: 160%;
 }
+
 #LogoImg{
     display: block;
     margin: auto;
@@ -31,40 +32,41 @@ div.top >div >a{
 div.login{
     margin-top:1%;
 }
-div.login >p{
-    text-align: center;
-    font-size: 30px;
-    font-weight:bold;
+
+label {
+    font-family: sans-serif;
 }
 
-div.login >div{
-    font-family: sans-serif;
+.recuadro {
+     
     /*¿Para que el display?*/
     display:block;
     margin:auto;
     background-color: purple;
     color:white;
     border-radius: 10px;
-    width:600px;
-    padding-bottom: 0.1%;
-}
-div.login > div > ul >li{
-    padding: 2%;
-    list-style: none;
+    max-width: 550px;
+    padding: 40px;
+    
 }
 
-input[type=text] {
-    width: 80%;
-    margin-right:4%;
-    float:right;
+div.login >p{
+    text-align: center;
+    font-size: 30px;
+    font-weight:bold;
+}
+
+.rellenar {
+    width: 430px;
     border-radius: 10px;
     box-sizing: border-box;
+    float: right;
 }
 
 
-form.email {
+/*form.email {
     padding-top: 5%;
-}
+}*/
 
 /* No esta en el centro completamente*/
 input.botones {
