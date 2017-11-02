@@ -26,6 +26,9 @@ div.top {
     padding: 20px;
     font-size: 160%;
 }
+.botonesArriba > a:hover{
+    color:lightgray;
+}
 
 #LogoImg {
     display: block;
@@ -61,7 +64,7 @@ div.login > p {
 }
 
 .rellenar {
-    width: 430px;
+    width: 390px;
     border-radius: 10px;
     box-sizing: border-box;
     float: right;
