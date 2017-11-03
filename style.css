@@ -14,17 +14,32 @@ div.top {
 }
 
 .botonesArriba {
-    margin-left: 10%;
+    /*margin-left: 10%;*/
     margin-top: 0.5%;
+    text-align: center;
 }
 
-.botonesArriba > a {
+.botonesArriba >label > img {
+    width: 25px;
+    margin-right: 8px;
+
+}
+
+.botonesArriba > label > a {
+    font-family: "GloriaHallelujah";
+    text-decoration: none;
+    color:white;
+    font-size: 15px;
+}
+.botonesArriba > a  {
+
     font-family: "GloriaHallelujah";
     font-weight: bold;
     color: white;
     text-decoration: none;
     padding: 20px;
-    font-size: 160%;
+    font-size: 120%;
+    
 }
 .botonesArriba > a:hover{
     color:lightgray;
@@ -33,10 +48,10 @@ div.top {
 #LogoImg {
     display: block;
     margin: auto;
-    width: 600px;
+    width: 550px;
 }
 
-div.login {
+div.login, .perfil {
     margin-top: 1%;
 }
 
@@ -57,7 +72,7 @@ label {
 
 }
 
-div.login > p {
+div.login > p, div.perfil > p {
     text-align: center;
     font-size: 30px;
     font-weight: bold;
@@ -84,42 +99,4 @@ input.botonConectar {
     border-radius: 10px;
     background-color: mediumpurple;
     color: white;
-}
-
-.botonUsuario {
-    width: 200px;
-    height: 50px;
-    left: 50px;
-    position: relative;
-    margin-left: -100px;
-    margin-top: 5%;
-    font-family: "GloriaHallelujah";
-    font-size: 140%;
-    left: 50%;
-    border-radius: 10px;
-    background-color: mediumpurple;
-    color: white;
-}
-
-.datoFecha {
-    float: right;
-    margin-top: 5px;
-    margin-right: 250px;
-}
-
-.datoImagen {
-    float: right;
-    margin-top: 8px;
-    margin-right: 112px;
-}
-.datoSexo {
-    float: right;
-    margin-top: 5px;
-    margin-right: 120px;
-}
-/*Todo el formulario podria haberse tratado como 
-un grid, OJO!, está bien así, pero lo más 
-normal hubiera sido usar un grid*/
-.datoSexo > input, .genero {
-    margin-right: 10px;
 }
