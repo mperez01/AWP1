@@ -16,36 +16,41 @@
         </div>
     </div>
     <div class="login">
-        <p>Entrar</p>
+        <p>Nuevo usuario</p>
         <div class="recuadro">
-            <form method="post" action="procesar_formulario.html">
+            <form method="post" action="crear_usuario.html">
                 <!-- Contenido del formulario -->
                 <div>
                     <label>Email </label>
-                    <input class="rellenar" type="text" name="email">
+                    <input class="rellenar" type="email" name="email" required>
                 </div>
                 <div>
                     <label>Contraseña </label>
-                    <input class="rellenar" type="password" name="contraseña">
+                    <input class="rellenar" type="password" name="contraseña" required>
                 </div>
                 <div>
                     <label> Nombre completo </label>
-                    <input class="rellenar" type="text" name="nombre">
+                    <input class="rellenar" type="text" name="nombre" required>
                 </div>
-                <div class = sexo>
+                <div>
                     <label> Sexo </label>
-                    <input type="radio" name="sexo" value="masculino"> <label class = genero> Masculino</label>
-                    <input type="radio" name="sexo" value="femenino"><label class = genero>Femenino </label>
-                    <input type="radio" name="sexo" value="otro"> <label class = genero>Otro</label>
+                    <label class="datoSexo">
+                    <input type="radio" name="gender" value="male" required> Masculino
 
+                    <input type="radio" name="gender" value="female"> Femenino 
+
+                    <input type="radio" name="gender" value="other"> Otro
+                    </label>
                 </div>
                 <div>
                     <label> Fecha de nacimiento </label>
+                    <input class="datoFecha" type="date" name="nacimiento">
                 </div>
                 <div>
                     <label> Imagen de perfil </label>
+                    <input class="datoImagen" name="uploadedfile" type="file" />
                 </div>
-                <input class="botones" type="submit" value="Conectar">
+                <input class="botonUsuario" type="submit" value="Crear usuario">
             </form>
         </div>
 

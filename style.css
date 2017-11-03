@@ -68,9 +68,10 @@ div.login > p {
     border-radius: 10px;
     box-sizing: border-box;
     float: right;
+    margin-top: 4px;
 }
 
-input.botones {
+input.botonConectar {
     width: 150px;
     height: 50px;
     left: 50%;
@@ -83,4 +84,42 @@ input.botones {
     border-radius: 10px;
     background-color: mediumpurple;
     color: white;
+}
+
+.botonUsuario {
+    width: 200px;
+    height: 50px;
+    left: 50px;
+    position: relative;
+    margin-left: -100px;
+    margin-top: 5%;
+    font-family: "GloriaHallelujah";
+    font-size: 140%;
+    left: 50%;
+    border-radius: 10px;
+    background-color: mediumpurple;
+    color: white;
+}
+
+.datoFecha {
+    float: right;
+    margin-top: 5px;
+    margin-right: 250px;
+}
+
+.datoImagen {
+    float: right;
+    margin-top: 8px;
+    margin-right: 112px;
+}
+.datoSexo {
+    float: right;
+    margin-top: 5px;
+    margin-right: 120px;
+}
+/*Todo el formulario podria haberse tratado como 
+un grid, OJO!, está bien así, pero lo más 
+normal hubiera sido usar un grid*/
+.datoSexo > input, .genero {
+    margin-right: 10px;
 }
