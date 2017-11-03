@@ -24,14 +24,17 @@
     margin-top: 8px;
     margin-right: 112px;
 }
+
 .datoSexo {
     float: right;
     margin-top: 5px;
     margin-right: 120px;
 }
+
 /*Todo el formulario podria haberse tratado como 
 un grid, OJO!, está bien así, pero lo más 
 normal hubiera sido usar un grid*/
+
 .datoSexo > input, .genero {
     margin-right: 10px;
 }
