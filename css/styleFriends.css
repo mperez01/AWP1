@@ -1,0 +1,8 @@
+.solicitudes > div{
+    text-align: center;
+}
+.solicitudes >div >p{
+    font-weight: bold;
+    font-size:130%;
+}
+

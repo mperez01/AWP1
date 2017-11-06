@@ -97,6 +97,7 @@ input.botonConectar {
     font-size: 140%;
     left: 50%;
     border-radius: 10px;
-    background-color: mediumpurple;
+    background-color: #B404AE;
     color: white;
+    font-weight: bold;
 }
