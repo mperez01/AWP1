@@ -15,12 +15,12 @@
 }
 
 .datoFecha {
-    float: right;
+    margin-right: 250px;
     border-radius: 10px;
     box-sizing: border-box;
+    float: right;
+    margin-top: 4px;
     text-align: center;
-    margin-top: 5px;
-    margin-right: 250px;
 }
 
 .datoImagen {
