@@ -15,21 +15,20 @@
 }
 
 .datoFecha {
-    
     border-radius: 10px;
     box-sizing: border-box;
-    margin-left: 18px;
+    margin-left: 12px;
 }
 
 .datoImagen {
-    width: 380px;
+    width: 70%;
     margin-left: 30px;
     float: right;
     margin-top: 8px;
 }
 
 .datoSexo {
-    width: 380px;
+    width: 70%;
     float: right;
     margin-top: 5px;
 }
