@@ -18,29 +18,20 @@
     
     border-radius: 10px;
     box-sizing: border-box;
-    margin-left: 12px;
+    margin-left: 18px;
 }
 
 .datoImagen {
-    width: 390px;
+    width: 380px;
+    margin-left: 30px;
     float: right;
     margin-top: 8px;
-    /*
-    float: right;
-    margin-top: 8px;
-    margin-right: 112px;
-    */
 }
 
 .datoSexo {
-    width: 390px;
+    width: 380px;
     float: right;
     margin-top: 5px;
-    /*
-    float: right;
-    margin-top: 5px;
-    margin-right: 120px;
-    */
 }
 
 /*Todo el formulario podria haberse tratado como 
