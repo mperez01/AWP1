@@ -76,9 +76,10 @@ div.login > p, div.perfil > p, div.solicitudes > div > p {
 }
 
 .rellenar {
-    width: 70%;
+    width: 380px;
     border-radius: 10px;
     box-sizing: border-box;
+    border: 1px solid black;
     float: right;
     margin-top: 4px;
 }

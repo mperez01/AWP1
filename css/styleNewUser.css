@@ -15,20 +15,24 @@
 }
 
 .datoFecha {
+    width: 30%;
     border-radius: 10px;
     box-sizing: border-box;
-    margin-left: 12px;
+    border: 1px solid black;
+    margin-left: 18px;
+    /* Para que el texto donde aparece la fecha este centrado */
+    text-align: center;
 }
 
 .datoImagen {
-    width: 70%;
+    width: 380px;
     margin-left: 30px;
     float: right;
     margin-top: 8px;
 }
 
 .datoSexo {
-    width: 70%;
+    width: 380px;
     float: right;
     margin-top: 5px;
 }
@@ -37,6 +41,7 @@
 un grid, OJO!, está bien así, pero lo más 
 normal hubiera sido usar un grid*/
 
-.datoSexo > input, .genero {
+.datoSexo > input,
+.genero {
     margin-right: 5px;
 }
