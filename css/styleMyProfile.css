@@ -1,12 +1,35 @@
-.perfil > div {
-    text-align: center;
+.fotoPerfil {
+    width: 150px;
+    height: 150px;
+    border: 1px solid black;
+    margin-top: 10px;
+    padding: 1px;
+    margin-right: 25px;
+    float: left;
+}
+
+.perfil > div  {
+    left: 50%;
+    position: relative;
+    margin-left: -300px;
+    left: 50%;
+    text-align: left;
+}
+
+.perfil > div > p {
+    margin: 10px;
+}
+
+p.datos {
+    font-family: sans-serif;
 }
 
 .nombre {
-    font-weight: bold;
+    font-weight: bold;;
     font-size: 20px;
 }
-input.botonModificar{
+
+input.botonModificar {
     width: 150px;
     height: 50px;
     left: 50%;
@@ -20,5 +43,9 @@ input.botonModificar{
     background-color: #B404AE;
     color: white;
     font-weight: bold;
-    
+}
+
+.iconoPerfil {
+    width: 25px;
+    margin-right: 8px;
 }
