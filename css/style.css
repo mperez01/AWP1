@@ -99,3 +99,8 @@ input.botonConectar {
     color: white;
     font-weight: bold;
 }
+
+.iconoPerfil {
+    width: 25px;
+    margin-right: 8px;
+}
