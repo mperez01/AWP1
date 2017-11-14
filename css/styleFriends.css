@@ -1,7 +1,22 @@
+.relleno {
+    width: 350px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    float: center;
+    margin-top: 4px;
+}
+
 .solicitudes > div{
     text-align: center;
 }
-.solicitudes >div >p{
+
+.botonBuscar {
+    width: 100px;
+    height: 40px;
+    font-family: "GloriaHallelujah";
+    font-size: 100%;
+    border-radius: 10px;
+    background-color: #B404AE;
+    color: white;
     font-weight: bold;
-    font-size: 130%;
 }
