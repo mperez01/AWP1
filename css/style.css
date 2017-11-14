@@ -60,7 +60,6 @@ label {
 .recuadro {
 
     /*¿Para que el display?*/
-    display: block;
     margin: auto;
     background-color: purple;
     color: white;
