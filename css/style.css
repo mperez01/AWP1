@@ -102,6 +102,7 @@ input.botonConectar {
 }
 
 .iconoPerfil {
+    vertical-align: middle;
     width: 25px;
     margin-right: 8px;
 }
