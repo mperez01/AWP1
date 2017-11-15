@@ -20,7 +20,7 @@ div.top {
     text-align: center;
 }
 
-.botonesArriba > label > a {
+.botonesArriba > label {
     font-family: "GloriaHallelujah";
     text-decoration: none;
     color: white;
