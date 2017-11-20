@@ -49,6 +49,5 @@ isUserCorrect(email, password, callback) {
 }
 
 module.exports = {
-    /*DAOUsers: DAOUsers*/
-    isUserCorrect: isUserCorrect
+    DAOUsers: DAOUsers
 }

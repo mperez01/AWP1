@@ -1,8 +1,11 @@
 "use strict";
 
 const mysql = require("mysql");
+const http = require("http");
+const express = require("express");
 const config = require("./config");
 const daoUsers = require("./dao_users");
+
 
 const pool= mysql.createPool({
     host: config.host,
@@ -11,8 +14,8 @@ const pool= mysql.createPool({
     database: config.database
 });
 
-let daoUsers = new daoUsers.DAOUsers(pool);
-daoUsers.isUserCorrect("user", "pass", (err, result) => {
+let daoUser = new daoUsers.DAOUsers(pool);
+daoUser.isUserCorrect("user", "pass", (err, result) => {
     if (err) {
         console.error(err);
     } else if (result) {
