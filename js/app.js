@@ -23,4 +23,5 @@ daoUser.isUserCorrect("user", "pass", (err, result) => {
     } else {
         console.log("Usuario y/o contraseña incorrectos");
     }
+    pool.end();
 });
