@@ -25,7 +25,7 @@ class DAOUsers {
  * @param {string} password Contraseña a comprobar
  * @param {function} callback Función que recibirá el objeto error y el resultado
  */
-    isUserCorrect(email, password, callback) {
+isUserCorrect(email, password, callback) {
 
         /* Implementar */
         this.pool.getConnection((err, connection) => {
@@ -46,5 +46,9 @@ class DAOUsers {
         })
 
     }
+}
 
+module.exports = {
+    /*DAOUsers: DAOUsers*/
+    isUserCorrect: isUserCorrect
 }

@@ -14,8 +14,8 @@
   ],
   "author": "Mario Rodriguez Salinero y Marcelino Perez Duran",
   "license": "ISC",
-  "dependencies":{
-    "mysql":"2.15.0"
+  "dependencies": {
+    "mysql": "2.15.0"
   },
   "private": true
 }
