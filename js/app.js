@@ -10,3 +10,14 @@ const pool= mysql.createPool({
     password: config.password,
     database: config.database
 });
+
+let daoUser = new daoUsers.DAOUsers(pool);
+daoUser.isUserCorrect(user, pass, (err, result) => {
+    if (err) {
+        console.error(err);
+    } else if (result) {
+        console.log("Usuario y contraseña correctos");
+    } else {
+        console.log("Usuario y/o contraseña incorrectos");
+    }
+});
