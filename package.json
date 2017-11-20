@@ -6,10 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mperez01/AWP1.git"
-  },
   "keywords": [
     "node",
     "facebluff",
@@ -17,6 +13,7 @@
   ],
   "author": "Mario Rodriguez y Marcelino Perez",
   "license": "ISC",
+  "private": true,
   "bugs": {
     "url": "https://github.com/mperez01/AWP1/issues"
   },
