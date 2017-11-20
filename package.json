@@ -1,0 +1,24 @@
+{
+  "name": "facebluff",
+  "version": "1.0.0",
+  "description": "Facebluff, red social para la asignatura de aplicaciones web",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mperez01/AWP1.git"
+  },
+  "keywords": [
+    "node",
+    "facebluff",
+    "aw"
+  ],
+  "author": "Mario Rodriguez y Marcelino Perez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mperez01/AWP1/issues"
+  },
+  "homepage": "https://github.com/mperez01/AWP1#readme"
+}
