@@ -29,16 +29,3 @@ normal hubiera sido usar un grid*/
 .genero {
     margin-right: 5px;
 }
-
-.botonUsuario {
-    width: 200px;
-    height: 50px;
-    margin: auto;
-    display: block;
-    font-family: "GloriaHallelujah";
-    font-size: 140%;
-    border-radius: 10px;
-    background-color: #B404AE;
-    color: white;
-    font-weight: bold;
-}
