@@ -5,7 +5,6 @@
 --"INSERT INTO user (email, password, name, gender, dateOfBirth, image) VALUES (?,?,?,?,?,?)", [email, password, name,gender,dateOfBirth,image] 
 ***Points no se meterían porque se puso como automático 0 al crear nuevo usuario***
 --Middleware para mandar a login en caso de que el usuario quiera entrar a algún html que sea sólo para usuarios.
-
 -----------------------------------------------------------------------
 COSAS NUEVAS HECHAS QUE QUIZAS NO SE VEN A SIMPLE VISTA
 (Mario)
@@ -13,3 +12,7 @@ COSAS NUEVAS HECHAS QUE QUIZAS NO SE VEN A SIMPLE VISTA
    directamente se posicione dentro del campo de escritura.
 -- Añadido bodyParser al proyecto (necesario para hacer la lectura de los formularios post).
 (Marce)
+
+-----------------------------------------------------------------------
+TUTORIA O PREGUNTAS EN CLASE
+--app.post se pone en el app.js o en el DAOUsers.js o dónde?
