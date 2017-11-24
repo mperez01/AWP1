@@ -4,10 +4,10 @@
   esos valores en vez de inicializarlo distintas veces?
 --"INSERT INTO user (email, password, name, gender, dateOfBirth, image) VALUES (?,?,?,?,?,?)", [email, password, name,gender,dateOfBirth,image] 
 ***Points no se meterían porque se puso como automático 0 al crear nuevo usuario***
---
+--Middleware para mandar a login en caso de que el usuario quiera entrar a algún html que sea sólo para usuarios.
 
 -----------------------------------------------------------------------
-COSAS NUEVAS HECHAS QUE QUIZAS NO SE VEN FÁCIL
+COSAS NUEVAS HECHAS QUE QUIZAS NO SE VEN A SIMPLE VISTA
 (Mario)
 -- He añadido lo de for en cada label, que de ese modo cuando se haga click sobre el nombre de el apartado en el form, por ejemplo en nombre,
    directamente se posicione dentro del campo de escritura.
