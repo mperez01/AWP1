@@ -32,7 +32,8 @@ getUserData(email,callback){
         if(usr.length=== 0){
             callback(null,undefined);
         }else{
-            let obj = {name: usr.name, gender: usr.gender, dateOfBirth: usr.dateOfBirth, points: usr.points};
+            let obj = {name: usr[0].name, gender: usr[0].gender, dateOfBirth: usr[0].dateOfBirth, points: usr[0].points};
+            console.log(obj);
             callback(null, obj);
         }
         });
@@ -73,7 +74,7 @@ isUserCorrect(email, password, callback) {
                 })
         })
 
-    }
+}
     /**
      * Obtiene el nombre de fichero que contiene la imagen de perfil de un usuario.
      * 
@@ -88,7 +89,7 @@ isUserCorrect(email, password, callback) {
 getUserImageName(email, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            connection.query("SELECT img FROM user WHERE email = ?",
+            connection.query("SELECT image FROM user WHERE email = ?",
                 [email],
                 (err, rows) => {
                     if (err) { callback(err); return; }
@@ -96,7 +97,7 @@ getUserImageName(email, callback) {
                     if (rows.length === 0) {
                         callback(null, undefined);
                     } else {
-                        callback(null, rows[0].img);
+                        callback(null, rows[0].image);
                     }
                 });
         });

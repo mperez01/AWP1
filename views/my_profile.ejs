@@ -12,11 +12,11 @@
     <div class="top">
         <img id="LogoImg" src="img/Logo.png" alt="logo">
         <div class="botonesArriba">
-            <a href="my_profile.html">Perfil</a>
+            <a href="/my_profile">Perfil</a>
             <a href="friends.html">Amigos</a>
             <a href="">Preguntas</a>
             <a href="/logout">Desconectar</a>
-            <label><img class="iconoPerfil" src="/imagenUsuario" alt="fotoPerfil"><%= user.points%></label>
+            <label><img class="iconoPerfil" src="/imagenUsuario" alt="fotoPerfil"> <%= user.points %> </label>
         </div>
     </div>
     <div class="perfil">
@@ -25,13 +25,13 @@
         <div>
             <img class="fotoPerfil" src="/imagenUsuario" alt="fotoPerfil">
             <p class="nombre"><%= user.name %></p>
-            <p class="datos">64 años</p>
+            <p class="datos"> <%= user.dateOfBirth %> </p>
             <!--hacer funcion para calcular la edad(profe dijo que con el tema 6 se podia)-->
             <p class="datos">
                 <% if(user.gender !== null) %>
                 <%= user.gender%>
             </p>
-            <p class="datos"><%= user.points%></p>
+            <p class="datos"><%= user.points%> puntos</p>
         </div>
         <input class="boton" type="submit" value="Modificar perfil">
     </div>

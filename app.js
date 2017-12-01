@@ -56,9 +56,9 @@ app.use((request, response, next) => {
 
 let daoU = new daoUsers.DAOUsers(pool);
 
-app.get("/", (request, response) => {
+app.get("/login.html", (request, response) => {
     response.status(200);
-    response.render("/login");
+    response.render("login");
 });
 
 app.listen(3000, (err) => {
@@ -70,19 +70,19 @@ app.listen(3000, (err) => {
 });
 
 app.post("/login", (request, response) => {
-    daoU.isUserCorrect(request.body.mail, request.body.pass, (err, existe) => {
+    daoU.isUserCorrect(request.body.email, request.body.pass, (err, existe) => {      
         if (err) {
             console.error(err);
-            response.redirect("/login")
+            response.redirect("/login.html")
         }
         else {
             if (existe === true) {
-                request.session.currentUser = request.body.mail;
+                request.session.currentUser = request.body.email;
                 response.redirect("/my_profile");
             }
             else {
                 response.setFlash("Dirección de correo electronico y/o contraseña no válidos");                
-                response.redirect("/login");
+                response.redirect("/login.html");
             }
         }
     })
@@ -91,7 +91,7 @@ app.post("/login", (request, response) => {
 app.get("/logout", (request, response) => {
     
     request.session.destroy();
-    response.redirect("/login");
+    response.redirect("/login.html");
 });
 
 function identificacionRequerida(request, response, next) {
@@ -100,7 +100,7 @@ function identificacionRequerida(request, response, next) {
           response.locals.userEmail = request.session.currentUser;
           next();
       } else {
-          response.redirect("/login");
+          response.redirect("/login.html");
       }
 }
 
@@ -109,9 +109,9 @@ app.get("/imagenUsuario",(request,response)=>{
         if(err){
             console.error(err);
         }else{
-            if(img === null){
+            if(img === null || img === undefined) {
                 response.status(200);
-                response.sendFile(__dirname + '/public/img/NoPerfil.png');
+                response.sendFile(__dirname + '/public/img/NoProfile.png');
             }else{
                 response.sendFile(__dirname + '/profile_imgs/'+ img);
             }
@@ -119,9 +119,12 @@ app.get("/imagenUsuario",(request,response)=>{
     });
 });
 
-app.get("/profile",identificacionRequerida,(request,response)=>{
+app.get("/my_profile",identificacionRequerida,(request,response)=>{
     response.status(200);
-    daoU.getUserData(response.locals.userEmail,(err,usr)=>{
+    daoU.getUserData(request.session.currentUser,(err,usr)=>{
+        console.log("Estamos en /profile");
+        console.log(`Los puntos de usuario son: ${usr.points}`);
+        console.log(`El nombre de usuario es: ${usr.name}`);
         response.render("my_profile",{user:usr});
     });
 });
