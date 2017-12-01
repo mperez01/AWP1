@@ -119,12 +119,30 @@ app.get("/imagenUsuario",(request,response)=>{
     });
 });
 
+app.get("/new_user.html", (request, response) => {
+    response.render("new_user");
+})
+
+app.post("/new_user", (request, response) => {
+    
+
+    
+    daoU.insertUser(request.body.email, request.body.password, request.body.name,
+         request.body.gender, request.body.date, request.body.uploadedfile, (err) => {
+             if (err) {
+                 console.error(err);
+             } else {
+                 console.log("Usuario insertado");
+                 console.log(`Usuario sube imagen: ${request.body.uploadedfile} `)
+                 request.session.currentUser = request.body.email;
+                 response.redirect("/my_profile");
+             }
+         });
+})
+
 app.get("/my_profile",identificacionRequerida,(request,response)=>{
     response.status(200);
     daoU.getUserData(request.session.currentUser,(err,usr)=>{
-        console.log("Estamos en /profile");
-        console.log(`Los puntos de usuario son: ${usr.points}`);
-        console.log(`El nombre de usuario es: ${usr.name}`);
         response.render("my_profile",{user:usr});
     });
 });

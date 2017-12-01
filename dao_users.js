@@ -16,30 +16,30 @@ class DAOUsers {
  * @param {string} email Identificador del usuario a buscar
  * @param {function} callback Función que recibirá el objeto error y el resultado
  */
-getUserData(email,callback){
+    getUserData(email, callback) {
 
-    this.pool.getConnection((err,connection)=>{
-        if(err){
-            callback(err);
-            return;
-        }
-        connection.query("SELECT name, gender, dateOfBirth, points FROM user WHERE email=?",[email],(err,usr)=>{
-        connection.release();
-        if(err){
-            callback(err);
-            return;
-        }
-        if(usr.length=== 0){
-            callback(null,undefined);
-        }else{
-            let obj = {name: usr[0].name, gender: usr[0].gender, dateOfBirth: usr[0].dateOfBirth, points: usr[0].points};
-            console.log(obj);
-            callback(null, obj);
-        }
-        });
-        
-    })
-}
+        this.pool.getConnection((err, connection) => {
+            if (err) {
+                callback(err);
+                return;
+            }
+            connection.query("SELECT name, gender, dateOfBirth, points FROM user WHERE email=?", [email], (err, usr) => {
+                connection.release();
+                if (err) {
+                    callback(err);
+                    return;
+                }
+                if (usr.length === 0) {
+                    callback(null, undefined);
+                } else {
+                    let obj = { name: usr[0].name, gender: usr[0].gender, dateOfBirth: usr[0].dateOfBirth, points: usr[0].points };
+                    console.log(obj);
+                    callback(null, obj);
+                }
+            });
+
+        })
+    }
     /**
  * Determina si un determinado usuario aparece en la BD con la contraseña
  * pasada como parámetro.
@@ -54,7 +54,7 @@ getUserData(email,callback){
  * @param {string} password Contraseña a comprobar
  * @param {function} callback Función que recibirá el objeto error y el resultado
  */
-isUserCorrect(email, password, callback) {
+    isUserCorrect(email, password, callback) {
 
         /* Implementar */
         this.pool.getConnection((err, connection) => {
@@ -74,7 +74,7 @@ isUserCorrect(email, password, callback) {
                 })
         })
 
-}
+    }
     /**
      * Obtiene el nombre de fichero que contiene la imagen de perfil de un usuario.
      * 
@@ -86,7 +86,7 @@ isUserCorrect(email, password, callback) {
      * @param {string} email Identificador del usuario cuya imagen se quiere obtener
      * @param {function} callback Función que recibirá el objeto error y el resultado
      */
-getUserImageName(email, callback) {
+    getUserImageName(email, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
             connection.query("SELECT image FROM user WHERE email = ?",
@@ -101,6 +101,19 @@ getUserImageName(email, callback) {
                     }
                 });
         });
+    }
+
+    insertUser(email, password, name, gender, date, image, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            connection.query("INSERT INTO user (email, password, name, gender, dateOfBirth, image)" +
+                " VALUES (?, ?, ?, ?, ?, ?)", [email, password, name, gender, date, image],
+                function (err, resultado) {
+                    if (err) { callback(err); return; }
+                    callback(null);
+                    connection.release();
+                })
+        })
     }
 }
 
