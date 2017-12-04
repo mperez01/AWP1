@@ -56,6 +56,20 @@ app.use((request, response, next) => {
 
 let daoU = new daoUsers.DAOUsers(pool);
 
+function identificacionRequerida(request, response, next) {
+    
+      if (request.session.currentUser !== undefined) {
+          response.locals.userEmail = request.session.currentUser;
+          next();
+      } else {
+          response.redirect("/login.html");
+      }
+}
+
+app.get("/", (request, response) => {
+    response.redirect("/login.html");
+});
+
 app.get("/login.html", (request, response) => {
     response.status(200);
     response.render("login");
@@ -93,16 +107,6 @@ app.get("/logout", (request, response) => {
     request.session.destroy();
     response.redirect("/login.html");
 });
-
-function identificacionRequerida(request, response, next) {
-    
-      if (request.session.currentUser !== undefined) {
-          response.locals.userEmail = request.session.currentUser;
-          next();
-      } else {
-          response.redirect("/login.html");
-      }
-}
 
 app.get("/imagenUsuario",(request,response)=>{
     daoU.getUserImageName(request.session.currentUser,(err,img)=>{
