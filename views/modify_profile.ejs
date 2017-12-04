@@ -16,7 +16,7 @@
             <a href="friends.html">Amigos</a>
             <a href="">Preguntas</a>
             <a href="/logout">Desconectar</a>
-            <label><img class="iconoPerfil" src="/imagenUsuario" alt="fotoPerfil"><%= user.points %></label>
+            <label><img class="iconoPerfil" src="/imagenUsuario" alt="fotoPerfil"> <%= user.points %> </label>
         </div>
     </div>
 
@@ -65,7 +65,7 @@
                 </div>
                 <div>
                     <label for="formFecha"> Fecha de nacimiento </label>
-                    <input class="datoFecha" type="date" name="date" value='<%= user.dateOfBirth %>'>
+                    <input class="datoFecha" type="date" name="date" value='<%=user.dateOfBirth%>'>
                 </div>
                 <div>
                     <label> Imagen de perfil </label>

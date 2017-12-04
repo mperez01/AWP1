@@ -13,7 +13,7 @@
         <img id="LogoImg" src="img/Logo.png" alt="logo">
         <div class="botonesArriba">
             <a href="/my_profile">Perfil</a>
-            <a href="friends.html">Amigos</a>
+            <a href="/friends">Amigos</a>
             <a href="">Preguntas</a>
             <a href="/logout">Desconectar</a>
             <label><img class="iconoPerfil" src="/imagenUsuario" alt="fotoPerfil"> <%= user.points %> </label>
@@ -26,7 +26,7 @@
             <img class="fotoPerfil" src="/imagenUsuario" alt="fotoPerfil">
             <p class="nombre"><%= user.name %></p>
             <% if (user.dateOfBirth !== null) { %>
-            <p class="datos"> <%= user.dateOfBirth %> años </p>
+            <p class="datos"> <%= user.age %> años </p>
             <% } %> 
             <!--hacer funcion para calcular la edad(profe dijo que con el tema 6 se podia)-->
             <p class="datos">

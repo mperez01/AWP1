@@ -124,13 +124,15 @@ app.get("/new_user.html", (request, response) => {
 })
 
 app.post("/new_user", (request, response) => {
+    //Si no se introduce nada en fecha, NULL
+    if (request.body.date === '') {
+        request.body.date = null;
+    }
     daoU.insertUser(request.body.email, request.body.password, request.body.name,
          request.body.gender, request.body.date, request.body.uploadedfile, (err) => {
              if (err) {
                  console.error(err);
              } else {
-                 //console.log("Usuario insertado");
-                 //console.log(`Usuario sube imagen: ${request.body.uploadedfile} `)
                  request.session.currentUser = request.body.email;
                  response.redirect("/my_profile");
              }
@@ -139,12 +141,6 @@ app.post("/new_user", (request, response) => {
 
 app.get("/my_profile",identificacionRequerida,(request,response)=>{
     response.status(200);
-    
-    let moment = require ("moment");
-    let hoy = moment();
-    //let fechaNacimiento = moment(new Date(user.dateOfBirth));
-    console.log(hoy);
-    
     daoU.getUserData(request.session.currentUser,(err,usr)=>{
         response.render("my_profile",{user:usr});
     });
@@ -163,3 +159,13 @@ app.get("/modify_profile",identificacionRequerida,(request,response)=>{
         response.render("my_profile",{user:usr});
     });
 });
+
+app.get("/friends", identificacionRequerida, (request, response) => {
+    response.redirect("/friends.html");
+})
+
+app.get("/friends.html", (request, response) => {
+    daoU.getUserData(request.session.currentUser,(err,usr)=>{
+        response.render("friends",{user:usr});
+    });
+})

@@ -33,16 +33,30 @@ class DAOUsers {
                     callback(null, undefined);
                 } else {
                     let edad = null;
+                    let date = null;
                     /* Fecha nacimiento */
                     if (usr[0].dateOfBirth != null) {
                         let moment = require ("moment");
                         let hoy = moment();
                         var fechaNacimiento = moment(new Date(usr[0].dateOfBirth));
                         edad = hoy.diff(fechaNacimiento, "years");
+
+                        var month = usr[0].dateOfBirth.getMonth() + 1; //months from 1-12
+                        var day = usr[0].dateOfBirth.getDate();
+                        console.log("DIA! " + day);
+                        if(day < '10') {
+                            day = `0${day}`;
+                        }
+                        if(month < '10') {
+                            month = `0${month}`;
+                        }
+                        var year = usr[0].dateOfBirth.getFullYear();
+                        date = `${year}-${month}-${day}`;
                     }
                     /* ----- */
 
-                    let obj = { email:usr[0].email, password: usr[0].password, name: usr[0].name, gender: usr[0].gender, dateOfBirth: edad, points: usr[0].points, image: usr[0].image };
+                    let obj = { email:usr[0].email, password: usr[0].password, name: usr[0].name, 
+                        gender: usr[0].gender, dateOfBirth: date, points: usr[0].points, image: usr[0].image, age: edad};
                     console.log(obj);
                     callback(null, obj);
                 }
