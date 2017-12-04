@@ -109,7 +109,7 @@ app.get("/imagenUsuario",(request,response)=>{
         if(err){
             console.error(err);
         }else{
-            if(img === null || img === undefined) {
+            if(img === null ||img==='') {
                 response.status(200);
                 response.sendFile(__dirname + '/public/img/NoProfile.png');
             }else{
@@ -132,8 +132,8 @@ app.post("/new_user", (request, response) => {
              if (err) {
                  console.error(err);
              } else {
-                 console.log("Usuario insertado");
-                 console.log(`Usuario sube imagen: ${request.body.uploadedfile} `)
+                 //console.log("Usuario insertado");
+                 //console.log(`Usuario sube imagen: ${request.body.uploadedfile} `)
                  request.session.currentUser = request.body.email;
                  response.redirect("/my_profile");
              }
@@ -141,6 +141,20 @@ app.post("/new_user", (request, response) => {
 })
 
 app.get("/my_profile",identificacionRequerida,(request,response)=>{
+    response.status(200);
+    daoU.getUserData(request.session.currentUser,(err,usr)=>{
+        response.render("my_profile",{user:usr});
+    });
+});
+
+app.get("/modify_profile.html",identificacionRequerida,(request,response)=>{
+    response.status(200);
+    daoU.getUserData(request.session.currentUser,(err,usr)=>{
+        response.render("modify_profile",{user:usr});
+    });
+});
+
+app.get("/modify_profile",identificacionRequerida,(request,response)=>{
     response.status(200);
     daoU.getUserData(request.session.currentUser,(err,usr)=>{
         response.render("my_profile",{user:usr});

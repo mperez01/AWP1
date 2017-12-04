@@ -28,12 +28,20 @@
             <p class="datos"> <%= user.dateOfBirth %> </p>
             <!--hacer funcion para calcular la edad(profe dijo que con el tema 6 se podia)-->
             <p class="datos">
-                <% if(user.gender !== null) %>
-                <%= user.gender%>
+                <% if(user.gender !== null){ %>
+                    <% if(user.gender==="male"){ %>
+                        Hombre
+                    <% } else if(user.gender==="female"){ %>
+                        Mujer
+                    <% } else { %>
+                        No identificado
+                    <% } %>
+                <% } %>
+                
             </p>
             <p class="datos"><%= user.points%> puntos</p>
         </div>
-        <input class="boton" type="submit" value="Modificar perfil">
+        <input class="boton" type="submit" value="Modificar perfil" onclick="window.location.href='/modify_profile.html'" >
     </div>
 </body>
 
