@@ -124,9 +124,6 @@ app.get("/new_user.html", (request, response) => {
 })
 
 app.post("/new_user", (request, response) => {
-    
-
-    
     daoU.insertUser(request.body.email, request.body.password, request.body.name,
          request.body.gender, request.body.date, request.body.uploadedfile, (err) => {
              if (err) {
@@ -142,6 +139,12 @@ app.post("/new_user", (request, response) => {
 
 app.get("/my_profile",identificacionRequerida,(request,response)=>{
     response.status(200);
+    
+    let moment = require ("moment");
+    let hoy = moment();
+    //let fechaNacimiento = moment(new Date(user.dateOfBirth));
+    console.log(hoy);
+    
     daoU.getUserData(request.session.currentUser,(err,usr)=>{
         response.render("my_profile",{user:usr});
     });

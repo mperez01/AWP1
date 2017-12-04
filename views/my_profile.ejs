@@ -25,7 +25,9 @@
         <div>
             <img class="fotoPerfil" src="/imagenUsuario" alt="fotoPerfil">
             <p class="nombre"><%= user.name %></p>
-            <p class="datos"> <%= user.dateOfBirth %> </p>
+            <% if (user.dateOfBirth !== null) { %>
+            <p class="datos"> <%= user.dateOfBirth %> años </p>
+            <% } %> 
             <!--hacer funcion para calcular la edad(profe dijo que con el tema 6 se podia)-->
             <p class="datos">
                 <% if(user.gender !== null){ %>

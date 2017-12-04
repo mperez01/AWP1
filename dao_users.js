@@ -32,12 +32,21 @@ class DAOUsers {
                 if (usr.length === 0) {
                     callback(null, undefined);
                 } else {
-                    let obj = { email:usr[0].email, password: usr[0].password, name: usr[0].name, gender: usr[0].gender, dateOfBirth: usr[0].dateOfBirth, points: usr[0].points, image: usr[0].image };
+                    let edad = null;
+                    /* Fecha nacimiento */
+                    if (usr[0].dateOfBirth != null) {
+                        let moment = require ("moment");
+                        let hoy = moment();
+                        var fechaNacimiento = moment(new Date(usr[0].dateOfBirth));
+                        edad = hoy.diff(fechaNacimiento, "years");
+                    }
+                    /* ----- */
+
+                    let obj = { email:usr[0].email, password: usr[0].password, name: usr[0].name, gender: usr[0].gender, dateOfBirth: edad, points: usr[0].points, image: usr[0].image };
                     console.log(obj);
                     callback(null, obj);
                 }
             });
-
         })
     }
     /**
