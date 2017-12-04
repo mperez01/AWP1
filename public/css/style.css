@@ -101,6 +101,14 @@ input.boton {
     font-weight: bold;
 }
 
+.error {
+    font-family: sans-serif;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+    color: red;
+}
+
 .iconoPerfil {
     vertical-align: middle;
     width: 25px;

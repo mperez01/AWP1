@@ -146,25 +146,15 @@ app.get("/my_profile",identificacionRequerida,(request,response)=>{
     });
 });
 
-app.get("/modify_profile.html",identificacionRequerida,(request,response)=>{
+
+app.get("/modify_profile",identificacionRequerida,(request,response)=>{
     response.status(200);
     daoU.getUserData(request.session.currentUser,(err,usr)=>{
         response.render("modify_profile",{user:usr});
     });
 });
 
-app.get("/modify_profile",identificacionRequerida,(request,response)=>{
-    response.status(200);
-    daoU.getUserData(request.session.currentUser,(err,usr)=>{
-        response.render("my_profile",{user:usr});
-    });
-});
-
 app.get("/friends", identificacionRequerida, (request, response) => {
-    response.redirect("/friends.html");
-})
-
-app.get("/friends.html", (request, response) => {
     daoU.getUserData(request.session.currentUser,(err,usr)=>{
         response.render("friends",{user:usr});
     });

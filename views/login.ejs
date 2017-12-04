@@ -29,14 +29,13 @@
                 </div>
                 <input class="boton" type="submit" value="Conectar">
             </form>
-            <% let errorMsg = getFlash(); %>
-            <% if (errorMsg) { %>
-                <div class="error">
-                    <%= errorMsg %>
-                </div>
-            <% } %>
         </div>
-
+        <% let errorMsg = getFlash(); %>
+        <% if (errorMsg) { %>
+            <div class="error">
+                <%= errorMsg %>
+            </div>
+        <% } %>
     </div>
 </body>
 
