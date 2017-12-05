@@ -43,7 +43,7 @@ class DAOUsers {
 
                         var month = usr[0].dateOfBirth.getMonth() + 1; //months from 1-12
                         var day = usr[0].dateOfBirth.getDate();
-                        console.log("DIA! " + day);
+                        //console.log("DIA! " + day);
                         if(day < '10') {
                             day = `0${day}`;
                         }
@@ -57,7 +57,7 @@ class DAOUsers {
 
                     let obj = { email:usr[0].email, password: usr[0].password, name: usr[0].name, 
                         gender: usr[0].gender, dateOfBirth: date, points: usr[0].points, image: usr[0].image, age: edad};
-                    console.log(obj);
+                    //console.log(obj);
                     callback(null, obj);
                 }
             });
@@ -133,21 +133,21 @@ class DAOUsers {
                 " VALUES (?, ?, ?, ?, ?, ?)", [email, password, name, gender, date, image],
                 function (err, resultado) {
                     if (err) { callback(err); return; }
-                    callback(null);
-                    connection.release();
                 })
+                callback(null);
+                connection.release();
         })
     }
     modifyUser(email, password, name, gender, date, image, callback){
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            connection.query("UPDATE user SET email=?, password=?,name=?,gender=?,dateOfBirth=?,image=?",
-            [email, password, name, gender, date, image],
+            connection.query("UPDATE user SET password=?,name=?,gender=?,dateOfBirth=?,image=? WHERE email=?",
+            [password, name, gender, date, image, email],
             function (err, resultado) {
                 if (err) { callback(err); return; }
-                callback(null);
-                connection.release();
             })
+            callback(null);
+            connection.release();
         })
     }
 }

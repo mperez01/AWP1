@@ -13,29 +13,29 @@
         <img id="LogoImg" src="img/Logo.png" alt="logo">
         <div class="botonesArriba">
             <a href="/my_profile">Perfil</a>
-            <a href="/friends">Amigos</a>
+            <a href="friends.html">Amigos</a>
             <a href="">Preguntas</a>
             <a href="/logout">Desconectar</a>
-            <label><img class="iconoPerfil" src="/imagenUsuario" alt="fotoPerfil"> <%= user.points %> </label>
+            <label><img class="iconoPerfil" src="/imagenUsuario" alt="fotoPerfil"><%= user.points %></label>
         </div>
     </div>
 
     <div class="login">
         <p>Modificar usuario</p>
         <div class="recuadro">
-            <form method="POST" action="/modify_profile">
+            <form method="POST" action="/modify">
                 <!-- Contenido del formulario -->
                 <div>
                     <label for="formEmail">Email </label>
-                    <input class="rellenar" type="email" name="email" value= '<%= user.email %>'>
+                    <input class="rellenar" type="email" name="email" id="formEmail" value= '<%= user.email %>'>
                 </div>
                 <div>
                     <label for="formContraseña">Contraseña </label>
-                    <input class="rellenar" type="password" name="password" value='<%= user.password %>'>
+                    <input class="rellenar" type="password" name="password" id="formContraseña"value='<%= user.password %>'>
                 </div>
                 <div>
                     <label for="formNombre"> Nombre completo </label>
-                    <input class="rellenar" type="text" name="name" value='<%= user.name %>'>
+                    <input class="rellenar" type="text" name="name" id="formNombre"value='<%= user.name %>'>
                 </div>
                 <div>
                     <label> Sexo </label>
@@ -65,14 +65,15 @@
                 </div>
                 <div>
                     <label for="formFecha"> Fecha de nacimiento </label>
-                    <input class="datoFecha" type="date" name="date" value='<%=user.dateOfBirth%>'>
+                    <input class="datoFecha" type="date" name="date" id="formFecha" value='<%= user.dateOfBirth %>'>
                 </div>
                 <div>
-                    <label> Imagen de perfil </label>
-                    <input class="datoImagen" name="uploadedfile" type="file">
+                    <label for="img"> Imagen de perfil </label>
+                    <!-- NO SE PUEDE PONER UN VALUE EN TYPE:FILE POR RAZONES DE SEGURIDAD-->
+                    <input class="datoImagen" name="uploadedfile" id="img" type="file" accept="image/*" value='<%= user.image %>'>
                 </div>
                 <div>
-                        <input class="boton" type="submit" value="Modificar">
+                    <input class="boton" type="submit" value="Modificar">
                 </div>
                 
             </form>

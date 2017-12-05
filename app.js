@@ -8,9 +8,11 @@ const config = require("./config");
 const daoUsers = require("./dao_users");
 const mysqlSession = require("express-mysql-session");
 const session = require("express-session");
+const multer = require("multer");
 const MySQLStore = mysqlSession(session);
 const ficherosEstaticos = path.join(__dirname, "public");
 const app = express();
+const multerFactory = multer();
 //siempre debe estar
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -87,7 +89,7 @@ app.post("/login", (request, response) => {
     daoU.isUserCorrect(request.body.email, request.body.pass, (err, existe) => {      
         if (err) {
             console.error(err);
-            response.redirect("/login.html")
+            response.redirect("/login.html");
         }
         else {
             if (existe === true) {
@@ -119,7 +121,8 @@ app.get("/imagenUsuario",(request,response)=>{
             }else{
                 response.sendFile(__dirname + '/profile_imgs/'+ img);
             }
-        }
+        }  
+        request.session.userImg = img;
     });
 });
 
@@ -153,14 +156,29 @@ app.get("/my_profile",identificacionRequerida,(request,response)=>{
 
 app.get("/modify_profile",identificacionRequerida,(request,response)=>{
     response.status(200);
-    daoU.modifyUser(request.body.email, request.body.password, request.body.name,
-        request.body.gender, request.body.date, request.body.uploadedfile, (err) => {
-            if (err) {
-                console.error(err);
-            } else {
-                response.redirect("/my_profile");
-            }
+    daoU.getUserData(request.session.currentUser,(err,usr)=>{
+        response.render("modify_profile",{user:usr});
     });
+});
+
+app.post("/modify",identificacionRequerida,(request,response)=>{
+    response.status(200);
+    var img;
+    if((request.body.uploadedfile===null)||(request.body.uploadedfile==="")||(request.body.uploadedfile===undefined)){
+        img=request.session.userImg;
+    }else{
+        img=request.body.uploadedfile;
+    }
+        
+        daoU.modifyUser(request.body.email, request.body.password, request.body.name,
+            request.body.gender, request.body.date, img, (err) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    response.redirect("/my_profile");
+                }
+        });
+    
 });
 
 app.get("/friends", identificacionRequerida, (request, response) => {
