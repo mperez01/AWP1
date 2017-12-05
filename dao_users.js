@@ -138,6 +138,18 @@ class DAOUsers {
                 })
         })
     }
+    modifyUser(email, password, name, gender, date, image, callback){
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            connection.query("UPDATE user SET email=?, password=?,name=?,gender=?,dateOfBirth=?,image=?",
+            [email, password, name, gender, date, image],
+            function (err, resultado) {
+                if (err) { callback(err); return; }
+                callback(null);
+                connection.release();
+            })
+        })
+    }
 }
 
 module.exports = {

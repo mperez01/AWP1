@@ -153,8 +153,13 @@ app.get("/my_profile",identificacionRequerida,(request,response)=>{
 
 app.get("/modify_profile",identificacionRequerida,(request,response)=>{
     response.status(200);
-    daoU.getUserData(request.session.currentUser,(err,usr)=>{
-        response.render("modify_profile",{user:usr});
+    daoU.modifyUser(request.body.email, request.body.password, request.body.name,
+        request.body.gender, request.body.date, request.body.uploadedfile, (err) => {
+            if (err) {
+                console.error(err);
+            } else {
+                response.redirect("/my_profile");
+            }
     });
 });
 
