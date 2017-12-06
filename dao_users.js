@@ -13,17 +13,17 @@ class DAOUsers {
     /**
  * Busca en la base de datos la información del usuario que ha insertado el email
  * 
- * @param {string} email Identificador del usuario a buscar
+ * @param {string} id Identificador del usuario a buscar
  * @param {function} callback Función que recibirá el objeto error y el resultado
  */
-    getUserData(email, callback) {
+    getUserData(id, callback) {
 
         this.pool.getConnection((err, connection) => {
             if (err) {
                 callback(err);
                 return;
             }
-            connection.query("SELECT email, password, name, gender, dateOfBirth, points, image FROM user WHERE email=?", [email], (err, usr) => {
+            connection.query("SELECT email, password, name, gender, dateOfBirth, points, image FROM user WHERE user_id=?", [id], (err, usr) => {
                 connection.release();
                 if (err) {
                     callback(err);
@@ -55,9 +55,8 @@ class DAOUsers {
                     }
                     /* ----- */
 
-                    let obj = { email:usr[0].email, password: usr[0].password, name: usr[0].name, 
+                    let obj = { email: usr[0].email, password: usr[0].password, name: usr[0].name, 
                         gender: usr[0].gender, dateOfBirth: date, points: usr[0].points, image: usr[0].image, age: edad};
-                    //console.log(obj);
                     callback(null, obj);
                 }
             });
@@ -82,17 +81,17 @@ class DAOUsers {
         /* Implementar */
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            connection.query("SELECT email, password FROM user WHERE email = ? AND password = ?", [email, password],
+            connection.query("SELECT user_id, email, password FROM user WHERE email = ? AND password = ?", [email, password],
                 (err, filas) => {
                     /* Conecction release se puede poner justo aqui, ya que tenemos la
                     información de la tabla en filas y no vamos a necesitarlo más */
                     connection.release();
                     if (err) { callback(err); return; }
                     if (filas.length === 0) {
-                        callback(null, false);
+                        callback(null, -1);
                     }
                     else {
-                        callback(null, true);
+                        callback(null, filas[0].user_id);
                     }
                 })
         })
@@ -106,14 +105,14 @@ class DAOUsers {
      * y, por otro lado, una cadena con el nombre de la imagen de perfil (o undefined
      * en caso de producirse un error).
      * 
-     * @param {string} email Identificador del usuario cuya imagen se quiere obtener
+     * @param {string} id Identificador del usuario cuya imagen se quiere obtener
      * @param {function} callback Función que recibirá el objeto error y el resultado
      */
-    getUserImageName(email, callback) {
+    getUserImageName(id, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            connection.query("SELECT image FROM user WHERE email = ?",
-                [email],
+            connection.query("SELECT image FROM user WHERE user_id = ?",
+                [id],
                 (err, rows) => {
                     if (err) { callback(err); return; }
                     connection.release();
@@ -133,16 +132,18 @@ class DAOUsers {
                 " VALUES (?, ?, ?, ?, ?, ?)", [email, password, name, gender, date, image],
                 function (err, resultado) {
                     if (err) { callback(err); return; }
+                    else {
+                        callback(null, resultado.insertId);
+                        connection.release();
+                    }
                 })
-                callback(null);
-                connection.release();
         })
     }
-    modifyUser(email, password, name, gender, date, image, callback){
+    modifyUser(id, email, password, name, gender, date, image, callback){
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            connection.query("UPDATE user SET password=?,name=?,gender=?,dateOfBirth=?,image=? WHERE email=?",
-            [password, name, gender, date, image, email],
+            connection.query("UPDATE user SET email=?, password=?,name=?,gender=?,dateOfBirth=?,image=? WHERE user_id=?",
+            [email, password, name, gender, date, image, id],
             function (err, resultado) {
                 if (err) { callback(err); return; }
             })

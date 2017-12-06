@@ -60,8 +60,8 @@ let daoU = new daoUsers.DAOUsers(pool);
 
 function identificacionRequerida(request, response, next) {
     
-      if (request.session.currentUser !== undefined) {
-          response.locals.userEmail = request.session.currentUser;
+      if (request.session.currentUserId !== undefined) {
+          response.locals.user_id = request.session.currentUserId;
           next();
       } else {
           response.redirect("/login.html");
@@ -74,6 +74,7 @@ app.get("/", (request, response) => {
 
 app.get("/login.html", (request, response) => {
     response.status(200);
+    console.log("Current user"+ request.session.currentUserId);
     response.render("login");
 });
 
@@ -86,14 +87,15 @@ app.listen(3000, (err) => {
 });
 
 app.post("/login", (request, response) => {
-    daoU.isUserCorrect(request.body.email, request.body.pass, (err, existe) => {      
+    daoU.isUserCorrect(request.body.email, request.body.pass, (err, id) => {      
         if (err) {
             console.error(err);
             response.redirect("/login.html");
         }
         else {
-            if (existe === true) {
-                request.session.currentUser = request.body.email;
+            if (id > 0) {
+                console.log("ID del usuario = " + id);
+                request.session.currentUserId = id;
                 response.redirect("/my_profile");
             }
             else {
@@ -111,11 +113,12 @@ app.get("/logout", (request, response) => {
 });
 
 app.get("/imagenUsuario",(request,response)=>{
-    daoU.getUserImageName(request.session.currentUser,(err,img)=>{
+    daoU.getUserImageName(request.session.currentUserId,(err,img)=>{
         if(err){
             console.error(err);
         }else{
-            if(img === null ||img==='') {
+            console.log("Imagen es " +  img);
+            if(img === null ||img==='' || img===undefined) {
                 response.status(200);
                 response.sendFile(__dirname + '/public/img/NoProfile.png');
             }else{
@@ -136,11 +139,11 @@ app.post("/new_user", (request, response) => {
         request.body.date = null;
     }
     daoU.insertUser(request.body.email, request.body.password, request.body.name,
-         request.body.gender, request.body.date, request.body.uploadedfile, (err) => {
+         request.body.gender, request.body.date, request.body.uploadedfile, (err, id) => {
              if (err) {
                  console.error(err);
              } else {
-                 request.session.currentUser = request.body.email;
+                 request.session.currentUserId = id;
                  response.redirect("/my_profile");
              }
          });
@@ -148,7 +151,7 @@ app.post("/new_user", (request, response) => {
 
 app.get("/my_profile",identificacionRequerida,(request,response)=>{
     response.status(200);
-    daoU.getUserData(request.session.currentUser,(err,usr)=>{
+    daoU.getUserData(request.session.currentUserId,(err,usr)=>{
         response.render("my_profile",{user:usr});
     });
 });
@@ -156,7 +159,7 @@ app.get("/my_profile",identificacionRequerida,(request,response)=>{
 
 app.get("/modify_profile",identificacionRequerida,(request,response)=>{
     response.status(200);
-    daoU.getUserData(request.session.currentUser,(err,usr)=>{
+    daoU.getUserData(request.session.currentUserId,(err,usr)=>{
         response.render("modify_profile",{user:usr});
     });
 });
@@ -169,8 +172,10 @@ app.post("/modify",identificacionRequerida,(request,response)=>{
     }else{
         img=request.body.uploadedfile;
     }
-        
-        daoU.modifyUser(request.body.email, request.body.password, request.body.name,
+    if (request.body.date === '') {
+        request.body.date = null;
+    }
+       daoU.modifyUser(request.session.currentUserId, request.body.email, request.body.password, request.body.name,
             request.body.gender, request.body.date, img, (err) => {
                 if (err) {
                     console.error(err);
@@ -182,7 +187,7 @@ app.post("/modify",identificacionRequerida,(request,response)=>{
 });
 
 app.get("/friends", identificacionRequerida, (request, response) => {
-    daoU.getUserData(request.session.currentUser,(err,usr)=>{
+    daoU.getUserData(request.session.currentUserId,(err,usr)=>{
         response.render("friends",{user:usr});
     });
 })
