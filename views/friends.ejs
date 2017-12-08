@@ -16,15 +16,38 @@
             <a href="/friends">Amigos</a>
             <a href="">Preguntas</a>
             <a href="/logout">Desconectar</a>
-            <label><img class="iconoPerfil" src="/imagenUsuario" alt="fotoPerfil"> <%= user.points %> </label>
+            <label>
+                <img class="iconoPerfil" src="/imagenUsuario" alt="fotoPerfil">
+                <%= user.points %>
+            </label>
         </div>
     </div>
     <div class="solicitudes">
         <div>
             <p>Solicitudes de amistad</p>
-        </div>
-        <div>
+            <ul>
+                    <%let i = 0; %>
+                    <% friends.forEach(friend => { %>
+                        <li>
+                            <%console.log("Status = " + friend.status + "Nombre = " + friend.name + "indice = "+ i); i++;%>
+                            <% if(friend.status === 0) { %>
+                                <div class="solAmigo">
+                                    <img class="fotoAmigo" src="/imagenUsuario" alt="fotoPerfil">
+                                    <span class="nombre">
+                                        <%= friend.name %>
+                                    </span>
+                                    <input class="botonAmigo" type="submit" value="Añadir">
+                                    <input class="botonAmigo" type="submit" value="Rechazar">
+                                </div>
+                                <% } %>
 
+
+                        </li>
+                        <% }); %>
+            </ul>
+        </div>
+
+        <div>
             <p>Búsqueda de amigos</p>
             <form>
                 <label>Buscar por nombre: </label>
@@ -33,9 +56,24 @@
             </form>
         </div>
         <div>
-            <p>Mis amigos</p>
-        </div>
-
+                <p>Mis amigos</p>
+                <ul>
+                        <%let a = 0; %>
+                        <% friends.forEach(friend => { %>
+                            <%console.log("Status abajo = " + friend.status + "Nombre abajo = " + friend.name + "indice  abajo= "+ a); a++;%>
+                            <li>
+                                <% if(friend.status === 1) { %>
+                                    <div class="listAmigo">
+                                        <img class="fotoAmigo" src="" alt="fotoPerfil" >
+                                        <span class="nombre">
+                                            <%= friend.name %>
+                                        </span>
+                                    </div>
+                                    <% } %>
+                            </li>
+                            <% }); %>
+                </ul>
+            </div>
     </div>
 </body>
 

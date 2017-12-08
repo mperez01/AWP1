@@ -6,6 +6,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const config = require("./config");
 const daoUsers = require("./dao_users");
+const daoFriends = require("./dao_friends");
 const mysqlSession = require("express-mysql-session");
 const session = require("express-session");
 const multer = require("multer");
@@ -57,6 +58,7 @@ app.use((request, response, next) => {
 });
 
 let daoU = new daoUsers.DAOUsers(pool);
+let daoF = new daoFriends.DAOFriends(pool);
 
 function identificacionRequerida(request, response, next) {
     
@@ -74,7 +76,6 @@ app.get("/", (request, response) => {
 
 app.get("/login.html", (request, response) => {
     response.status(200);
-    console.log("Current user"+ request.session.currentUserId);
     response.render("login");
 });
 
@@ -117,17 +118,17 @@ app.get("/imagenUsuario",(request,response)=>{
         if(err){
             console.error(err);
         }else{
-            console.log("Imagen es " +  img);
             if(img === null ||img==='' || img===undefined) {
                 response.status(200);
                 response.sendFile(__dirname + '/public/img/NoProfile.png');
-            }else{
+            }else {
                 response.sendFile(__dirname + '/profile_imgs/'+ img);
             }
         }  
         request.session.userImg = img;
     });
 });
+
 
 app.get("/new_user.html", (request, response) => {
     response.render("new_user");
@@ -187,7 +188,10 @@ app.post("/modify",identificacionRequerida,(request,response)=>{
 });
 
 app.get("/friends", identificacionRequerida, (request, response) => {
+
     daoU.getUserData(request.session.currentUserId,(err,usr)=>{
-        response.render("friends",{user:usr});
+        daoF.getFriendList(request.session.currentUserId, (err, frd) =>{
+            response.render("friends",{user:usr, friends:frd}); 
+        } )
     });
 })
