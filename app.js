@@ -74,7 +74,7 @@ app.get("/", (request, response) => {
 
 app.get("/login.html", (request, response) => {
     response.status(200);
-    console.log("Current user"+ request.session.currentUserId);
+    
     response.render("login");
 });
 
@@ -94,7 +94,6 @@ app.post("/login", (request, response) => {
         }
         else {
             if (id > 0) {
-                console.log("ID del usuario = " + id);
                 request.session.currentUserId = id;
                 response.redirect("/my_profile");
             }
@@ -117,7 +116,6 @@ app.get("/imagenUsuario",(request,response)=>{
         if(err){
             console.error(err);
         }else{
-            console.log("Imagen es " +  img);
             if(img === null ||img==='' || img===undefined) {
                 response.status(200);
                 response.sendFile(__dirname + '/public/img/NoProfile.png');
@@ -134,7 +132,6 @@ app.get("/new_user.html", (request, response) => {
 })
 
 app.post("/new_user", (request, response) => {
-    //Si no se introduce nada en fecha, NULL
     if (request.body.date === '') {
         request.body.date = null;
     }
@@ -167,7 +164,7 @@ app.get("/modify_profile",identificacionRequerida,(request,response)=>{
 app.post("/modify",identificacionRequerida,(request,response)=>{
     response.status(200);
     var img;
-    if((request.body.uploadedfile===null)||(request.body.uploadedfile==="")||(request.body.uploadedfile===undefined)){
+    if((request.body.uploadedfile===null)||(request.body.uploadedfile==="")){
         img=request.session.userImg;
     }else{
         img=request.body.uploadedfile;
