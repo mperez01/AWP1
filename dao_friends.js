@@ -105,12 +105,21 @@ class DAOFriends {
                 return;
             }
             console.log("USUARIO ES " + user);
-            connection.query("SELECT DISTINCT u.name, u.image, r.status FROM relationship r JOIN user u " + 
+            /*connection.query("SELECT DISTINCT u.name, u.image, r.status " + 
+            "FROM relationship r JOIN user u " + 
             "WHERE r.user_one_id=? OR r.user_two_id=? AND r.status=1", 
-            [user, user],
+            [user, user, user],
+            */
+            connection.query("SELECT * FROM `relationship` JOIN user ON user_one_id = user_id or user_two_id = user_id " +
+            "WHERE (`user_one_id` = ? OR `user_two_id` = ?) AND user_id != ?",
+            [user, user, user],
+            
             function (err, friend) {
                 if (err) { callback(err, undefined); return; }
                 else {
+                friend.forEach(friend => {
+                        console.log("RESULTADO DE CONSULTA " +  friend.user_two_id);
+                    })
                     //Resultado tendra la relació
                     connection.release();
                     callback(err, friend);
