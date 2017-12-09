@@ -17,7 +17,7 @@
             <a href="">Preguntas</a>
             <a href="/logout">Desconectar</a>
             <label>
-                <img class="iconoPerfil" src="/imagenUsuario" alt="fotoPerfil">
+                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
                 <%= user.points %>
             </label>
         </div>
@@ -32,7 +32,7 @@
                             <!--<%console.log("Status = " + friend.status + "Nombre = " + friend.name + "indice = "+ i); i++;%>-->
                             <% if(friend.status === 0) { %>
                                 <div class="solAmigo">
-                                    <img class="fotoAmigo" name="imagen" id="imagen" src="/friendImg" alt="fotoPerfil">
+                                    <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil">
                                     <input type="hidden" name="userId" id="userId" value="<user.user_id>">
                                     <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">
                                     <span class="nombre">
@@ -66,7 +66,7 @@
                             <li>
                                 <% if(friend.status === 1) { %>
                                     <div class="listAmigo">
-                                        <img class="fotoAmigo" name="imagen" id="imagen"src="/friendImg" alt="fotoPerfil" value=<%friend.image%> >
+                                        <img class="fotoAmigo" name="imagen" id="imagen"src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil" value=<%friend.image%> >
                                         <span class="nombre">
                                             <%= friend.name %>
                                         </span>

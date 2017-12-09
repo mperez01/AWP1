@@ -112,23 +112,15 @@ app.get("/logout", (request, response) => {
     request.session.destroy();
     response.redirect("/login.html");
 });
-
-app.get("/imagenUsuario",(request,response)=>{
-    daoU.getUserImageName(request.session.currentUserId,(err,img)=>{
-        if(err){
-            console.error(err);
-        }else{
-            if(img === null ||img==='' || img===undefined) {
-                response.status(200);
-                response.sendFile(__dirname + '/public/img/NoProfile.png');
-            }else {
-                response.sendFile(__dirname + '/profile_imgs/'+ img);
-            }
-        }  
-        request.session.userImg = img;
-    });
+app.get("/imagenUsuario/:id", (request, response) => {
+    if(request.params.id === null ||request.params.id==='' || request.params.id===undefined) {
+            response.status(200);
+            response.sendFile(__dirname + '/public/img/NoProfile.png');
+    }else{
+        response.sendFile(path.join(__dirname, "profile_imgs", request.params.id));
+    }
+    
 });
-
 
 app.get("/new_user.html", (request, response) => {
     response.render("new_user");
@@ -141,7 +133,7 @@ app.post("/new_user", upload.single("uploadedfile"),(request, response) => {
             console.log(`Tamaño: ${request.file.size}`);
             console.log(`Tipo de fichero: ${request.file.mimetype}`);
             imgName = request.file.filename;
-            console.log('nameFile' + imgName);
+            console.log('nameFile' + request.file.filename);
             }
     if (request.body.date === '') {
         request.body.date = null;

@@ -108,7 +108,7 @@ class DAOUsers {
      * @param {string} id Identificador del usuario cuya imagen se quiere obtener
      * @param {function} callback Función que recibirá el objeto error y el resultado
      */
-    getUserImageName(id, callback) {
+    /*getUserImageName(id, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
             connection.query("SELECT image FROM user WHERE user_id = ?",
@@ -123,7 +123,7 @@ class DAOUsers {
                     }
                 });
         });
-    }
+    }*/
 
     insertUser(email, password, name, gender, date, image, callback) {
         this.pool.getConnection((err, connection) => {
