@@ -206,7 +206,6 @@ app.get("/friends", identificacionRequerida, (request, response) => {
     });
 })
 
-<<<<<<< HEAD
 app.post("/deleteFriend", (request, response) => {
     daoF.deleteFriend(request.body.id,request.session.currentUserId, (err => {
         if (err) {
@@ -216,8 +215,8 @@ app.post("/deleteFriend", (request, response) => {
             response.redirect("/friends");
         }
     })
-    );
-=======
+    )});
+
 app.get("/friendImg",identificacionRequerida,(request,response)=>{
     let img;
     img=request.body.userId;
@@ -228,7 +227,5 @@ app.get("/friendImg",identificacionRequerida,(request,response)=>{
         }else {
             response.sendFile(__dirname + '/profile_imgs/'+ img);
         }
-         
         request.session.userImg = img;
->>>>>>> b5526f9651ae08d8aaec06be9960bcfb1e6097fd
-})
+    })
