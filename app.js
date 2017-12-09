@@ -112,6 +112,7 @@ app.get("/logout", (request, response) => {
     response.redirect("/login.html");
 });
 app.get("/imagenUsuario/:id", (request, response) => {
+    console.log("imagenID:" + request.params.id);
     if(request.params.id === null ||request.params.id==='' || request.params.id===undefined) {
             response.status(200);
             response.sendFile(__dirname + '/public/img/NoProfile.png');
@@ -119,6 +120,10 @@ app.get("/imagenUsuario/:id", (request, response) => {
         response.sendFile(path.join(__dirname, "profile_imgs", request.params.id));
     }
     
+});
+app.get("/imagenUsuario", (request, response) => {
+    response.status(200);
+    response.sendFile(__dirname + '/public/img/NoProfile.png');
 });
 
 app.get("/new_user.html", (request, response) => {
