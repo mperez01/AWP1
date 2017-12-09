@@ -113,10 +113,10 @@ app.get("/logout", (request, response) => {
 });
 app.get("/imagenUsuario/:id", (request, response) => {
     console.log("imagenID:" + request.params.id);
-    if(request.params.id === null ||request.params.id==='' || request.params.id===undefined) {
-            response.status(200);
-            response.sendFile(__dirname + '/public/img/NoProfile.png');
-    }else{
+    if (request.params.id === null || request.params.id === '' || request.params.id === undefined) {
+        response.status(200);
+        response.sendFile(__dirname + '/public/img/NoProfile.png');
+    } else {
         response.sendFile(path.join(__dirname, "profile_imgs", request.params.id));
     }
 
@@ -188,6 +188,7 @@ app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (req
             if (err) {
                 console.error(err);
             } else {
+                response.setFlash("Modificaciones guardadas");
                 response.redirect("/my_profile");
             }
         });
@@ -251,7 +252,7 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
         else {
             if (list.length !== 0) {
                 daoU.getUserData(request.session.currentUserId, (err, usr) => {
-                    response.render("search", { user: usr, list: list, id: request.session.currentUserId, nombre: request.query.nombre});
+                    response.render("search", { user: usr, list: list, id: request.session.currentUserId, nombre: request.query.nombre });
                 })
             } else {
                 //Mensaje flash aqui
@@ -271,8 +272,8 @@ app.post("/sendFriend", identificacionRequerida, (request, response) => {
         }
         else {
             //Mensaje flash (peticion enviada)
-            console.log("Petición enviada")
-           response.redirect("/friends");
+            response.setFlash("Petición enviada");
+            response.redirect("/searchName");
         }
     })
 })

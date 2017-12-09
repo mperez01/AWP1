@@ -62,6 +62,12 @@
                 <input class="relleno" type="text" name="nombre" required>
                 <input class="botonBuscar" type="submit" value="Buscar">
             </form>
+            <% let errorMsg = getFlash(); %>
+            <% if (errorMsg) { %>
+                <div class="error">
+                    <%= errorMsg %>
+                </div>
+            <% } %>
         </div>
         <div>
                 <p>Mis amigos</p>
