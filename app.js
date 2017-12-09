@@ -108,7 +108,6 @@ app.post("/login", (request, response) => {
 });
 
 app.get("/logout", (request, response) => {
-    
     request.session.destroy();
     response.redirect("/login.html");
 });
@@ -191,7 +190,19 @@ app.get("/friends", identificacionRequerida, (request, response) => {
 
     daoU.getUserData(request.session.currentUserId,(err,usr)=>{
         daoF.getFriendList(request.session.currentUserId, (err, frd) =>{
-            response.render("friends",{user:usr, friends:frd}); 
+            response.render("friends",{user:usr, friends:frd, id:request.session.currentUserId}); 
         } )
     });
+})
+
+app.post("/deleteFriend", (request, response) => {
+    daoF.deleteFriend(request.body.id,request.session.currentUserId, (err => {
+        if (err) {
+            console.error(err);
+        }
+        else {
+            response.redirect("/friends");
+        }
+    })
+    );
 })

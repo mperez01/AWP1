@@ -174,6 +174,30 @@ class DAOFriends {
             })
         })
     }
+
+    deleteFriend(idFriend,userId, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            let first;
+            let second;
+            if (idFriend > userId) {
+                first = userId;
+                second = idFriend;
+            }
+            else {
+                first = idFriend;
+                second = userId;
+            }
+            connection.query(
+                "DELETE FROM relationship WHERE user_one_id=? AND user_two_id=? ",
+                [first, second],
+                (err) => {
+                    connection.release();
+                    callback(err);
+                }
+            );
+        });
+    }
 }
 
 module.exports = {
