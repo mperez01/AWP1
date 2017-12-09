@@ -128,53 +128,6 @@ class DAOFriends {
         })
     }
 
-    getPedingList(user, callback) {
-        this.pool.getConnection((err, connection) => {
-            if (err) {
-                callback(err);
-                return;
-            }
-            connection.query("SELECT * FROM relationship where (user_one_id = ? OR user_two_id = ?) AND status=0 AND action_user_id!=?" +
-                " VALUES (?, ?)", [user],
-                function (err, resultado) {
-                    if (err) { callback(err); return; }
-                    else {
-                        //Resultado tendra la relación.
-                        connection.release();
-                    }
-                })
-        })
-    }
-
-    acceptFriend(user1, user2, callback) {
-        this.pool.getConnection((err, connection) => {
-            if (err) {
-                callback(err);
-                return;
-            }
-
-            let idTop;
-            let idDown;
-            if (user1 > user2) {
-                idTop = user1;
-                idDown = user2;
-            }
-            else {
-                idTop = user2;
-                idDown = user1;
-            }
-            connection.query("UPDATE relationship set status = 1, action_user_id = ? where user_one_id = ? AND user_two_id = ?" +
-            " VALUES (?, ?, ?)", [idTop, idDown, user1],
-            function (err, resultado) {
-                if (err) { callback(err); return; }
-                else {
-                    //Resultado tendra la relación.
-                    connection.release();
-                }
-            })
-        })
-    }
-
     deleteFriend(idFriend,userId, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
@@ -191,6 +144,30 @@ class DAOFriends {
             connection.query(
                 "DELETE FROM relationship WHERE user_one_id=? AND user_two_id=? ",
                 [first, second],
+                (err) => {
+                    connection.release();
+                    callback(err);
+                }
+            );
+        });
+    }
+
+    addFriend(idFriend,userId, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            let first;
+            let second;
+            if (idFriend > userId) {
+                first = userId;
+                second = idFriend;
+            }
+            else {
+                first = idFriend;
+                second = userId;
+            }
+            connection.query(
+                "UPDATE relationship SET status=1, action_user_id=? WHERE user_one_id=? AND user_two_id=?",
+                [userId, first, second],
                 (err) => {
                     connection.release();
                     callback(err);

@@ -203,7 +203,7 @@ app.get("/friends", identificacionRequerida, (request, response) => {
     });
 })
 
-app.post("/deleteFriend", (request, response) => {
+app.post("/deleteFriend",identificacionRequerida, (request, response) => {
     daoF.deleteFriend(request.body.id,request.session.currentUserId, (err => {
         if (err) {
             console.error(err);
@@ -212,7 +212,20 @@ app.post("/deleteFriend", (request, response) => {
             response.redirect("/friends");
         }
     })
-    )});
+    )
+})
+
+app.post("/addFriend", identificacionRequerida, (request, response) => {
+    daoF.addFriend(request.body.id,request.session.currentUserId, (err => {
+        if (err) {
+            console.error(err);
+        }
+        else {
+            response.redirect("/friends");
+        }
+    })
+    )
+})
 
 app.get("/friendImg",identificacionRequerida,(request,response)=>{
     let img;
