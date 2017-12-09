@@ -3,6 +3,7 @@ body {
     margin: 0px;
     background-image: url(../img/Fondo.jpg);
      background-repeat: repeat-x;
+     padding-bottom: 10px;
 }
 
 @font-face {
@@ -85,7 +86,7 @@ div.login > p, div.perfil > p, div.solicitudes > div > p {
     padding-left: 5px;
 }
 
-input.boton {
+.boton {
     padding-left: 2%;
     padding-right: 2%;
     padding-bottom: 0.5%;
@@ -99,6 +100,14 @@ input.boton {
     background-color: #B404AE;
     color: white;
     font-weight: bold;
+}
+
+.error {
+    font-family: sans-serif;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+    color: red;
 }
 
 .iconoPerfil {

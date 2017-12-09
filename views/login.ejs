@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title> Bienvenido - Facebluff </title>
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div class="top">
+        <img id="LogoImg" src="img/Logo.png" alt="logo">
+        <div class="botonesArriba">
+            <a href="/login.html">Entrar</a>
+            <a href="/new_user.html">Nuevo Usuario</a>
+        </div>
+    </div>
+    <div class="login">
+        <p>Entrar</p>
+        <div class="recuadro">
+            <form action="/login" method="POST">
+                <div>
+                    <label>Email </label>
+                    <input class="rellenar" type="email" name="email" required>
+                </div>
+                <div>
+                    <label>Contraseña </label>
+                    <input class="rellenar" type="password" name="pass" required>
+                </div>
+                <input class="boton" type="submit" value="Conectar">
+            </form>
+        </div>
+        <% let errorMsg = getFlash(); %>
+        <% if (errorMsg) { %>
+            <div class="error">
+                <%= errorMsg %>
+            </div>
+        <% } %>
+    </div>
+</body>
+
+</html>

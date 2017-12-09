@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title> Perfil - Facebluff </title>
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <link rel="stylesheet" href="css/styleMyProfile.css" media="screen">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div class="top">
+        <img id="LogoImg" src="img/Logo.png" alt="logo">
+        <div class="botonesArriba">
+            <a href="/my_profile">Perfil</a>
+            <a href="/friends">Amigos</a>
+            <a href="">Preguntas</a>
+            <a href="/logout">Desconectar</a>
+            <label><img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil"> <%= user.points %> </label>
+        </div>
+    </div>
+    <div class="perfil">
+        <p>Tu perfil</p>
+
+        <div>
+            <img class="fotoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
+            <p class="nombre"><%= user.name %></p>
+            <% if (user.dateOfBirth !== null) { %>
+            <p class="datos"> <%= user.age %> años </p>
+            <% } %> 
+            <!--hacer funcion para calcular la edad(profe dijo que con el tema 6 se podia)-->
+            <p class="datos">
+                <% if(user.gender !== null){ %>
+                    <% if(user.gender==="male"){ %>
+                        Hombre
+                    <% } else if(user.gender==="female"){ %>
+                        Mujer
+                    <% } else { %>
+                        No identificado
+                    <% } %>
+                <% } %>
+                
+            </p>
+            <p class="datos"><%= user.points%> puntos</p>
+        </div>
+        <input class="boton" type="submit" value="Modificar perfil" onclick="window.location.href='/modify_profile'" >
+    </div>
+    <% let errorMsg = getFlash(); %>
+    <% if (errorMsg) { %>
+        <div class="error">
+            <%= errorMsg %>
+        </div>
+    <% } %>
+</body>
+
+</html>

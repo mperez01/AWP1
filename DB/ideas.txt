@@ -1,0 +1,5 @@
+Tabla usr(La que ya estamos usando)
+	|
+Relación booleana amigos true o false
+	|
+Tabla usuarios (Contiene toda la lista de usuarios cogiendo la PK)

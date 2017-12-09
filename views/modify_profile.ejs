@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title> Modificar Perfil - Facebluff </title>
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <link rel="stylesheet" href="css/styleNewUser.css" media="screen">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div class="top">
+        <img id="LogoImg" src="img/Logo.png" alt="logo">
+        <div class="botonesArriba">
+            <a href="/my_profile">Perfil</a>
+            <a href="friends.html">Amigos</a>
+            <a href="">Preguntas</a>
+            <a href="/logout">Desconectar</a>
+            <label><img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil"> <%= user.points %> </label>
+        </div>
+    </div>
+
+    <div class="login">
+        <p>Modificar usuario</p>
+        <div class="recuadro">
+            <form method="POST" action="/modify" enctype="multipart/form-data">
+                <!-- Contenido del formulario -->
+                <div>
+                    <label for="formEmail">Email </label>
+                    <input class="rellenar" type="email" name="email" id="formEmail" value= '<%= user.email %>'>
+                </div>
+                <div>
+                    <label for="formContraseña">Contraseña </label>
+                    <input class="rellenar" type="password" name="password" id="formContraseña"value='<%= user.password %>'>
+                </div>
+                <div>
+                    <label for="formNombre"> Nombre completo </label>
+                    <input class="rellenar" type="text" name="name" id="formNombre"value='<%= user.name %>'>
+                </div>
+                <div>
+                    <label> Sexo </label>
+                    <label class="datoSexo">
+                            <% if(user.gender !== null){ %>
+                                <% if(user.gender==="male"){ %>
+                                    <input type="radio" name="gender" value="male" checked> Masculino
+                                    
+                                    <input type="radio" name="gender" value="female"> Femenino 
+                                    
+                                    <input type="radio" name="gender" value="other"> Otro
+                                <% } else if(user.gender==="female"){ %>
+                                    <input type="radio" name="gender" value="male"> Masculino
+                                    
+                                    <input type="radio" name="gender" value="female" checked> Femenino 
+                                    
+                                    <input type="radio" name="gender" value="other"> Otro
+                                <% } else { %>
+                                    <input type="radio" name="gender" value="male"> Masculino
+                                    
+                                    <input type="radio" name="gender" value="female"> Femenino 
+                                    
+                                    <input type="radio" name="gender" value="other" checked> Otro
+                                <% } %>
+                            <% } %>
+                    </label>
+                </div>
+                <div>
+                    <label for="formFecha"> Fecha de nacimiento </label>
+                    <input class="datoFecha" type="date" name="date" id="formFecha" value='<%= user.dateOfBirth %>'>
+                </div>
+                <div>
+                    <label for="img"> Imagen de perfil </label>
+                    <!-- NO SE PUEDE PONER UN VALUE EN TYPE:FILE POR RAZONES DE SEGURIDAD-->
+                    <input class="datoImagen" name="uploadedfile" id="img" type="file" accept="image/*" value='<%= user.image %>'>
+                </div>
+                <div>
+                    <input class="boton" type="submit" value="Modificar">
+                </div>
+                
+            </form>
+        </div>
+
+    </div>
+</body>
+
+</html>

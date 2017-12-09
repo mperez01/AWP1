@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title> Mis amigos - FaceBluff </title>
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <link rel="stylesheet" href="css/styleFriends.css" media="screen">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div class="top">
+        <img id="LogoImg" src="img/Logo.png" alt="logo">
+        <div class="botonesArriba">
+            <a href="/my_profile">Perfil</a>
+            <a href="/friends">Amigos</a>
+            <a href="">Preguntas</a>
+            <a href="/logout">Desconectar</a>
+            <label>
+                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
+                <%= user.points %>
+            </label>
+        </div>
+    </div>
+    <div class="solicitudes">
+        <div>
+            <p>Solicitudes de amistad</p>
+            <ul>
+                <% friends.forEach(friend => { %>
+                    <li>
+                        <% if(friend.status === 0) { %>
+                            <% if (id !== friend.action_user_id) { %>
+                                <div class="listAmigo">
+                                    <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil">
+                                    <input type="hidden" name="userId" id="userId" value="<user.user_id>">
+                                    <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">
+
+                                    <form method="GET" action="/friendProfile">
+                                        <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">
+                                        <input class="nombre" type="submit" value="<%= friend.name %>">
+                                    </form>
+
+                                    <form method="POST" action="/addFriend">
+                                        <input type="hidden" name="id" value= <%=friend.user_id%> >
+                                        <input class="botonAmigo" value="Añadir" type="submit">
+                                    </form>
+                                    <form method="POST" action="/discardFriend">
+                                        <input type="hidden" name="id" value=<%=friend.user_id%> >
+                                        <input class="botonAmigo" value="Rechazar" type="submit">
+                                    </form>
+                                </div>
+                                <% } %>
+                                    <% } %>
+                    </li>
+                    <% }); %>
+            </ul>
+        </div>
+
+        <div>
+            <p>Búsqueda de amigos</p>
+            <form action="/searchName" method="GET">
+                <label>Buscar por nombre: </label>
+                <input class="relleno" type="search" name="nombre" required>
+                <input class="botonBuscar" type="submit" value="Buscar">
+            </form>
+            <% let errorMsg = getFlash(); %>
+                <% if (errorMsg) { %>
+                    <div class="error">
+                        <%= errorMsg %>
+                    </div>
+                    <% } %>
+        </div>
+        <div>
+            <p>Mis amigos</p>
+            <ul>
+                <% friends.forEach(friend => { %>
+                    <li>
+                        <% if(friend.status === 1) { %>
+                            <div class="listAmigo">
+                                <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil" value=<%friend.image%> >
+                                <form method="GET" action="/friendProfile">
+                                    <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">
+                                    <input class="nombre" type="submit" value="<%= friend.name %>">
+                                </form>
+                            </div>
+                            <% } %>
+                    </li>
+                    <% }); %>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
