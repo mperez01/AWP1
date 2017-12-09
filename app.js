@@ -112,14 +112,8 @@ app.get("/logout", (request, response) => {
     response.redirect("/login.html");
 });
 app.get("/imagenUsuario/:id", (request, response) => {
-    console.log("imagenID:" + request.params.id);
-    if (request.params.id === null || request.params.id === '' || request.params.id === undefined) {
-        response.status(200);
-        response.sendFile(__dirname + '/public/img/NoProfile.png');
-    } else {
-        response.sendFile(path.join(__dirname, "profile_imgs", request.params.id));
-    }
-
+    response.sendFile(path.join(__dirname, "profile_imgs", request.params.id));
+    request.session.userImg=request.params.id;
 });
 app.get("/imagenUsuario", (request, response) => {
     response.status(200);
@@ -177,7 +171,9 @@ app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (req
         console.log(`Tipo de fichero: ${request.file.mimetype}`);
         img = request.file.filename;
         console.log('nameFile' + img);
+        console.log("cambioFichero");
     } else {
+        console.log("no hay cambio");
         img = request.session.userImg;
     }
     if (request.body.date === '') {
