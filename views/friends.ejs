@@ -37,7 +37,7 @@
                                     <span class="nombre">
                                         <%= friend.name %> <%friend.user_id%>
                                     </span>
-                                    <form method="POST" action="/">
+                                    <form method="POST" action="/addFriend">
                                         <input type="hidden" name="id" value= <%= friend.action_user_id %> >
                                         <input class="botonAmigo" value="Añadir" type="submit">
                                     </form>
