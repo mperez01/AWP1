@@ -41,11 +41,11 @@
                                     </form>
 
                                     <form method="POST" action="/addFriend">
-                                        <input type="hidden" name="id" value=< %=f riend.action_user_id %> >
+                                        <input type="hidden" name="id" value= <%=friend.user_id%> >
                                         <input class="botonAmigo" value="Añadir" type="submit">
                                     </form>
                                     <form method="POST" action="/deleteFriend">
-                                        <input type="hidden" name="id" value=< %=f riend.action_user_id %> >
+                                        <input type="hidden" name="id" value=<%=friend.user_id%> >
                                         <input class="botonAmigo" value="Rechazar" type="submit">
                                     </form>
                                 </div>

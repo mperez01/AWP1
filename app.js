@@ -192,7 +192,7 @@ app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (req
 });
 
 app.get("/friends", identificacionRequerida, (request, response) => {
-    console.log("Aqui, en aimgos, estamos")
+    
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         daoF.getFriendList(request.session.currentUserId, (err, frd) => {
             response.render("friends", { user: usr, friends: frd, id: request.session.currentUserId });
@@ -201,6 +201,7 @@ app.get("/friends", identificacionRequerida, (request, response) => {
 })
 
 app.post("/deleteFriend", identificacionRequerida, (request, response) => {
+    
     daoF.deleteFriend(request.body.id, request.session.currentUserId, (err => {
         if (err) {
             console.error(err);
@@ -229,7 +230,7 @@ app.post("/addFriend", identificacionRequerida, (request, response) => {
 app.get("/friendImg", identificacionRequerida, (request, response) => {
     let img;
     img = request.body.userId;
-    console.log(img);
+    
     if (img === null || img === '' || img === undefined) {
         response.status(200);
         response.sendFile(__dirname + '/public/img/NoProfile.png');

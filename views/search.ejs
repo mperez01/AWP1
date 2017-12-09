@@ -39,7 +39,7 @@
 
                             <% if (id !== list.user_id) { %>
                                 <form method="POST" action="/sendFriendRequest">
-                                    <input type="hidden" name="id" value=< %=l ist.user_id %> >
+                                    <input type="hidden" name="id" value=<%=list.user_id %> >
                                     <input class="botonAmigo" value="Enviar petición" type="submit">
                                 </form>
                                 <% } %>
