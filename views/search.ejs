@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title> Búsqueda - FaceBluff </title>
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <link rel="stylesheet" href="css/styleFriends.css" media="screen">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div class="top">
+        <img id="LogoImg" src="img/Logo.png" alt="logo">
+        <div class="botonesArriba">
+            <a href="/my_profile">Perfil</a>
+            <a href="/friends">Amigos</a>
+            <a href="">Preguntas</a>
+            <a href="/logout">Desconectar</a>
+            <label>
+                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
+                <%= user.points %>
+            </label>
+        </div>
+    </div>
+    <div class="solicitudes">
+        <div>
+            <p>Resultado</p>
+            <ul>
+                <% list.forEach(list => { %>
+                    <li>
+                        <div class="listAmigo">
+                            <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=list.image%>" alt="fotoPerfil" value=<%list.image%> >
+                            <span class="nombre">
+                                <%= list.name %>
+                            </span>
+                            <form method="POST" action="/sendFriend">
+                                <input type="hidden" name="id" value= <%= list.user_id %> >
+                                <input class="botonAmigo" value="Enviar petición" type="submit">
+                            </form>
+                        </div>
+                    </li>
+                    <% }); %>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

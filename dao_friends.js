@@ -14,34 +14,30 @@ class DAOFriends {
     /** Status code in database:
      * 0 Pendiente
      * 1 Aceptada
-     * 2 Declinada
      */
 
-    sendFriendship(user1, user2, status, action_user, callback) {
+    sendFriendship(idFriend, userId, callback) {
 
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            let idTop;
-            let idDown;
-            if (user1 > user2) {
-                idTop = user1;
-                idDown = user2;
+            let first;
+            let second;
+            if (idFriend > userId) {
+                first = userId;
+                second = idFriend;
             }
             else {
-                idTop = user2;
-                idDown = user1;
+                first = idFriend;
+                second = userId;
             }
             connection.query("INSERT INTO relationship (user_one_id, user_two_id, status, action_user_id)" +
-                " VALUES (?, ?, ?, ?)", [idTop, idDown, status, action_user],
+                " VALUES (?, ?, 0, ?)", [first, second, userId],
                 function (err, resultado) {
+                    connection.release();
                     if (err) { callback(err); return; }
-                    else {
-                        connection.release();
-                    }
                 })
         })
     }
-
 
     /**
 * Busca en la base de datos la información del usuario que ha insertado el email
@@ -104,31 +100,22 @@ class DAOFriends {
                 callback(err, undefined);
                 return;
             }
-            console.log("USUARIO ES " + user);
-            /*connection.query("SELECT DISTINCT u.name, u.image, r.status " + 
-            "FROM relationship r JOIN user u " + 
-            "WHERE r.user_one_id=? OR r.user_two_id=? AND r.status=1", 
-            [user, user, user],
-            */
+
             connection.query("SELECT * FROM `relationship` JOIN user ON user_one_id = user_id or user_two_id = user_id " +
-            "WHERE (`user_one_id` = ? OR `user_two_id` = ?) AND user_id != ?",
-            [user, user, user],
-            
-            function (err, friend) {
-                if (err) { callback(err, undefined); return; }
-                else {
-                friend.forEach(friend => {
-                        console.log("RESULTADO DE CONSULTA " +  friend.user_two_id);
-                    })
-                    //Resultado tendra la relació
+                "WHERE (`user_one_id` = ? OR `user_two_id` = ?) AND user_id != ?",
+                [user, user, user],
+
+                function (err, friend) {
                     connection.release();
-                    callback(err, friend);
-                }
-            })
+                    if (err) { callback(err, undefined); return; }
+                    else {
+                        callback(err, friend);
+                    }
+                })
         })
     }
 
-    deleteFriend(idFriend,userId, callback) {
+    deleteFriend(idFriend, userId, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
             let first;
@@ -141,6 +128,7 @@ class DAOFriends {
                 first = idFriend;
                 second = userId;
             }
+            console.log("FIRST  " + first + "SEGUNDO " + second)
             connection.query(
                 "DELETE FROM relationship WHERE user_one_id=? AND user_two_id=? ",
                 [first, second],
@@ -152,7 +140,7 @@ class DAOFriends {
         });
     }
 
-    addFriend(idFriend,userId, callback) {
+    addFriend(idFriend, userId, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
             let first;
@@ -174,6 +162,24 @@ class DAOFriends {
                 }
             );
         });
+    }
+
+    searchByName(name, callback) {
+        this.pool.getConnection((err, connection) => {
+            //Si se pusiera %?% en la consulta, daría error
+            name = `%` + name + `%`;
+            connection.query(
+                "SELECT name, image, user_id FROM user WHERE name LIKE ? ",
+                [name],
+                function (err, friend) {
+                    connection.release();
+                    if (err) { callback(err, undefined); return; }
+                    else {
+                        callback(err, friend);
+                    }
+                }
+            );
+        })
     }
 }
 
