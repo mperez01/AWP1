@@ -32,9 +32,9 @@ class DAOFriends {
             }
             connection.query("INSERT INTO relationship (user_one_id, user_two_id, status, action_user_id)" +
                 " VALUES (?, ?, 0, ?)", [first, second, userId],
-                function (err, resultado) {
+                (err) => {
                     connection.release();
-                    if (err) { callback(err); return; }
+                    callback(err);
                 })
         })
     }
@@ -128,7 +128,6 @@ class DAOFriends {
                 first = idFriend;
                 second = userId;
             }
-            console.log("FIRST  " + first + "SEGUNDO " + second)
             connection.query(
                 "DELETE FROM relationship WHERE user_one_id=? AND user_two_id=? ",
                 [first, second],

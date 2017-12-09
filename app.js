@@ -195,7 +195,7 @@ app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (req
 });
 
 app.get("/friends", identificacionRequerida, (request, response) => {
-
+    console.log("Aqui, en aimgos, estamos")
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         daoF.getFriendList(request.session.currentUserId, (err, frd) => {
             response.render("friends", { user: usr, friends: frd, id: request.session.currentUserId });
@@ -250,11 +250,8 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
         }
         else {
             if (list.length !== 0) {
-                list.forEach(x => {
-                    console.log("Nombre " + x.name);
-                })
                 daoU.getUserData(request.session.currentUserId, (err, usr) => {
-                    response.render("search", { user: usr, list: list });
+                    response.render("search", { user: usr, list: list, id: request.session.currentUserId });
                 })
             } else {
                 //Mensaje flash aqui
@@ -275,7 +272,7 @@ app.post("/sendFriend", identificacionRequerida, (request, response) => {
         else {
             //Mensaje flash (peticion enviada)
             console.log("Petición enviada")
-            response.redirect("/friends");
+           response.redirect("/friends");
         }
     })
 })
