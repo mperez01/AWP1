@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 
-    <head>
-        <title> Perfil de <%=friend.name%>- Facebluff </title>
-        <link rel="stylesheet" href="css/style.css" media="screen">
-        <link rel="stylesheet" href="css/styleMyProfile.css" media="screen">
-        <meta charset="utf-8" />
-    </head>
+<head>
+    <title> Perfil de
+        <%=friend.name%>- Facebluff </title>
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <link rel="stylesheet" href="css/styleMyProfile.css" media="screen">
+    <meta charset="utf-8" />
+</head>
 
 <body>
     <div class="top">
@@ -17,18 +18,22 @@
             <a href="">Preguntas</a>
             <a href="/logout">Desconectar</a>
             <label>
-                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil"> <%= user.points %> </label>
+                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
+                <%= user.points %>
+            </label>
         </div>
     </div>
     <div class="perfil">
-        <p>Perfil de <%= friend.name %></p>
+        <p>Perfil de
+            <%= friend.name %>
+        </p>
 
         <div>
             <img class="fotoPerfil" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil">
             <p class="nombre">
                 <%= friend.name %>
             </p>
-            <% if (user.dateOfBirth !== null) { %>
+            <% if (friend.dateOfBirth !== null) { %>
                 <p class="datos">
                     <%= friend.age %> años </p>
                 <% } %>
@@ -47,6 +52,8 @@
                     </p>
                     <p class="datos">
                         <%= friend.points%> puntos</p>
+        </div>
+    </div>
 </body>
 
 </html>
