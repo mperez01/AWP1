@@ -26,11 +26,10 @@
         <div>
             <p>Solicitudes de amistad</p>
             <ul>
-                    <%let i = 0; %>
                     <% friends.forEach(friend => { %>
                         <li>
-                            <!--<%console.log("Status = " + friend.status + "Nombre = " + friend.name + "indice = "+ i); i++;%>-->
                             <% if(friend.status === 0) { %>
+                                <% if (id !== friend.action_user_id) { %>
                                 <div class="solAmigo">
                                     <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil">
                                     <input type="hidden" name="userId" id="userId" value="<user.user_id>">
@@ -38,9 +37,16 @@
                                     <span class="nombre">
                                         <%= friend.name %> <%friend.user_id%>
                                     </span>
-                                    <input class="botonAmigo" type="submit" value="Añadir">
-                                    <input class="botonAmigo" type="submit" value="Rechazar">
+                                    <form method="POST" action="/">
+                                        <input type="hidden" name="id" value= <%= friend.action_user_id %> >
+                                        <input class="botonAmigo" value="Añadir" type="submit">
+                                    </form>
+                                    <form method="POST" action="/deleteFriend">
+                                        <input type="hidden" name="id" value= <%= friend.action_user_id %> >
+                                        <input class="botonAmigo" value="Rechazar" type="submit">
+                                    </form>
                                 </div>
+                                <% } %>
                                 <% } %>
 
 
@@ -60,9 +66,7 @@
         <div>
                 <p>Mis amigos</p>
                 <ul>
-                        <%let a = 0; %>
                         <% friends.forEach(friend => { %>
-                           <!-- <%console.log("Status abajo = " + friend.status + "Nombre abajo = " + friend.name + "indice  abajo= "+ a); a++;%> -->
                             <li>
                                 <% if(friend.status === 1) { %>
                                     <div class="listAmigo">
