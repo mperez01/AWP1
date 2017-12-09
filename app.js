@@ -13,7 +13,7 @@ const multer = require("multer");
 const MySQLStore = mysqlSession(session);
 const ficherosEstaticos = path.join(__dirname, "public");
 const app = express();
-const multerFactory = multer();
+const upload = multer({ dest: path.join(__dirname, "profile_imgs") });
 //siempre debe estar
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -134,13 +134,20 @@ app.get("/new_user.html", (request, response) => {
     response.render("new_user");
 })
 
-app.post("/new_user", (request, response) => {
-    //Si no se introduce nada en fecha, NULL
+app.post("/new_user", upload.single("uploadedfile"),(request, response) => {
+    let imgName;
+        if (request.file) { // Si se ha subido un fichero
+            console.log(`Fichero guardado en: ${request.file.path}`);
+            console.log(`Tamaño: ${request.file.size}`);
+            console.log(`Tipo de fichero: ${request.file.mimetype}`);
+            imgName = request.file.filename;
+            console.log('nameFile' + imgName);
+            }
     if (request.body.date === '') {
         request.body.date = null;
     }
     daoU.insertUser(request.body.email, request.body.password, request.body.name,
-         request.body.gender, request.body.date, request.body.uploadedfile, (err, id) => {
+         request.body.gender, request.body.date, imgName, (err, id) => {
              if (err) {
                  console.error(err);
              } else {
@@ -165,13 +172,17 @@ app.get("/modify_profile",identificacionRequerida,(request,response)=>{
     });
 });
 
-app.post("/modify",identificacionRequerida,(request,response)=>{
+app.post("/modify",identificacionRequerida,upload.single("uploadedfile"),(request,response)=>{
     response.status(200);
     var img;
-    if((request.body.uploadedfile===null)||(request.body.uploadedfile==="")||(request.body.uploadedfile===undefined)){
-        img=request.session.userImg;
+    if (request.file) { // Si se ha subido un fichero
+        console.log(`Fichero guardado en: ${request.file.path}`);
+        console.log(`Tamaño: ${request.file.size}`);
+        console.log(`Tipo de fichero: ${request.file.mimetype}`);
+        img = request.file.filename;
+        console.log('nameFile' + img);
     }else{
-        img=request.body.uploadedfile;
+            img=request.session.userImg;
     }
     if (request.body.date === '') {
         request.body.date = null;
@@ -194,4 +205,18 @@ app.get("/friends", identificacionRequerida, (request, response) => {
             response.render("friends",{user:usr, friends:frd}); 
         } )
     });
+})
+
+app.get("/friendImg",identificacionRequerida,(request,response)=>{
+    let img;
+    img=request.body.userId;
+    console.log(img);
+        if(img === null ||img==='' || img===undefined) {
+            response.status(200);
+            response.sendFile(__dirname + '/public/img/NoProfile.png');
+        }else {
+            response.sendFile(__dirname + '/profile_imgs/'+ img);
+        }
+         
+        request.session.userImg = img;
 })
