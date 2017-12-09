@@ -251,7 +251,7 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
         else {
             if (list.length !== 0) {
                 daoU.getUserData(request.session.currentUserId, (err, usr) => {
-                    response.render("search", { user: usr, list: list, id: request.session.currentUserId });
+                    response.render("search", { user: usr, list: list, id: request.session.currentUserId, nombre: request.query.nombre});
                 })
             } else {
                 //Mensaje flash aqui
