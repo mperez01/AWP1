@@ -26,32 +26,33 @@
         <div>
             <p>Solicitudes de amistad</p>
             <ul>
-                    <% friends.forEach(friend => { %>
-                        <li>
-                            <% if(friend.status === 0) { %>
-                                <% if (id !== friend.action_user_id) { %>
+                <% friends.forEach(friend => { %>
+                    <li>
+                        <% if(friend.status === 0) { %>
+                            <% if (id !== friend.action_user_id) { %>
                                 <div class="solAmigo">
                                     <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil">
                                     <input type="hidden" name="userId" id="userId" value="<user.user_id>">
                                     <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">
-                                    <span class="nombre">
-                                        <%= friend.name %> <%friend.user_id%>
-                                    </span>
+
+                                    <form method="GET" action="/friendProfile">
+                                        <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">
+                                        <input class="nombre" type="submit" value="<%= friend.name %>">
+                                    </form>
+
                                     <form method="POST" action="/addFriend">
-                                        <input type="hidden" name="id" value= <%= friend.action_user_id %> >
+                                        <input type="hidden" name="id" value=< %=f riend.action_user_id %> >
                                         <input class="botonAmigo" value="Añadir" type="submit">
                                     </form>
                                     <form method="POST" action="/deleteFriend">
-                                        <input type="hidden" name="id" value= <%= friend.action_user_id %> >
+                                        <input type="hidden" name="id" value=< %=f riend.action_user_id %> >
                                         <input class="botonAmigo" value="Rechazar" type="submit">
                                     </form>
                                 </div>
                                 <% } %>
-                                <% } %>
-
-
-                        </li>
-                        <% }); %>
+                                    <% } %>
+                    </li>
+                    <% }); %>
             </ul>
         </div>
 
@@ -59,33 +60,34 @@
             <p>Búsqueda de amigos</p>
             <form action="/searchName" method="GET">
                 <label>Buscar por nombre: </label>
-                <input class="relleno" type="text" name="nombre" required>
+                <input class="relleno" type="search" name="nombre" required>
                 <input class="botonBuscar" type="submit" value="Buscar">
             </form>
             <% let errorMsg = getFlash(); %>
-            <% if (errorMsg) { %>
-                <div class="error">
-                    <%= errorMsg %>
-                </div>
-            <% } %>
+                <% if (errorMsg) { %>
+                    <div class="error">
+                        <%= errorMsg %>
+                    </div>
+                    <% } %>
         </div>
         <div>
-                <p>Mis amigos</p>
-                <ul>
-                        <% friends.forEach(friend => { %>
-                            <li>
-                                <% if(friend.status === 1) { %>
-                                    <div class="listAmigo">
-                                        <img class="fotoAmigo" name="imagen" id="imagen"src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil" value=<%friend.image%> >
-                                        <span class="nombre">
-                                            <%= friend.name %>
-                                        </span>
-                                    </div>
-                                    <% } %>
-                            </li>
-                            <% }); %>
-                </ul>
-            </div>
+            <p>Mis amigos</p>
+            <ul>
+                <% friends.forEach(friend => { %>
+                    <li>
+                        <% if(friend.status === 1) { %>
+                            <div class="listAmigo">
+                                <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil" value=<%friend.image%> >
+                                <form method="GET" action="/friendProfile">
+                                    <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">
+                                    <input class="nombre" type="submit" value="<%= friend.name %>">
+                                </form>
+                            </div>
+                            <% } %>
+                    </li>
+                    <% }); %>
+            </ul>
+        </div>
     </div>
 </body>
 

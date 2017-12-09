@@ -256,6 +256,7 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
                 })
             } else {
                 //Mensaje flash aqui
+                response.setFlash(`Ningún resultado para: ${request.query.nombre} `);
                 console.log("Nada encontrado")
                 response.redirect("/friends");
             }
@@ -264,7 +265,7 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
     )
 })
 
-app.post("/sendFriend", identificacionRequerida, (request, response) => {
+app.post("/sendFriendRequest", identificacionRequerida, (request, response) => {
 
     daoF.sendFriendship(request.body.id, request.session.currentUserId, (err) => {
         if (err) {
@@ -273,7 +274,15 @@ app.post("/sendFriend", identificacionRequerida, (request, response) => {
         else {
             //Mensaje flash (peticion enviada)
             response.setFlash("Petición enviada");
-            response.redirect("/searchName");
+            response.redirect("/friends");
         }
     })
+})
+
+app.get("/friendProfile",identificacionRequerida, (request, response) => {
+    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+        daoU.getUserData(request.query.friendId, (err, frd) => {
+            response.render("friend_profile", { user:usr, friend: frd });
+        })
+    });
 })

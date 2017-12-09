@@ -86,7 +86,7 @@ div.login > p, div.perfil > p, div.solicitudes > div > p {
     padding-left: 5px;
 }
 
-input.boton {
+.boton {
     padding-left: 2%;
     padding-right: 2%;
     padding-bottom: 0.5%;

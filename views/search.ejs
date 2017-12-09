@@ -24,21 +24,25 @@
     </div>
     <div class="solicitudes">
         <div>
-            <p>Resultado de búsqueda "<%=nombre%>"</p>
+            <p>Resultado de búsqueda "
+                <%=nombre%>"</p>
             <ul>
                 <% list.forEach(list => { %>
                     <li>
-                        <div class="listAmigo">
-                            <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=list.image%>" alt="fotoPerfil" value=<%list.image%> >
-                            <span class="nombre">
-                                <%= list.name %>
-                            </span>
+                        <div class="solAmigo">
+                                <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=list.image%>" alt="fotoPerfil" value=<%list.image%> >
+                                
+                                <form method="GET" action="/friendProfile">
+                                    <input type="hidden" name="friendId" id="friendId" value="<%=list.user_id%>">
+                                    <input class="nombre" type="submit" value="<%= list.name %>">
+                                </form>
+
                             <% if (id !== list.user_id) { %>
-                            <form method="POST" action="/sendFriend">
-                                <input type="hidden" name="id" value= <%= list.user_id %> >
-                                <input class="botonAmigo" value="Enviar petición" type="submit">
-                            </form>
-                            <% } %>
+                                <form method="POST" action="/sendFriendRequest">
+                                    <input type="hidden" name="id" value=< %=l ist.user_id %> >
+                                    <input class="botonAmigo" value="Enviar petición" type="submit">
+                                </form>
+                                <% } %>
                         </div>
                     </li>
                     <% }); %>
