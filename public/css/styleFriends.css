@@ -44,18 +44,14 @@
     margin-right: 1%;
 }
 
-.solAmigo {
-    display:flex;
-    justify-content: center;
-    margin-top: 3%;
-}
-
 li {
     list-style-type: none;
 }
 
 .listAmigo {
-    margin-top: 1%;
+    display:flex;
+    justify-content: center;
+    margin-top: 3%;
 }
 
 .botonBuscar {

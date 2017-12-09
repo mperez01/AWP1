@@ -112,7 +112,7 @@ app.get("/logout", (request, response) => {
 });
 app.get("/imagenUsuario/:id", (request, response) => {
     response.sendFile(path.join(__dirname, "profile_imgs", request.params.id));
-    request.session.userImg=request.params.id;
+    request.session.userImg = request.params.id;
 });
 app.get("/imagenUsuario", (request, response) => {
     response.status(200);
@@ -182,7 +182,7 @@ app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (req
 });
 
 app.get("/friends", identificacionRequerida, (request, response) => {
-    
+
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         daoF.getFriendList(request.session.currentUserId, (err, frd) => {
             response.render("friends", { user: usr, friends: frd, id: request.session.currentUserId });
@@ -191,7 +191,7 @@ app.get("/friends", identificacionRequerida, (request, response) => {
 })
 
 app.post("/discardFriend", identificacionRequerida, (request, response) => {
-    
+
     daoF.deleteFriend(request.body.id, request.session.currentUserId, (err => {
         if (err) {
             console.error(err);
@@ -220,7 +220,7 @@ app.post("/addFriend", identificacionRequerida, (request, response) => {
 app.get("/friendImg", identificacionRequerida, (request, response) => {
     let img;
     img = request.body.userId;
-    
+
     if (img === null || img === '' || img === undefined) {
         response.status(200);
         response.sendFile(__dirname + '/public/img/NoProfile.png');
@@ -238,8 +238,11 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
         }
         else {
             if (list.length !== 0) {
-                daoU.getUserData(request.session.currentUserId, (err, usr) => {
-                    response.render("search", { user: usr, list: list, id: request.session.currentUserId, nombre: request.query.nombre });
+                daoF.getFriendList(request.session.currentUserId, (err, frd) => {
+                    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                        response.render("search", { friend: frd, user: usr, list: list, 
+                            id: request.session.currentUserId, nombre: request.query.nombre });
+                    })
                 })
             } else {
                 //Mensaje flash aqui
@@ -266,10 +269,10 @@ app.post("/sendFriendRequest", identificacionRequerida, (request, response) => {
     })
 })
 
-app.get("/friendProfile",identificacionRequerida, (request, response) => {
+app.get("/friendProfile", identificacionRequerida, (request, response) => {
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         daoU.getUserData(request.query.friendId, (err, frd) => {
-            response.render("friend_profile", { user:usr, friend: frd });
+            response.render("friend_profile", { user: usr, friend: frd });
         })
     });
 })

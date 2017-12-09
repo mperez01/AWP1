@@ -60,33 +60,6 @@ class DAOFriends {
         })
     }
 
-    acceptFriend(user1, user2, callback) {
-        this.pool.getConnection((err, connection) => {
-            if (err) {
-                callback(err);
-                return;
-            }
-            let idTop;
-            let idDown;
-            if (user1 > user2) {
-                idTop = user1;
-                idDown = user2;
-            }
-            else {
-                idTop = user2;
-                idDown = user1;
-            }
-            connection.query("UPDATE relationship set status = 1, action_user_id = ? where user_one_id = ? AND user_two_id = ?" +
-                " VALUES (?, ?, ?)", [idTop, idDown, user1],
-                function (err, resultado) {
-                    if (err) { callback(err); return; }
-                    else {
-                        //Resultado tendra la relación.
-                        connection.release();
-                    }
-                })
-        })
-    }
     discardFriend(idFriend, userId, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }

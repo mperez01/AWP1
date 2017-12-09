@@ -30,7 +30,7 @@
                     <li>
                         <% if(friend.status === 0) { %>
                             <% if (id !== friend.action_user_id) { %>
-                                <div class="solAmigo">
+                                <div class="listAmigo">
                                     <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil">
                                     <input type="hidden" name="userId" id="userId" value="<user.user_id>">
                                     <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">

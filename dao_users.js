@@ -43,7 +43,7 @@ class DAOUsers {
 
                         var month = usr[0].dateOfBirth.getMonth() + 1; //months from 1-12
                         var day = usr[0].dateOfBirth.getDate();
-                        //console.log("DIA! " + day);
+                         
                         if(day < '10') {
                             day = `0${day}`;
                         }
@@ -97,33 +97,6 @@ class DAOUsers {
         })
 
     }
-    /**
-     * Obtiene el nombre de fichero que contiene la imagen de perfil de un usuario.
-     * 
-     * Es una operación asíncrona, de modo que se llamará a la función callback
-     * pasando, por un lado, el objeto Error (si se produce, o null en caso contrario)
-     * y, por otro lado, una cadena con el nombre de la imagen de perfil (o undefined
-     * en caso de producirse un error).
-     * 
-     * @param {string} id Identificador del usuario cuya imagen se quiere obtener
-     * @param {function} callback Función que recibirá el objeto error y el resultado
-     */
-    /*getUserImageName(id, callback) {
-        this.pool.getConnection((err, connection) => {
-            if (err) { callback(err); return; }
-            connection.query("SELECT image FROM user WHERE user_id = ?",
-                [id],
-                (err, rows) => {
-                    if (err) { callback(err); return; }
-                    connection.release();
-                    if (rows.length === 0) {
-                        callback(null, undefined);
-                    } else {
-                        callback(null, rows[0].image);
-                    }
-                });
-        });
-    }*/
 
     insertUser(email, password, name, gender, date, image, callback) {
         this.pool.getConnection((err, connection) => {

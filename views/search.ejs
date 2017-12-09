@@ -29,7 +29,7 @@
             <ul>
                 <% list.forEach(list => { %>
                     <li>
-                        <div class="solAmigo">
+                        <div class="listAmigo">
                             <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=list.image%>" alt="fotoPerfil" value=<%list.image%> >
 
                             <form method="GET" action="/friendProfile">
@@ -40,9 +40,9 @@
                             <% if (id !== list.user_id) { %>
                                 <form method="POST" action="/sendFriendRequest">
                                     <input type="hidden" name="id" value=<%=list.user_id %> >
-                                    <input class="botonAmigo" value="Enviar petición" type="submit">
+                                    <input class="botonAmigo" value="Solicitar amistad" type="submit">
                                 </form>
-                                <% } %>
+                            <% } %>
                         </div>
                     </li>
                     <% }); %>
