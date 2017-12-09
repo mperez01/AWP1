@@ -95,7 +95,6 @@ app.post("/login", (request, response) => {
         }
         else {
             if (id > 0) {
-                console.log("ID del usuario = " + id);
                 request.session.currentUserId = id;
                 response.redirect("/my_profile");
             }
@@ -127,11 +126,7 @@ app.get("/new_user.html", (request, response) => {
 app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
     let imgName;
     if (request.file) { // Si se ha subido un fichero
-        console.log(`Fichero guardado en: ${request.file.path}`);
-        console.log(`Tamaño: ${request.file.size}`);
-        console.log(`Tipo de fichero: ${request.file.mimetype}`);
         imgName = request.file.filename;
-        console.log('nameFile' + request.file.filename);
     }
     if (request.body.date === '') {
         request.body.date = null;
