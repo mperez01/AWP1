@@ -30,12 +30,12 @@
                 <% list.forEach(list => { %>
                     <li>
                         <div class="solAmigo">
-                                <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=list.image%>" alt="fotoPerfil" value=<%list.image%> >
-                                
-                                <form method="GET" action="/friendProfile">
-                                    <input type="hidden" name="friendId" id="friendId" value="<%=list.user_id%>">
-                                    <input class="nombre" type="submit" value="<%= list.name %>">
-                                </form>
+                            <img class="fotoAmigo" name="imagen" id="imagen" src="/imagenUsuario/<%=list.image%>" alt="fotoPerfil" value=<%list.image%> >
+
+                            <form method="GET" action="/friendProfile">
+                                <input type="hidden" name="friendId" id="friendId" value="<%=list.user_id%>">
+                                <input class="nombre" type="submit" value="<%= list.name %>">
+                            </form>
 
                             <% if (id !== list.user_id) { %>
                                 <form method="POST" action="/sendFriendRequest">

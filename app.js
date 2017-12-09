@@ -166,14 +166,9 @@ app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (req
     response.status(200);
     var img;
     if (request.file) { // Si se ha subido un fichero
-        console.log(`Fichero guardado en: ${request.file.path}`);
-        console.log(`Tamaño: ${request.file.size}`);
-        console.log(`Tipo de fichero: ${request.file.mimetype}`);
         img = request.file.filename;
-        console.log('nameFile' + img);
-        console.log("cambioFichero");
     } else {
-        console.log("no hay cambio");
+        console.log("No hay cambio en imagen");
         img = request.session.userImg;
     }
     if (request.body.date === '') {
@@ -200,7 +195,7 @@ app.get("/friends", identificacionRequerida, (request, response) => {
     });
 })
 
-app.post("/deleteFriend", identificacionRequerida, (request, response) => {
+app.post("/discardFriend", identificacionRequerida, (request, response) => {
     
     daoF.deleteFriend(request.body.id, request.session.currentUserId, (err => {
         if (err) {

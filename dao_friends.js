@@ -87,7 +87,7 @@ class DAOFriends {
                 })
         })
     }
-    deleteFriend(idFriend, userId, callback) {
+    discardFriend(idFriend, userId, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
             let first;
