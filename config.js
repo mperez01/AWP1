@@ -16,6 +16,5 @@ module.exports = {
   },
   //Puerto de escucha
   port:3000
-  
 
 }

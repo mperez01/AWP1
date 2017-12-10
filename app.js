@@ -240,8 +240,17 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
             if (list.length !== 0) {
                 daoF.getFriendList(request.session.currentUserId, (err, frd) => {
                     daoU.getUserData(request.session.currentUserId, (err, usr) => {
-                        response.render("search", { friend: frd, user: usr, list: list, 
-                            id: request.session.currentUserId, nombre: request.query.nombre });
+                        frd.forEach(friend => {
+                            list.forEach(user => {
+                                if (friend.user_id === user.user_id) {
+                                    user.tieneRelacion = true;
+                                }
+                            })
+                        })
+                        response.render("search", {
+                            user: usr, list: list,
+                            id: request.session.currentUserId, nombre: request.query.nombre
+                        });
                     })
                 })
             } else {
