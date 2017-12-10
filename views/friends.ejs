@@ -39,16 +39,16 @@
                                         <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">
                                         <input class="nombre" type="submit" value="<%= friend.name %>">
                                     </form>
-                                    <div class="botones">
-                                        <form method="POST" action="/addFriend">
-                                            <input type="hidden" name="id" value= <%=friend.user_id%> >
-                                            <input class="botonAmigo" value="Añadir" type="submit">
-                                        </form>
-                                        <form method="POST" action="/discardFriend">
-                                            <input type="hidden" name="id" value=<%=friend.user_id%> >
-                                            <input class="botonAmigo" value="Rechazar" type="submit">
-                                        </form>
-                                    </div>
+                                </div>
+                                <div class="botones">
+                                    <form method="POST" action="/addFriend">
+                                        <input type="hidden" name="id" value= <%=friend.user_id%> >
+                                        <input class="botonAmigo" value="Añadir" type="submit">
+                                    </form>
+                                    <form method="POST" action="/discardFriend">
+                                        <input type="hidden" name="id" value=<%=friend.user_id%> >
+                                        <input class="botonAmigo" value="Rechazar" type="submit">
+                                    </form>
                                 </div>
                                 <% } %>
                                     <% } %>
