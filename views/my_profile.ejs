@@ -45,10 +45,10 @@
         </div>
         <input class="boton" type="submit" value="Modificar perfil" onclick="window.location.href='/modify_profile'" >
     </div>
-    <% let errorMsg = getFlash(); %>
-    <% if (errorMsg) { %>
+    <% let mensaje = getFlash(); %>
+    <% if (mensaje) { %>
         <div class="error">
-            <%= errorMsg %>
+            <%= mensaje %>
         </div>
     <% } %>
 </body>
