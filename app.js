@@ -94,7 +94,7 @@ app.post("/login", (request, response) => {
     request.checkBody("email", "Dirección de correo vacía").notEmpty();
     request.checkBody("email", "Dirección de correo no válida").isEmail();
     request.checkBody("pass", "Contraseña vacía").notEmpty();
-    //request.checkBody("pass", "La contraseña debe tener entre 4 y 15 caracteres").isLength({ min: 4, max: 15 });
+    request.checkBody("pass", "La contraseña debe tener entre 4 y 15 caracteres").isLength({ min: 4, max: 15 });
     request.getValidationResult().then((result) => {
         if (result.isEmpty()) {
             daoU.isUserCorrect(request.body.email, request.body.pass, (err, id) => {
@@ -144,6 +144,7 @@ app.get("/new_user.html", (request, response) => {
 app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
     //request.checkBody("name", "Nombre de usuario no válido").matches(/^[A-Z0-9]*$/i);
     request.checkBody("name", "Nombre de usuario vacío").notEmpty();
+    request.checkBody("name", "Nombre no puede ser menor que 1 ni mayor que 50 caracteres").isLength({ min: 0, max: 50 });
     request.checkBody("email", "Dirección de correo no válida").isEmail();
     request.checkBody("email", "Dirección de correo vacía").notEmpty();
     request.checkBody("gender", "Sexo no seleccionado").notEmpty();
@@ -209,6 +210,7 @@ app.get("/modify_profile", identificacionRequerida, (request, response) => {
 
 app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (request, response) => {
     request.checkBody("name", "Nombre de usuario vacío").notEmpty();
+    request.checkBody("name", "Nombre no puede ser menor que 1 ni mayor que 50 caracteres").isLength({ min: 0, max: 50 });
     request.checkBody("email", "Dirección de correo no válida").isEmail();
     request.checkBody("email", "Dirección de correo vacía").notEmpty();
     request.checkBody("gender", "Sexo no seleccionado").notEmpty();
@@ -320,6 +322,7 @@ app.get("/friendImg", identificacionRequerida, (request, response) => {
 app.get("/searchName", identificacionRequerida, (request, response) => {
 
     request.checkQuery("nombre", "Debe introducir al menos un carácter para realizar la búsqueda").notEmpty();
+    request.checkQuery("nombre", "La búsqueda no puede ser menor que 1 ni mayor que 50 caracteres").isLength({ min: 0, max: 50 });
     request.getValidationResult().then((result) => {
         if (result.isEmpty()) {
             daoF.searchByName(request.query.nombre, (err, list) => {
