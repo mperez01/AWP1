@@ -64,10 +64,10 @@
                 <input class="relleno" type="search" name="nombre" required>
                 <input class="botonBuscar" type="submit" value="Buscar">
             </form>
-            <% let errorMsg = getFlash(); %>
-                <% if (errorMsg) { %>
+            <% let mensaje = getFlash(); %>
+                <% if (mensaje) { %>
                     <div class="error">
-                        <%= errorMsg %>
+                        <%= mensaje %>
                     </div>
                     <% } %>
         </div>
