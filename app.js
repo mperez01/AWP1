@@ -335,7 +335,6 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
                                 frd.forEach(friend => {
                                     list.forEach(user => {
                                         if (friend.user_id === user.user_id) {
-                                            console.log("ESTADO " + friend.status);
                                             user.tieneRelacion = friend.status;
                                         }
                                     })
