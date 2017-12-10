@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="botones">
                                     <form method="POST" action="/addFriend">
-                                        <input type="hidden" name="id" value= <%=friend.user_id%> >
+                                        <input type="hidden" name="id" value=< %=friend.user_id%> >
                                         <input class="botonAmigo" value="Añadir" type="submit">
                                     </form>
                                     <form method="POST" action="/discardFriend">
@@ -61,7 +61,7 @@
             <p>Búsqueda de amigos</p>
             <form action="/searchName" method="GET">
                 <label>Buscar por nombre: </label>
-                <input class="relleno" type="search" name="nombre" required>
+                <input class="relleno" type="search" name="nombre">
                 <input class="botonBuscar" type="submit" value="Buscar">
             </form>
             <% let mensaje = getFlash(); %>
@@ -70,6 +70,11 @@
                         <%= mensaje %>
                     </div>
                     <% } %>
+                        <% if (errores.nombre) { %>
+                            <div class="error">
+                                <%= errores.nombre.msg %>
+                            </div>
+                            <% } %>
         </div>
         <div>
             <p>Mis amigos</p>

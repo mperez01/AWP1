@@ -94,6 +94,7 @@ app.post("/login", (request, response) => {
     request.checkBody("email", "Dirección de correo vacía").notEmpty();
     request.checkBody("email", "Dirección de correo no válida").isEmail();
     request.checkBody("pass", "Contraseña vacía").notEmpty();
+    //request.checkBody("pass", "La contraseña debe tener entre 4 y 15 caracteres").isLength({ min: 4, max: 15 });
     request.getValidationResult().then((result) => {
         if (result.isEmpty()) {
             daoU.isUserCorrect(request.body.email, request.body.pass, (err, id) => {
@@ -104,6 +105,7 @@ app.post("/login", (request, response) => {
                 else {
                     if (id > 0) {
                         request.session.currentUserId = id;
+                        request.session.currentUserEmail = request.body.email;
                         response.redirect("/my_profile");
                     }
                     else {
@@ -113,8 +115,6 @@ app.post("/login", (request, response) => {
                 }
             })
         } else {
-            console.log(result.array());
-            console.log(result.mapped());
             var usuarioIncorrecto = {
                 pass: request.body.pass,
                 email: request.body.email,
@@ -147,7 +147,7 @@ app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
     request.checkBody("email", "Dirección de correo no válida").isEmail();
     request.checkBody("email", "Dirección de correo vacía").notEmpty();
     request.checkBody("gender", "Sexo no seleccionado").notEmpty();
-    request.checkBody("password", "La contraseña no tiene entre 4 y 15 caracteres").isLength({ min: 4, max: 15 });
+    request.checkBody("password", "La contraseña debe tener entre 4 y 15 caracteres").isLength({ min: 4, max: 15 });
     request.checkBody("password", "Contraseña vacía").notEmpty();
     request.getValidationResult().then((result) => {
         if (result.isEmpty()) {
@@ -181,8 +181,6 @@ app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
                 }
             })
         } else {
-            console.log(result.array());
-            console.log(result.mapped());
             var usuarioIncorrecto = {
                 email: request.body.email,
                 password: request.body.password,
@@ -205,39 +203,76 @@ app.get("/my_profile", identificacionRequerida, (request, response) => {
 app.get("/modify_profile", identificacionRequerida, (request, response) => {
     response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
-        response.render("modify_profile", { user: usr });
+        response.render("modify_profile", { user: usr, errores: [], usuario: {} });
     });
 });
 
 app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (request, response) => {
-    response.status(200);
-    var img;
-    if (request.file) { // Si se ha subido un fichero
-        img = request.file.filename;
-    } else {
-        console.log("No hay cambio en imagen");
-        img = request.session.userImg;
-    }
-    if (request.body.date === '') {
-        request.body.date = null;
-    }
-    daoU.modifyUser(request.session.currentUserId, request.body.email, request.body.password, request.body.name,
-        request.body.gender, request.body.date, img, (err) => {
-            if (err) {
-                console.error(err);
-            } else {
-                response.setFlash("Modificaciones guardadas");
-                response.redirect("/my_profile");
-            }
-        });
-
+    request.checkBody("name", "Nombre de usuario vacío").notEmpty();
+    request.checkBody("email", "Dirección de correo no válida").isEmail();
+    request.checkBody("email", "Dirección de correo vacía").notEmpty();
+    request.checkBody("gender", "Sexo no seleccionado").notEmpty();
+    request.checkBody("password", "La contraseña debe tener entre 4 y 15 caracteres").isLength({ min: 4, max: 15 });
+    request.checkBody("password", "Contraseña vacía").notEmpty();
+    request.getValidationResult().then((result) => {
+        if (result.isEmpty()) {
+            daoU.userExist(request.body.email, (err, email) => {
+                if (err) {
+                    console.error(err);
+                }
+                else {
+                    //Comprobamos que el correo sea el mismo, o si se ha cambiado, que no exista ya en la base de datos
+                    if (request.session.currentUserEmail === request.body.email || email !== request.body.email) {
+                        var img;
+                        if (request.file) { // Si se ha subido un fichero
+                            img = request.file.filename;
+                        } else {
+                            console.log("No hay cambio en imagen");
+                            img = request.session.userImg;
+                        }
+                        if (request.body.date === '') {
+                            request.body.date = null;
+                        }
+                        daoU.modifyUser(request.session.currentUserId, request.body.email, request.body.password, request.body.name,
+                            request.body.gender, request.body.date, img, (err) => {
+                                if (err) {
+                                    console.error(err);
+                                } else {
+                                    //Cambiamos las cookies de sesion
+                                    if (request.session.currentUserEmail !== request.body.email) {
+                                        request.session.currentUserEmail = request.body.email;
+                                    }
+                                    response.setFlash("Modificaciones guardadas");
+                                    response.redirect("/my_profile");
+                                }
+                            });
+                    }
+                    else {
+                        response.setFlash("Dirección de correo electrónico en uso");
+                        response.redirect("/modify_profile");
+                    }
+                }
+            });
+        } else {
+            var usuarioIncorrecto = {
+                email: request.body.email,
+                password: request.body.password,
+                name: request.body.name,
+                gender: request.body.gender,
+            };
+            daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                response.render("modify_profile", { user: usr, errores: result.mapped(), usuario: usuarioIncorrecto });
+            });
+        }
+    });
 });
 
 app.get("/friends", identificacionRequerida, (request, response) => {
 
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         daoF.getFriendList(request.session.currentUserId, (err, frd) => {
-            response.render("friends", { user: usr, friends: frd, id: request.session.currentUserId });
+            response.render("friends", { user: usr, friends: frd, id: request.session.currentUserId,
+                 errores: [], usuario: {} });
         })
     });
 })
@@ -284,36 +319,51 @@ app.get("/friendImg", identificacionRequerida, (request, response) => {
 
 app.get("/searchName", identificacionRequerida, (request, response) => {
 
-    daoF.searchByName(request.query.nombre, (err, list) => {
-        if (err) {
-            console.error(err);
-        }
-        else {
-            if (list.length !== 0) {
-                daoF.getFriendList(request.session.currentUserId, (err, frd) => {
-                    daoU.getUserData(request.session.currentUserId, (err, usr) => {
-                        frd.forEach(friend => {
-                            list.forEach(user => {
-                                if (friend.user_id === user.user_id) {
-                                    user.tieneRelacion = true;
-                                }
+    request.checkQuery("nombre", "Debe introducir al menos un carácter para realizar la búsqueda").notEmpty();
+    request.getValidationResult().then((result) => {
+        if (result.isEmpty()) {
+            daoF.searchByName(request.query.nombre, (err, list) => {
+                if (err) {
+                    console.error(err);
+                }
+                else {
+                    if (list.length !== 0) {
+                        daoF.getFriendList(request.session.currentUserId, (err, frd) => {
+                            daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                                frd.forEach(friend => {
+                                    list.forEach(user => {
+                                        if (friend.user_id === user.user_id) {
+                                            user.tieneRelacion = true;
+                                        }
+                                    })
+                                })
+                                response.render("search", {
+                                    user: usr, list: list,
+                                    id: request.session.currentUserId, nombre: request.query.nombre
+                                });
                             })
                         })
-                        response.render("search", {
-                            user: usr, list: list,
-                            id: request.session.currentUserId, nombre: request.query.nombre
-                        });
-                    })
-                })
-            } else {
-                //Mensaje flash aqui
-                response.setFlash(`Ningún resultado para: ${request.query.nombre} `);
-                console.log("Nada encontrado")
-                response.redirect("/friends");
+                    } else {
+                        //Mensaje flash aqui
+                        response.setFlash(`Ningún resultado para: ${request.query.nombre} `);
+                        console.log("Nada encontrado")
+                        response.redirect("/friends");
+                    }
+                }
             }
+            )
+        } else {
+            var busquedaIncorrecta = {
+                busqueda: request.query.nombre,
+            };
+            daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                daoF.getFriendList(request.session.currentUserId, (err, frd) => {
+                    response.render("friends", { user: usr, friends: frd, id: request.session.currentUserId, 
+                        errores: result.mapped(), busqueda: busquedaIncorrecta });
+                })
+            });
         }
-    }
-    )
+    })
 })
 
 app.post("/sendFriendRequest", identificacionRequerida, (request, response) => {

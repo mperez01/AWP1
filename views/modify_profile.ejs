@@ -13,7 +13,7 @@
         <img id="LogoImg" src="img/Logo.png" alt="logo">
         <div class="botonesArriba">
             <a href="/my_profile">Perfil</a>
-            <a href="friends.html">Amigos</a>
+            <a href="/friends">Amigos</a>
             <a href="">Preguntas</a>
             <a href="/logout">Desconectar</a>
             <label><img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil"> <%= user.points %> </label>
@@ -78,7 +78,37 @@
                 
             </form>
         </div>
-
+        <% let mensaje = getFlash(); %>
+        <% if (mensaje) { %>
+            <div class="error">
+                <%= mensaje %>
+            </div>
+        <% } %>
+        <% if (errores.email) { %>
+            <div class="error">
+                <%= errores.email.msg %>
+            </div>
+        <% } %>
+        <% if (errores.password) { %>
+            <div class="error">
+                <%= errores.password.msg %>
+            </div>
+        <% } %>
+        <% if (errores.name) { %>
+            <div class="error">
+                <%= errores.name.msg %>
+            </div>
+        <% } %>
+        <% if (errores.gender) { %>
+            <div class="error">
+                <%= errores.gender.msg %>
+            </div>
+        <% } %>
+        <% if (errores.date) { %>
+            <div class="error">
+                <%= errores.date.msg %>
+            </div>
+        <% } %>
     </div>
 </body>
 
