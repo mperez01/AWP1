@@ -192,7 +192,7 @@ app.get("/friends", identificacionRequerida, (request, response) => {
 
 app.post("/discardFriend", identificacionRequerida, (request, response) => {
 
-    daoF.deleteFriend(request.body.id, request.session.currentUserId, (err => {
+    daoF.discardFriend(request.body.id, request.session.currentUserId, (err => {
         if (err) {
             console.error(err);
         }
