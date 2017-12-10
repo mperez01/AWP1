@@ -240,7 +240,7 @@ app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (req
                                 if (err) {
                                     console.error(err);
                                 } else {
-                                    //Cambiamos las cookies de sesion
+                                    //Cambiamos las cookies de sesion si hemos cambiado el email
                                     if (request.session.currentUserEmail !== request.body.email) {
                                         request.session.currentUserEmail = request.body.email;
                                     }
