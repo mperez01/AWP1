@@ -25,3 +25,16 @@ p.datos {
     font-weight: bold;;
     font-size: 20px;
 }
+
+.botonEliminar {
+    margin: auto;
+    display: block;
+    margin-top: 7%;
+    font-family: sans-serif;
+    font-size: 100%;
+    color: red;
+}
+
+.botonEliminar:hover {
+    font-weight: bold;
+}
