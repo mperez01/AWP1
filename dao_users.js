@@ -23,7 +23,7 @@ class DAOUsers {
                 callback(err);
                 return;
             }
-            connection.query("SELECT email, password, name, gender, dateOfBirth, points, image FROM user WHERE user_id=?", [id], (err, usr) => {
+            connection.query("SELECT user_id, email, password, name, gender, dateOfBirth, points, image FROM user WHERE user_id=?", [id], (err, usr) => {
                 connection.release();
                 if (err) {
                     callback(err);
@@ -55,7 +55,7 @@ class DAOUsers {
                     }
                     /* ----- */
 
-                    let obj = { email: usr[0].email, password: usr[0].password, name: usr[0].name, 
+                    let obj = { user_id:usr[0].user_id, email: usr[0].email, password: usr[0].password, name: usr[0].name, 
                         gender: usr[0].gender, dateOfBirth: date, points: usr[0].points, image: usr[0].image, age: edad};
                     callback(null, obj);
                 }

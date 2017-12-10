@@ -53,6 +53,15 @@
                     <p class="datos">
                         <%= friend.points%> puntos</p>
         </div>
+        <% console.log("STATUS = " + status);  %>
+        <% console.log("FRIEND ID = " +  friend.user_id);  %>
+        <% if(status !== '') { %>
+            <% console.log("ESTAMOS DENTRO");  %>
+            <form method="POST" action="/deleteFriend">
+                <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">
+                <input class="boton" type="submit" value="Eliminar amigo">
+            </form>
+        <% } %>
     </div>
 </body>
 

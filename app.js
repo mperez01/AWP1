@@ -289,8 +289,7 @@ app.post("/discardFriend", identificacionRequerida, (request, response) => {
             console.log("Peticion rechazada")
             response.redirect("/friends");
         }
-    })
-    )
+    }))
 })
 
 app.post("/addFriend", identificacionRequerida, (request, response) => {
@@ -336,7 +335,7 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
                                 frd.forEach(friend => {
                                     list.forEach(user => {
                                         if (friend.user_id === user.user_id) {
-                                            user.tieneRelacion = true;
+                                            user.tieneRelacion = 1;
                                         }
                                     })
                                 })
@@ -386,7 +385,20 @@ app.post("/sendFriendRequest", identificacionRequerida, (request, response) => {
 app.get("/friendProfile", identificacionRequerida, (request, response) => {
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         daoU.getUserData(request.query.friendId, (err, frd) => {
-            response.render("friend_profile", { user: usr, friend: frd });
+            response.render("friend_profile", { user: usr, friend: frd, status: request.query.friendStatus });
         })
     });
+})
+
+app.post("/deleteFriend", identificacionRequerida, (request, response) => {
+   daoF.discardFriend(request.body.friendId, request.session.currentUserId, (err => {
+        if (err) {
+            console.error(err);
+        }
+        else {
+            console.log("Amigo eliminado")
+            response.setFlash("Amigo eliminado");
+            response.redirect("/friends");
+        }
+    }))
 })

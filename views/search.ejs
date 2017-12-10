@@ -34,16 +34,17 @@
 
                             <form method="GET" action="/friendProfile">
                                 <input type="hidden" name="friendId" id="friendId" value="<%=list.user_id%>">
+                                <input type="hidden" name="friendStatus" id="friendStatus" value="<%=list.tieneRelacion%>">
                                 <input class="nombre" type="submit" value="<%= list.name %>">
                             </form>
-                            <% if (list.tieneRelacion !== true) { %>
-                            <% if (id !== list.user_id) { %>
-                                <form method="POST" action="/sendFriendRequest">
-                                    <input type="hidden" name="id" value=<%=list.user_id %> >
-                                    <input class="botonAmigo" value="Solicitar amistad" type="submit">
-                                </form>
-                                <% } %>
-                                <% } %>
+                            <% if (list.tieneRelacion !== 1) { %>
+                                <% if (id !== list.user_id) { %>
+                                    <form method="POST" action="/sendFriendRequest">
+                                        <input type="hidden" name="id" value=<%=list.user_id %> >
+                                        <input class="botonAmigo" value="Solicitar amistad" type="submit">
+                                    </form>
+                                    <% } %>
+                                        <% } %>
                         </div>
                     </li>
                     <% }); %>
