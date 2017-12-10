@@ -55,11 +55,16 @@
         </div>
         <% console.log("STATUS = " + status);  %>
         <% console.log("FRIEND ID = " +  friend.user_id);  %>
-        <% if(status !== '') { %>
+        <% if(status === '1'){ %>
             <% console.log("ESTAMOS DENTRO");  %>
             <form method="POST" action="/deleteFriend">
-                <input type="hidden" name="friendId" id="friendId" value="<%=friend.user_id%>">
+                <input type="hidden" name="friendId" value="<%=friend.user_id%>">
                 <input class="botonEliminar" type="submit" value="Eliminar amigo">
+            </form>
+        <%} else if(status === '0'){ %>
+            <form method="POST" action="/deleteFriend">
+                <input type="hidden" name="friendId" value="<%=friend.user_id%>">
+                <input class="botonEliminar" type="submit" value="Rechazar petición">
             </form>
         <% } %>
     </div>
