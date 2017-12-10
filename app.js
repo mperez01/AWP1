@@ -11,6 +11,9 @@ const mysqlSession = require("express-mysql-session");
 const session = require("express-session");
 const multer = require("multer");
 const MySQLStore = mysqlSession(session);
+
+const expressValidator = require("express-validator");
+
 const ficherosEstaticos = path.join(__dirname, "public");
 const app = express();
 const upload = multer({ dest: path.join(__dirname, "profile_imgs") });
@@ -43,6 +46,7 @@ const middlewareSession = session({
 app.use(express.static(ficherosEstaticos));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(middlewareSession);
+app.use(expressValidator());
 
 //app.use del flash
 app.use((request, response, next) => {
@@ -74,11 +78,6 @@ app.get("/", (request, response) => {
     response.redirect("/login.html");
 });
 
-app.get("/login.html", (request, response) => {
-    response.status(200);
-    response.render("login");
-});
-
 app.listen(3000, (err) => {
     if (err) {
         console.error("No se pudo inicializar el servidor: " + err.message);
@@ -87,23 +86,42 @@ app.listen(3000, (err) => {
     }
 });
 
+app.get("/login.html", (request, response) => {
+    response.render("login", { errores: [], usuario: {} });
+});
+
 app.post("/login", (request, response) => {
-    daoU.isUserCorrect(request.body.email, request.body.pass, (err, id) => {
-        if (err) {
-            console.error(err);
-            response.redirect("/login.html");
+    request.checkBody("email", "Dirección de correo vacía").notEmpty();
+    request.checkBody("email", "Dirección de correo no válida").isEmail();
+    request.checkBody("pass", "Contraseña vacía").notEmpty();
+    request.getValidationResult().then((result) => {
+        if (result.isEmpty()) {
+            daoU.isUserCorrect(request.body.email, request.body.pass, (err, id) => {
+                if (err) {
+                    console.error(err);
+                    response.redirect("/login.html");
+                }
+                else {
+                    if (id > 0) {
+                        request.session.currentUserId = id;
+                        response.redirect("/my_profile");
+                    }
+                    else {
+                        response.setFlash("Dirección de correo electronico y/o contraseña no válidos");
+                        response.redirect("/login.html");
+                    }
+                }
+            })
+        } else {
+            console.log(result.array());
+            console.log(result.mapped());
+            var usuarioIncorrecto = {
+                pass: request.body.pass,
+                email: request.body.email,
+            };
+            response.render("login", { errores: result.mapped(), usuario: usuarioIncorrecto });
         }
-        else {
-            if (id > 0) {
-                request.session.currentUserId = id;
-                response.redirect("/my_profile");
-            }
-            else {
-                response.setFlash("Dirección de correo electronico y/o contraseña no válidos");
-                response.redirect("/login.html");
-            }
-        }
-    })
+    });
 });
 
 app.get("/logout", (request, response) => {
@@ -120,26 +138,60 @@ app.get("/imagenUsuario", (request, response) => {
 });
 
 app.get("/new_user.html", (request, response) => {
-    response.render("new_user");
+    response.render("new_user", { errores: [], usuario: {} });
 })
 
 app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
-    let imgName;
-    if (request.file) { // Si se ha subido un fichero
-        imgName = request.file.filename;
-    }
-    if (request.body.date === '') {
-        request.body.date = null;
-    }
-    daoU.insertUser(request.body.email, request.body.password, request.body.name,
-        request.body.gender, request.body.date, imgName, (err, id) => {
-            if (err) {
-                console.error(err);
-            } else {
-                request.session.currentUserId = id;
-                response.redirect("/my_profile");
-            }
-        });
+    request.checkBody("name", "Nombre de usuario no válido").matches(/^[A-Z0-9]*$/i);
+    request.checkBody("name", "Nombre de usuario vacío").notEmpty();
+    request.checkBody("email", "Dirección de correo no válida").isEmail();
+    request.checkBody("email", "Dirección de correo vacía").notEmpty();
+    request.checkBody("gender", "Sexo no seleccionado").notEmpty();
+    request.checkBody("password", "La contraseña no tiene entre 4 y 15 caracteres").isLength({ min: 4, max: 15 });
+    request.checkBody("password", "Contraseña vacía").notEmpty();
+    request.getValidationResult().then((result) => {
+        if (result.isEmpty()) {
+            daoU.userExist(request.body.email, (err, email) => {
+                if (err) {
+                    console.error(err);
+                }
+                else {
+                    if (email !== request.body.email) {
+                        let imgName;
+                        if (request.file) { // Si se ha subido un fichero
+                            imgName = request.file.filename;
+                        }
+                        if (request.body.date === '') {
+                            request.body.date = null;
+                        }
+                        daoU.insertUser(request.body.email, request.body.password, request.body.name,
+                            request.body.gender, request.body.date, imgName, (err, id) => {
+                                if (err) {
+                                    console.error(err);
+                                } else {
+                                    request.session.currentUserId = id;
+                                    response.redirect("/my_profile");
+                                }
+                            })
+                    }
+                    else {
+                        response.setFlash("Dirección de correo electrónico en uso");
+                        response.redirect("/new_user.html");
+                    }
+                }
+            })
+        } else {
+            console.log(result.array());
+            console.log(result.mapped());
+            var usuarioIncorrecto = {
+                email: request.body.email,
+                password: request.body.password,
+                name: request.body.name,
+                gender: request.body.gender,
+            };
+            response.render("new_user", { errores: result.mapped(), usuario: usuarioIncorrecto });
+        }
+    });
 })
 
 app.get("/my_profile", identificacionRequerida, (request, response) => {

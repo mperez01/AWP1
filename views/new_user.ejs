@@ -24,20 +24,20 @@
                 <!-- Contenido del formulario -->
                 <div>
                     <label for="formEmail">Email </label>
-                    <input class="rellenar" type="email" name="email" id="formEmail" required>
+                    <input class="rellenar" type="email" name="email" id="formEmail" >
                 </div>
                 <div>
                     <label for="formContraseña">Contraseña </label>
-                    <input class="rellenar" type="password" name="password" id="formContraseña" required>
+                    <input class="rellenar" type="password" name="password" id="formContraseña" >
                 </div>
                 <div>
                     <label for="formNombre"> Nombre completo </label>
-                    <input class="rellenar" type="text" name="name" id="formNombre" required>
+                    <input class="rellenar" type="text" name="name" id="formNombre" >
                 </div>
                 <div>
                     <label> Sexo </label>
                     <label class="datoSexo">
-                    <input type="radio" name="gender" value="male" required> Masculino
+                    <input type="radio" name="gender" value="male" > Masculino
 
                     <input type="radio" name="gender" value="female"> Femenino 
 
@@ -55,7 +55,37 @@
                 <input class="boton" type="submit" value="Crear usuario">
             </form>
         </div>
-
+        <% let errorMsg = getFlash(); %>
+        <% if (errorMsg) { %>
+            <div class="error">
+                <%= errorMsg %>
+            </div>
+        <% } %>
+        <% if (errores.email) { %>
+            <div class="error">
+                <%= errores.email.msg %>
+            </div>
+        <% } %>
+        <% if (errores.password) { %>
+            <div class="error">
+                <%= errores.password.msg %>
+            </div>
+        <% } %>
+        <% if (errores.name) { %>
+            <div class="error">
+                <%= errores.name.msg %>
+            </div>
+        <% } %>
+        <% if (errores.gender) { %>
+            <div class="error">
+                <%= errores.gender.msg %>
+            </div>
+        <% } %>
+        <% if (errores.date) { %>
+            <div class="error">
+                <%= errores.date.msg %>
+            </div>
+        <% } %>
     </div>
 </body>
 

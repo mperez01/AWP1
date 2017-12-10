@@ -21,11 +21,11 @@
             <form action="/login" method="POST">
                 <div>
                     <label>Email </label>
-                    <input class="rellenar" type="email" name="email" required>
+                    <input class="rellenar" type="email" name="email">
                 </div>
                 <div>
                     <label>Contraseña </label>
-                    <input class="rellenar" type="password" name="pass" required>
+                    <input class="rellenar" type="password" name="pass">
                 </div>
                 <input class="boton" type="submit" value="Conectar">
             </form>
@@ -34,6 +34,16 @@
         <% if (errorMsg) { %>
             <div class="error">
                 <%= errorMsg %>
+            </div>
+        <% } %>
+        <% if (errores.email) { %>
+            <div class="error">
+                <%= errores.email.msg %>
+            </div>
+        <% } %>
+        <% if (errores.pass) { %>
+            <div class="error">
+                <%= errores.pass.msg %>
             </div>
         <% } %>
     </div>

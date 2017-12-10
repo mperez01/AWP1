@@ -98,6 +98,25 @@ class DAOUsers {
 
     }
 
+    userExist(email, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            connection.query("SELECT email FROM user WHERE email = ?", [email],
+                (err, filas) => {
+                    /* Conecction release se puede poner justo aqui, ya que tenemos la
+                    información de la tabla en filas y no vamos a necesitarlo más */
+                    connection.release();
+                    if (err) { callback(err); return; }
+                    if (filas.length === 0) {
+                        callback(null, -1);
+                    }
+                    else {
+                        callback(null, filas[0].email);
+                    }
+                })
+        })
+    }
+
     insertUser(email, password, name, gender, date, image, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
