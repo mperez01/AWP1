@@ -281,12 +281,12 @@ app.get("/friends", identificacionRequerida, (request, response) => {
 
 app.post("/discardFriend", identificacionRequerida, (request, response) => {
 
-    daoF.discardFriend(request.body.id, request.session.currentUserId, (err => {
+    daoF.discardFriend(request.body.friendId, request.session.currentUserId, (err => {
         if (err) {
             console.error(err);
         }
         else {
-            console.log("Peticion rechazada")
+            response.setFlash("Petición rechazada");
             response.redirect("/friends");
         }
     }))
@@ -335,7 +335,8 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
                                 frd.forEach(friend => {
                                     list.forEach(user => {
                                         if (friend.user_id === user.user_id) {
-                                            user.tieneRelacion = 1;
+                                            console.log("ESTADO " + friend.status);
+                                            user.tieneRelacion = friend.status;
                                         }
                                     })
                                 })
