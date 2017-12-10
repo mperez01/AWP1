@@ -142,7 +142,7 @@ app.get("/new_user.html", (request, response) => {
 })
 
 app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
-    request.checkBody("name", "Nombre de usuario no válido").matches(/^[A-Z0-9]*$/i);
+    //request.checkBody("name", "Nombre de usuario no válido").matches(/^[A-Z0-9]*$/i);
     request.checkBody("name", "Nombre de usuario vacío").notEmpty();
     request.checkBody("email", "Dirección de correo no válida").isEmail();
     request.checkBody("email", "Dirección de correo vacía").notEmpty();
