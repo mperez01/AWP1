@@ -13,7 +13,7 @@
 }
 
 .nombre {
-    padding: 0;
+    padding-top: 10%;
     border: none;
     background: none;
     font-family: sans-serif;
@@ -50,8 +50,13 @@ li {
 
 .listAmigo {
     display:flex;
-    justify-content: center;
+    margin: auto;
+    width: 30%;
     margin-top: 3%;
+}
+.botones{
+    display: flex;
+    margin: 20%;
 }
 
 .botonBuscar {
