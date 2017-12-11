@@ -47,7 +47,13 @@ const middlewareSession = session({
 app.use(express.static(ficherosEstaticos));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(middlewareSession);
-app.use(expressValidator());
+app.use(expressValidator({
+    customValidators: {
+        whiteSpace: function (param) {
+            return /\S/.test(param);
+        }
+    }
+}));
 
 //app.use del flash
 app.use((request, response, next) => {
@@ -146,6 +152,7 @@ app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
     //request.checkBody("name", "Nombre de usuario no válido").matches(/^[A-Z0-9]*$/i);
     request.checkBody("name", "Nombre de usuario vacío").notEmpty();
     request.checkBody("name", "Nombre no puede ser menor que 1 ni mayor que 50 caracteres").isLength({ min: 0, max: 50 });
+    request.checkBody("name", "Nombre no puede ser espacio en blanco").whiteSpace();
     request.checkBody("email", "Dirección de correo no válida").isEmail();
     request.checkBody("email", "Dirección de correo vacía").notEmpty();
     request.checkBody("gender", "Sexo no seleccionado").notEmpty();
@@ -212,6 +219,7 @@ app.get("/modify_profile", identificacionRequerida, (request, response) => {
 app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (request, response) => {
     request.checkBody("name", "Nombre de usuario vacío").notEmpty();
     request.checkBody("name", "Nombre no puede ser menor que 1 ni mayor que 50 caracteres").isLength({ min: 0, max: 50 });
+    request.checkBody("name", "Nombre no puede ser espacio en blanco").whiteSpace();
     request.checkBody("email", "Dirección de correo no válida").isEmail();
     request.checkBody("email", "Dirección de correo vacía").notEmpty();
     request.checkBody("gender", "Sexo no seleccionado").notEmpty();
@@ -274,8 +282,10 @@ app.get("/friends", identificacionRequerida, (request, response) => {
 
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         daoF.getFriendList(request.session.currentUserId, (err, frd) => {
-            response.render("friends", { user: usr, friends: frd, id: request.session.currentUserId,
-                 errores: [], usuario: {} });
+            response.render("friends", {
+                user: usr, friends: frd, id: request.session.currentUserId,
+                errores: [], usuario: {}
+            });
         })
     });
 })
@@ -361,8 +371,10 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
             };
             daoU.getUserData(request.session.currentUserId, (err, usr) => {
                 daoF.getFriendList(request.session.currentUserId, (err, frd) => {
-                    response.render("friends", { user: usr, friends: frd, id: request.session.currentUserId, 
-                        errores: result.mapped(), busqueda: busquedaIncorrecta });
+                    response.render("friends", {
+                        user: usr, friends: frd, id: request.session.currentUserId,
+                        errores: result.mapped(), busqueda: busquedaIncorrecta
+                    });
                 })
             });
         }
@@ -392,7 +404,7 @@ app.get("/friendProfile", identificacionRequerida, (request, response) => {
 })
 
 app.post("/deleteFriend", identificacionRequerida, (request, response) => {
-   daoF.discardFriend(request.body.friendId, request.session.currentUserId, (err => {
+    daoF.discardFriend(request.body.friendId, request.session.currentUserId, (err => {
         if (err) {
             console.error(err);
         }
@@ -404,9 +416,9 @@ app.post("/deleteFriend", identificacionRequerida, (request, response) => {
     }))
 })
 
-app.get("/questions", identificacionRequerida, (request,response)=>{
+app.get("/questions", identificacionRequerida, (request, response) => {
     response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
-        response.render("questions",{user:usr});
+        response.render("questions", { user: usr });
     });
 })
