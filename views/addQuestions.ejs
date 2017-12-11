@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title> Nueva pregunta - Facebluff </title>
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <link rel="stylesheet" href="css/styleNewUser.css" media="screen">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div class="top">
+        <img id="LogoImg" src="img/Logo.png" alt="logo">
+        <div class="botonesArriba">
+            <a href="/my_profile">Perfil</a>
+            <a href="/friends">Amigos</a>
+            <a href="/questions">Preguntas</a>
+            <a href="/logout">Desconectar</a>
+            <label>
+                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
+                <%= user.points %>
+            </label>
+        </div>
+    </div>
+
+    <div class="login">
+        <p>Nueva pregunta</p>
+        <div class="recuadro">
+            <form>
+                <!-- Contenido del formulario -->
+                <div>
+                    <label>Título de la pregunta </label>
+                    <input class="rellenar" type="email" name="email" id="formEmail">
+                </div>
+                <div>
+                    <label> Respuestas </label>
+                    <textarea class="rellenar" name="respuestas" placeholder="¡Escriba aquí las respuestas!"></textarea>
+                </div>
+                <input class="boton" type="submit" value="Crear pregunta">
+            </form>
+        </div>
+
+    </div>
+</body>
+
+</html>

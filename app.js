@@ -492,7 +492,7 @@ app.get("/addQuestion", identificacionRequerida, (request, response) => {
                     console.error(err);
                 }
                 else {
-                    response.render("/addQuestions", {user: usr});
+                    response.render("addQuestions", {user: usr});
                 }
             })
         }
