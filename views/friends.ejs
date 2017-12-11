@@ -31,15 +31,18 @@
                         <% if(friend.status === 0) { %>
                             <% if (id !== friend.action_user_id) { %>
                                 <div class="listAmigo">
-                                    <img class="fotoAmigo" name="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil">
-                                    <input type="hidden" name="userId" value="<user.user_id>">
-                                    <input type="hidden" name="friendId" value="<%=friend.user_id%>">
-
-                                    <form method="GET" action="/friendProfile">
-                                        <input type="hidden" name="friendId" value="<%=friend.user_id%>">
-                                        <input type="hidden" name="friendStatus" value="<%=friend.status%>">
-                                        <input class="nombre" type="submit" value="<%= friend.name %>">
-                                    </form>
+                                    <div class="userData">
+                                            <img class="fotoAmigo" name="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil">
+                                            <input type="hidden" name="userId" value="<user.user_id>">
+                                            <input type="hidden" name="friendId" value="<%=friend.user_id%>">
+        
+                                            <form method="GET" action="/friendProfile">
+                                                <input type="hidden" name="friendId" value="<%=friend.user_id%>">
+                                                <input type="hidden" name="friendStatus" value="<%=friend.status%>">
+                                                <input class="nombre" type="submit" value="<%= friend.name %>">
+                                            </form>
+                                    </div>
+                                    
 
                                     <div class="botones">
                                         <form method="POST" action="/addFriend">
@@ -85,12 +88,15 @@
                     <li>
                         <% if(friend.status === 1) { %>
                             <div class="listAmigo">
-                                <img class="fotoAmigo" name="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil" value=<%friend.image%> >
-                                <form method="GET" action="/friendProfile">
-                                    <input type="hidden" name="friendId" value="<%=friend.user_id%>">
-                                    <input type="hidden" name="friendStatus" value="<%=friend.status%>">
-                                    <input class="nombre" type="submit" value="<%= friend.name %>">
-                                </form>
+                                <div class="userData">
+                                    <img class="fotoAmigo" name="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil" value=<%friend.image%> >
+                                    <form method="GET" action="/friendProfile">
+                                        <input type="hidden" name="friendId" value="<%=friend.user_id%>">
+                                        <input type="hidden" name="friendStatus" value="<%=friend.status%>">
+                                        <input class="nombre" type="submit" value="<%= friend.name %>">
+                                    </form>
+                                </div>
+                                
                             </div>
                             <% } %>
                     </li>
