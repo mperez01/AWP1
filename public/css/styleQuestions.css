@@ -1,13 +1,26 @@
-.preguntas{
+.title{
 text-align: center;
-font-size:30px;
+font-size: 40px;
 font-weight: 900;
+line-height: 26.4px;
 }
 
-.preguntasAleatorias{
-
+.preguntaAleatoria{
+    font-size: 20px;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-align: left;
+    padding:1%;
 }
 
 .nuevaPregunta{
 
+}
+li {
+    list-style-type: none;
+    width: 45%;
+    margin: auto;
+    background-color: rgb(248, 194, 101);
+    color:rgb(179, 36, 179);
+    height: 10%;
 }
