@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const config = require("./config");
 const daoUsers = require("./dao_users");
 const daoFriends = require("./dao_friends");
+const daoQuestions = require("./dao_questions");
 const mysqlSession = require("express-mysql-session");
 const session = require("express-session");
 const multer = require("multer");
@@ -401,4 +402,11 @@ app.post("/deleteFriend", identificacionRequerida, (request, response) => {
             response.redirect("/friends");
         }
     }))
+})
+
+app.get("/questions", identificacionRequerida, (request,response)=>{
+    response.status(200);
+    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+        response.render("questions",{user:usr});
+    });
 })
