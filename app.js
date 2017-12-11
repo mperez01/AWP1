@@ -71,6 +71,7 @@ app.use((request, response, next) => {
 
 let daoU = new daoUsers.DAOUsers(pool);
 let daoF = new daoFriends.DAOFriends(pool);
+let daoQ = new daoQuestions.DAOQuestions(pool);
 
 function identificacionRequerida(request, response, next) {
 
@@ -467,9 +468,33 @@ app.get("/questions", identificacionRequerida, (request, response) => {
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
+        } else {
+            daoQ.getQuestions((err, qst) => {
+                if (err) {
+                    console.error(err);
+                }
+                else {
+                    response.render("questions", { user: usr, questions: qst });
+                }
+            })
         }
-        else {
-            response.render("questions", { user: usr });
+    });
+})
+
+app.get("/addQuestion", identificacionRequerida, (request, response) => {
+    response.status(200);
+    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+        if (err) {
+            console.error(err);
+        } else {
+            daoQ.getQuestions((err, qst) => {
+                if (err) {
+                    console.error(err);
+                }
+                else {
+                    response.render("/addQuestions", {user: usr});
+                }
+            })
         }
     });
 })

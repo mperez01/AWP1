@@ -22,20 +22,30 @@
             </label>
         </div>
     </div>
-    <div class="preguntas">
-        <p>Preguntas seleccionadas aleatoriamente</p>
+    <div class="solicitudes">
+        <div>
+            <p>Preguntas seleccionadas aleatoriamente</p>
+        </div>
         <div class="preguntasAleatorias">
             <ul>
                 <%questions.forEach(question=>{%>
                     <li>
-
+                        <p>
+                            <%=question.text%>
+                        </p>
                     </li>
-                <% }); %>
+                    <% }); %>
             </ul>
         </div>
         <div class="nuevaPregunta">
-
+            <p>¡¡Añade tus preguntas!!</p>
+            <div>
+                <form method="GET" action="/addQuestion">
+                    <input class="boton" type="submit" value="Crear nueva pregunta">
+                </form>
+            </div>
         </div>
     </div>
 </body>
+
 </html>

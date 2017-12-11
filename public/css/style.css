@@ -59,8 +59,6 @@ label {
 }
 
 .recuadro {
-
-    /*¿Para que el display?*/
     margin: auto;
     background-color: purple;
     color: white;
@@ -87,13 +85,10 @@ div.login > p, div.perfil > p, div.solicitudes > div > p {
 }
 
 .boton {
-    padding-left: 2%;
-    padding-right: 2%;
-    padding-bottom: 0.5%;
-    padding-top: 0.5%;
+ 
     margin: auto;
     display: block;
-    margin-top: 7%;
+    margin-top: 5%;
     font-family: "GloriaHallelujah";
     font-size: 140%;
     border-radius: 10px;

@@ -9,26 +9,55 @@ class DAOQuestions {
         this.pool = pool;
     }
 
-    /*getQuestionList(user, callback) {
+    getQuestions(callback) {
         this.pool.getConnection((err, connection) => {
             if (err) {
                 callback(err, undefined);
                 return;
             }
-
-            connection.query("SELECT * FROM `relationship` JOIN user ON user_one_id = user_id or user_two_id = user_id " +
-                "WHERE (`user_one_id` = ? OR `user_two_id` = ?) AND user_id != ?",
-                [user, user, user],
-
-                function (err, friend) {
+            connection.query("SELECT * FROM questions",
+                function (err, questions) {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
                     else {
-                        callback(err, friend);
+                        callback(err, questions);
                     }
                 })
         })
-    }*/
+    }
+
+    getAnswers(callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) {
+                callback(err, undefined);
+                return;
+            }
+            connection.query("SELECT * FROM answers",
+                function (err, questions) {
+                    connection.release();
+                    if (err) { callback(err, undefined); return; }
+                    else {
+                        callback(err, questions);
+                    }
+                })
+        })
+    }
+
+    addQuestion(userId, question, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) {
+                callback(err, undefined);
+                return;
+            }
+            //¿como introducimos las opciones?
+            connection.query("INSERT INTO questions (user_id, text)" +
+            " VALUES (?, ?)", [userId, question],
+            (err) => {
+                connection.release();
+                callback(err);
+            })
+        })
+    }
 }
 module.exports = {
     DAOQuestions: DAOQuestions
