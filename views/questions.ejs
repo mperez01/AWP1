@@ -30,9 +30,9 @@
             <ul>
                 <%questions.forEach(question=>{%>
                     <li>
-                        <form method="GET" action="">
+                        <form>
                             <input type="hidden" name="question_id" value="<%=question.question_id%>">
-                            <input class="pregunta" type="submit" value="<%=question.text%>">
+                            <input class="pregunta" type="" value="<%=question.text%>">
                         </form>
                     </li>
                     <% }); %>

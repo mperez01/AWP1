@@ -26,15 +26,15 @@
     <div class="login">
         <p>Nueva pregunta</p>
         <div class="recuadro">
-            <form>
+            <form method="POST" action="/addQuestion">
                 <!-- Contenido del formulario -->
                 <div>
                     <label>Título de la pregunta </label>
-                    <input class="rellenar" type="email" name="email" id="formEmail">
+                    <input class="rellenar" type="text" name="question">
                 </div>
                 <div>
                     <label> Respuestas </label>
-                    <textarea class="rellenar" name="respuestas" placeholder="¡Escriba aquí las respuestas!"></textarea>
+                    <textarea class="rellenar" name="answers" placeholder="¡Escriba aquí las respuestas!"></textarea>
                 </div>
                 <input class="boton" type="submit" value="Crear pregunta">
             </form>

@@ -443,7 +443,10 @@ app.get("/friendProfile", identificacionRequerida, (request, response) => {
                 if (err) {
                     console.error(err);
                 } else {
-                    response.render("friend_profile", { user: usr, friend: frd, status: request.query.friendStatus });
+                    response.render("friend_profile", {
+                        user: usr, friend: frd,
+                        status: request.query.friendStatus
+                    });
                 }
             })
         }
@@ -492,9 +495,41 @@ app.get("/addQuestion", identificacionRequerida, (request, response) => {
                     console.error(err);
                 }
                 else {
-                    response.render("addQuestions", {user: usr});
+                    response.render("addQuestions", { user: usr });
                 }
             })
         }
     });
+})
+
+app.post("/addQuestion", identificacionRequerida, (request, response) => {
+    response.status(200);
+
+    // VALIDACIÓN!!!
+
+    let allAnswers = request.body.answers;
+    var answer = allAnswers.split("\n");
+    
+    daoQ.addQuestion(request.session.currentUserId, request.body.question, answer, (err) => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log("BIEN AQUI ENTONCES, despues de insertar")
+            daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log("BIEN AQUI ENTONCES, despues de buscar datos de usuario")
+                    daoQ.getQuestions((err, qst) => {
+                        if (err) {
+                            console.error(err);
+                        }
+                        else {
+                            response.render("questions", { user: usr, questions: qst });
+                        }
+                    })
+                }
+            });
+        }
+    }) 
 })
