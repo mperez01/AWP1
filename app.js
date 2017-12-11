@@ -47,7 +47,14 @@ const middlewareSession = session({
 app.use(express.static(ficherosEstaticos));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(middlewareSession);
-app.use(expressValidator());
+app.use(expressValidator({
+    customValidators: {
+        //comprobamos que param no es solo espacios en blanco
+        whiteSpace: function (param) {
+            return /\S/.test(param);
+        }
+    }
+}));
 
 //app.use del flash
 app.use((request, response, next) => {
@@ -146,6 +153,7 @@ app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
     //request.checkBody("name", "Nombre de usuario no válido").matches(/^[A-Z0-9]*$/i);
     request.checkBody("name", "Nombre de usuario vacío").notEmpty();
     request.checkBody("name", "Nombre no puede ser menor que 1 ni mayor que 50 caracteres").isLength({ min: 0, max: 50 });
+    request.checkBody("name", "Nombre no puede ser espacio en blanco").whiteSpace();
     request.checkBody("email", "Dirección de correo no válida").isEmail();
     request.checkBody("email", "Dirección de correo vacía").notEmpty();
     request.checkBody("gender", "Sexo no seleccionado").notEmpty();
@@ -197,7 +205,11 @@ app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
 app.get("/my_profile", identificacionRequerida, (request, response) => {
     response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
-        response.render("my_profile", { user: usr });
+        if (err) {
+            console.error(err);
+        } else {
+            response.render("my_profile", { user: usr });
+        }
     });
 });
 
@@ -205,13 +217,18 @@ app.get("/my_profile", identificacionRequerida, (request, response) => {
 app.get("/modify_profile", identificacionRequerida, (request, response) => {
     response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
-        response.render("modify_profile", { user: usr, errores: [], usuario: {} });
+        if (err) {
+            console.error(err);
+        } else {
+            response.render("modify_profile", { user: usr, errores: [], usuario: {} });
+        }
     });
 });
 
 app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (request, response) => {
     request.checkBody("name", "Nombre de usuario vacío").notEmpty();
     request.checkBody("name", "Nombre no puede ser menor que 1 ni mayor que 50 caracteres").isLength({ min: 0, max: 50 });
+    request.checkBody("name", "Nombre no puede ser espacio en blanco").whiteSpace();
     request.checkBody("email", "Dirección de correo no válida").isEmail();
     request.checkBody("email", "Dirección de correo vacía").notEmpty();
     request.checkBody("gender", "Sexo no seleccionado").notEmpty();
@@ -264,7 +281,11 @@ app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (req
                 gender: request.body.gender,
             };
             daoU.getUserData(request.session.currentUserId, (err, usr) => {
-                response.render("modify_profile", { user: usr, errores: result.mapped(), usuario: usuarioIncorrecto });
+                if (err) {
+                    console.error(err);
+                } else {
+                    response.render("modify_profile", { user: usr, errores: result.mapped(), usuario: usuarioIncorrecto });
+                }
             });
         }
     });
@@ -273,10 +294,20 @@ app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (req
 app.get("/friends", identificacionRequerida, (request, response) => {
 
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
-        daoF.getFriendList(request.session.currentUserId, (err, frd) => {
-            response.render("friends", { user: usr, friends: frd, id: request.session.currentUserId,
-                 errores: [], usuario: {} });
-        })
+        if (err) {
+            console.error(err);
+        } else {
+            daoF.getFriendList(request.session.currentUserId, (err, frd) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    response.render("friends", {
+                        user: usr, friends: frd, id: request.session.currentUserId,
+                        errores: [], usuario: {}
+                    });
+                }
+            })
+        }
     });
 })
 
@@ -332,19 +363,27 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
                 else {
                     if (list.length !== 0) {
                         daoF.getFriendList(request.session.currentUserId, (err, frd) => {
-                            daoU.getUserData(request.session.currentUserId, (err, usr) => {
-                                frd.forEach(friend => {
-                                    list.forEach(user => {
-                                        if (friend.user_id === user.user_id) {
-                                            user.tieneRelacion = friend.status;
-                                        }
-                                    })
+                            if (err) {
+                                console.error(err);
+                            } else {
+                                daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                                    if (err) {
+                                        console.error(err);
+                                    } else {
+                                        frd.forEach(friend => {
+                                            list.forEach(user => {
+                                                if (friend.user_id === user.user_id) {
+                                                    user.tieneRelacion = friend.status;
+                                                }
+                                            })
+                                        })
+                                        response.render("search", {
+                                            user: usr, list: list,
+                                            id: request.session.currentUserId, nombre: request.query.nombre
+                                        });
+                                    }
                                 })
-                                response.render("search", {
-                                    user: usr, list: list,
-                                    id: request.session.currentUserId, nombre: request.query.nombre
-                                });
-                            })
+                            }
                         })
                     } else {
                         //Mensaje flash aqui
@@ -360,10 +399,20 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
                 busqueda: request.query.nombre,
             };
             daoU.getUserData(request.session.currentUserId, (err, usr) => {
-                daoF.getFriendList(request.session.currentUserId, (err, frd) => {
-                    response.render("friends", { user: usr, friends: frd, id: request.session.currentUserId, 
-                        errores: result.mapped(), busqueda: busquedaIncorrecta });
-                })
+                if (err) {
+                    console.error(err);
+                } else {
+                    daoF.getFriendList(request.session.currentUserId, (err, frd) => {
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            response.render("friends", {
+                                user: usr, friends: frd, id: request.session.currentUserId,
+                                errores: result.mapped(), busqueda: busquedaIncorrecta
+                            });
+                        }
+                    })
+                }
             });
         }
     })
@@ -385,14 +434,23 @@ app.post("/sendFriendRequest", identificacionRequerida, (request, response) => {
 
 app.get("/friendProfile", identificacionRequerida, (request, response) => {
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
-        daoU.getUserData(request.query.friendId, (err, frd) => {
-            response.render("friend_profile", { user: usr, friend: frd, status: request.query.friendStatus });
-        })
+        if (err) {
+            console.error(err);
+        }
+        else {
+            daoU.getUserData(request.query.friendId, (err, frd) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    response.render("friend_profile", { user: usr, friend: frd, status: request.query.friendStatus });
+                }
+            })
+        }
     });
 })
 
 app.post("/deleteFriend", identificacionRequerida, (request, response) => {
-   daoF.discardFriend(request.body.friendId, request.session.currentUserId, (err => {
+    daoF.discardFriend(request.body.friendId, request.session.currentUserId, (err => {
         if (err) {
             console.error(err);
         }
@@ -404,9 +462,14 @@ app.post("/deleteFriend", identificacionRequerida, (request, response) => {
     }))
 })
 
-app.get("/questions", identificacionRequerida, (request,response)=>{
+app.get("/questions", identificacionRequerida, (request, response) => {
     response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
-        response.render("questions",{user:usr});
+        if (err) {
+            console.error(err);
+        }
+        else {
+            response.render("questions", { user: usr });
+        }
     });
 })
