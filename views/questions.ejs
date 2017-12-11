@@ -28,11 +28,12 @@
         </div>
         <div class="preguntasAleatorias">
             <ul>
-                    <%questions.forEach(question=>{%>
+                <%questions.forEach(question=>{%>
                     <li>
-                        <p>
-                            <%=question.text%>
-                        </p>
+                        <form method="GET" action="/friendProfile">
+                            <input type="hidden" name="question_id" value="<%=question.question_id%>">
+                            <input class="pregunta" type="submit" value="<%=question.text%>">
+                        </form>
                     </li>
                     <% }); %>
             </ul>

@@ -5,7 +5,6 @@ li {
 
 .preguntasAleatorias{
     text-align: left;
-    color: rgb(134, 48, 78);
     background-color: rgb(236, 207, 154);
     margin: auto;
     font-family: sans-serif;
@@ -16,7 +15,17 @@ li {
     width: 50%;
 }
 
+.pregunta {
+    color: rgb(233, 58, 201);
+    border: none;
+    background: none;
+    font-family: sans-serif;
+    font-size: 20px;
+}
 
+.pregunta:hover {
+    color:rgb(177, 2, 136);
+}
 
 .nuevaPregunta{
 
