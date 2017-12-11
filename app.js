@@ -51,7 +51,7 @@ app.use(expressValidator({
     customValidators: {
         //comprobamos que param no es solo espacios en blanco
         whiteSpace: function (param) {
-            return /\S/.test(param);
+            return param.trim().length > 0;
         }
     }
 }));

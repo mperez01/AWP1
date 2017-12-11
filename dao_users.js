@@ -58,7 +58,7 @@ class DAOUsers {
                     let obj = { user_id:usr[0].user_id, email: usr[0].email, password: usr[0].password, name: usr[0].name, 
                         gender: usr[0].gender, dateOfBirth: date, points: usr[0].points, image: usr[0].image, age: edad};
                     callback(null, obj);
-                }
+                } 
             });
         })
     }

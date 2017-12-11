@@ -30,7 +30,7 @@
             <ul>
                 <%questions.forEach(question=>{%>
                     <li>
-                        <form method="GET" action="/friendProfile">
+                        <form method="GET" action="">
                             <input type="hidden" name="question_id" value="<%=question.question_id%>">
                             <input class="pregunta" type="submit" value="<%=question.text%>">
                         </form>
