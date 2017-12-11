@@ -22,7 +22,46 @@ class DAOQuestions {
                     else {
                         callback(err, questions);
                     }
-                })      
+                })
+        })
+    }
+
+    getParticularQuestion(question_id, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) {
+                callback(err, undefined); return;
+            }
+            connection.query("SELECT * FROM questions where id=?", [question_id],
+                function (err, quest) {
+                    connection.release();
+                    if (err) { callback(err, undefined); return; }
+                    else {
+                        callback(err, quest[0]);
+                    }
+                })
+        })
+    }
+
+    isAnsweredByUser(user_id, question_id, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) {
+                callback(err, undefined); return;
+            }
+            else {
+                connection.query("SELECT * FROM user_answer JOIN answer " +
+                    "WHERE user_answer.id_user=? and answer.id = user_answer.id_answer and id_question=?",
+                    [user_id, question_id],
+                    function (err, answ) {
+                        connection.release();
+                        if (err) { callback(err, undefined); return; }
+                        if (answ.length === 0) {
+                            callback(null, false);
+                        }
+                        else {
+                            callback(err, true);
+                        }
+                    })
+            }
         })
     }
 
@@ -52,16 +91,16 @@ class DAOQuestions {
                 " VALUES (?, ?)", [userId, question],
                 function (err, questions) {
                     if (err) { callback(err); return; }
-                        answers.forEach(a => {
-                            connection.query("INSERT INTO answer (id_question, text)" +
-                                " VALUES (?, ?)", [questions.insertId, a],
-                                function (err, resultado) {
-                                    if (err) { callback(err); return; }
-                                })
-                        })
+                    answers.forEach(a => {
+                        connection.query("INSERT INTO answer (id_question, text)" +
+                            " VALUES (?, ?)", [questions.insertId, a],
+                            function (err, resultado) {
+                                if (err) { callback(err); return; }
+                            })
+                    })
                 })
-                callback();
-                connection.release();
+            callback();
+            connection.release();
         })
     }
 }

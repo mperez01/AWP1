@@ -492,7 +492,7 @@ app.get("/addQuestion", identificacionRequerida, (request, response) => {
                     console.error(err);
                 }
                 else {
-                    response.render("addQuestions", { user: usr });
+                    response.render("add_questions", { user: usr });
                 }
             })
         }
@@ -561,4 +561,27 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
             });
         }
     })
+})
+
+app.get("/quest_menu", identificacionRequerida, (request, response) => {
+
+    response.status(200);
+    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+        if (err) {
+            console.error(err);
+        } else {
+            daoQ.getParticularQuestion(request.query.question_id, (err, qst) => {
+                if (err) { console.error(err); }
+                else {
+                    daoQ.isAnsweredByUser(request.session.currentUserId, request.query.question_id, (err, ans) => {
+                        if (err) { console.error(err); }
+                        else {
+                            response.render("quest_menu", { user: usr, quest: qst, answered: ans });
+                        }
+                    })
+                }
+            })
+        }
+    });
+
 })

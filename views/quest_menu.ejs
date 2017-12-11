@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title> Pregunta - Facebluff </title>
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <link rel="stylesheet" href="css/styleQuestions.css" media="screen">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div class="top">
+        <img id="LogoImg" src="img/Logo.png" alt="logo">
+        <div class="botonesArriba">
+            <a href="/my_profile">Perfil</a>
+            <a href="/friends">Amigos</a>
+            <a href="/questions">Preguntas</a>
+            <a href="/logout">Desconectar</a>
+            <label>
+                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
+                <%= user.points %>
+            </label>
+        </div>
+    </div>
+
+    <div class="login">
+        <p>
+            <%=quest.text%>
+        </p>
+        <% if (!answered) { %>
+            <div>
+                <p class="mensaje">No has contestado a esta pregunta.</p>
+                <input class="boton" type="submit" value="Contestar pregunta">
+            </div>
+            <% } else { %>
+                <div>
+                    <p class="mensaje">Ya has contestado a esta pregunta.</p>
+                </div>
+                <% } %>
+    </div>
+</body>
+
+</html>

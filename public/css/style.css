@@ -103,6 +103,11 @@ div.login > p, div.perfil > p, div.solicitudes > div > p {
     margin-top: 6%;
 }
 
+.mensaje {
+    font-family: sans-serif;
+    text-align: center;
+}
+
 .error {
     font-family: sans-serif;
     text-align: center;
