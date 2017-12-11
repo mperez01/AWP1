@@ -22,7 +22,7 @@ class DAOQuestions {
                     else {
                         callback(err, questions);
                     }
-                })
+                })      
         })
     }
 

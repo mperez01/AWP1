@@ -96,7 +96,12 @@ app.listen(3000, (err) => {
 });
 
 app.get("/login.html", (request, response) => {
-    response.render("login", { errores: [], usuario: {} });
+    //Si el usuario esta logeado ya en el sistema, impedimos que vaya a la vista login
+    if (request.session.currentUserId === undefined) {
+        response.render("login", { errores: [], usuario: {} });
+    } else {
+        response.redirect("/my_profile");
+    }
 });
 
 app.post("/login", (request, response) => {
@@ -299,9 +304,8 @@ app.get("/friends", identificacionRequerida, (request, response) => {
             console.error(err);
         } else {
             daoF.getFriendList(request.session.currentUserId, (err, frd) => {
-                if (err) {
-                    console.error(err);
-                } else {
+                if (err) { console.error(err); }
+                else {
                     response.render("friends", {
                         user: usr, friends: frd, id: request.session.currentUserId,
                         errores: [], usuario: {}
@@ -315,9 +319,7 @@ app.get("/friends", identificacionRequerida, (request, response) => {
 app.post("/discardFriend", identificacionRequerida, (request, response) => {
 
     daoF.discardFriend(request.body.friendId, request.session.currentUserId, (err => {
-        if (err) {
-            console.error(err);
-        }
+        if (err) { console.error(err); }
         else {
             response.setFlash("Petición rechazada");
             response.redirect("/friends");
@@ -327,11 +329,9 @@ app.post("/discardFriend", identificacionRequerida, (request, response) => {
 
 app.post("/addFriend", identificacionRequerida, (request, response) => {
     daoF.addFriend(request.body.id, request.session.currentUserId, (err => {
-        if (err) {
-            console.error(err);
-        }
+        if (err) { console.error(err); }
         else {
-            console.log("Peticion aceptada")
+            response.setFlash("Petición aceptada");
             response.redirect("/friends");
         }
     })
@@ -389,7 +389,6 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
                     } else {
                         //Mensaje flash aqui
                         response.setFlash(`Ningún resultado para: ${request.query.nombre} `);
-                        console.log("Nada encontrado")
                         response.redirect("/friends");
                     }
                 }
@@ -426,7 +425,6 @@ app.post("/sendFriendRequest", identificacionRequerida, (request, response) => {
             console.error(err);
         }
         else {
-            //Mensaje flash (peticion enviada)
             response.setFlash("Petición enviada");
             response.redirect("/friends");
         }
@@ -459,7 +457,6 @@ app.post("/deleteFriend", identificacionRequerida, (request, response) => {
             console.error(err);
         }
         else {
-            console.log("Amigo eliminado")
             response.setFlash("Amigo eliminado");
             response.redirect("/friends");
         }
@@ -505,31 +502,63 @@ app.get("/addQuestion", identificacionRequerida, (request, response) => {
 app.post("/addQuestion", identificacionRequerida, (request, response) => {
     response.status(200);
 
-    // VALIDACIÓN!!!
-
     let allAnswers = request.body.answers;
-    var answer = allAnswers.split("\n");
-    
-    daoQ.addQuestion(request.session.currentUserId, request.body.question, answer, (err) => {
-        if (err) {
-            console.error(err);
-        } else {
-            console.log("BIEN AQUI ENTONCES, despues de insertar")
+    let answer = allAnswers.split("\n");
+
+    // VALIDACIÓN!!!
+    request.checkBody("question", "La pregunta está vacía").notEmpty();
+    request.checkBody("answers", "Respuestas está vacío").notEmpty();
+    request.checkBody("question", "La pregunta no puede ser espacio en blanco").whiteSpace();
+    request.checkBody("answers", "Las respuestas no pueden ser espacio en blanco").whiteSpace();
+    request.getValidationResult().then((result) => {
+        if (result.isEmpty()) {
+            daoQ.addQuestion(request.session.currentUserId, request.body.question, answer, (err) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            daoQ.getQuestions((err, qst) => {
+                                if (err) { console.error(err); }
+                                else {
+                                    console.log("Estamos aquí??");
+                                    response.redirect("/questions");
+                                    console.log("Estamos aquí de nuevo????");
+                                }
+                            })
+                        }
+                    });
+                }
+            })
+        }
+        else {
+            var addQuestIncorrecto = {
+                question: request.body.question,
+                answers: request.body.answers
+            };
             daoU.getUserData(request.session.currentUserId, (err, usr) => {
                 if (err) {
                     console.error(err);
                 } else {
-                    console.log("BIEN AQUI ENTONCES, despues de buscar datos de usuario")
-                    daoQ.getQuestions((err, qst) => {
+                    daoU.getUserData(request.session.currentUserId, (err, usr) => {
                         if (err) {
                             console.error(err);
+                        } else {
+                            daoQ.getQuestions((err, qst) => {
+                                if (err) { console.error(err); }
+                                else {
+                                    response.render("questions", {
+                                        user: usr, questions: qst,
+                                        errores: result.mapped(), usuario: addQuestIncorrecto
+                                    });
+                                }
+                            })
                         }
-                        else {
-                            response.render("questions", { user: usr, questions: qst });
-                        }
-                    })
+                    });
                 }
             });
         }
-    }) 
+    })
 })

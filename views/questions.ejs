@@ -32,14 +32,14 @@
                     <li>
                         <form>
                             <input type="hidden" name="question_id" value="<%=question.question_id%>">
-                            <input class="pregunta" type="" value="<%=question.text%>">
+                            <input class="pregunta" type="submit" value="<%=question.text%>">
                         </form>
                     </li>
                     <% }); %>
             </ul>
         </div>
         <div class="nuevaPregunta">
-            <p>¡¡Añade tus preguntas!!</p>
+            <p>¡Añade tus preguntas!</p>
             <div>
                 <form method="GET" action="/addQuestion">
                     <input class="boton" type="submit" value="Crear nueva pregunta">
