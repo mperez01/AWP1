@@ -82,13 +82,13 @@ class DAOQuestions {
         })
     }
 
-    addQuestion(userId, question, answers, callback) {
+    addQuestion(userId, question, answers, num, callback) {
         this.pool.getConnection((err, connection) => {
             connection.release();
             if (err) { callback(err); return; }
             //¿como introducimos las opciones?
-            connection.query("INSERT INTO questions (user_id, text)" +
-                " VALUES (?, ?)", [userId, question],
+            connection.query("INSERT INTO questions (user_id, text,num_answ)" +
+                " VALUES (?, ?, ?)", [userId, question, num],
                 function (err, questions) {
                     if (err) { callback(err); return; }
                     answers.forEach(a => {

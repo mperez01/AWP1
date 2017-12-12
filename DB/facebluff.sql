@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 12-12-2017 a las 11:33:37
+-- Tiempo de generación: 12-12-2017 a las 21:13:10
 -- Versión del servidor: 10.1.28-MariaDB
 -- Versión de PHP: 7.1.11
 
@@ -39,7 +39,10 @@ CREATE TABLE `answer` (
 --
 
 INSERT INTO `answer` (`id`, `id_question`, `text`) VALUES
-(1, 1, 'respuesta 1');
+(55, 15, '1\r'),
+(56, 15, '2\r'),
+(57, 15, '3\r'),
+(58, 15, '4');
 
 -- --------------------------------------------------------
 
@@ -50,15 +53,16 @@ INSERT INTO `answer` (`id`, `id_question`, `text`) VALUES
 CREATE TABLE `questions` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED DEFAULT NULL,
-  `text` text NOT NULL
+  `text` text NOT NULL,
+  `num_answ` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `questions`
 --
 
-INSERT INTO `questions` (`id`, `user_id`, `text`) VALUES
-(1, NULL, '¿Es la primera pregunta?');
+INSERT INTO `questions` (`id`, `user_id`, `text`, `num_answ`) VALUES
+(15, 24, 'Pregunta', 4);
 
 -- --------------------------------------------------------
 
@@ -78,8 +82,8 @@ CREATE TABLE `relationship` (
 --
 
 INSERT INTO `relationship` (`user_one_id`, `user_two_id`, `status`, `action_user_id`) VALUES
-(1, 23, 1, 23),
-(1, 19, 1, 1);
+(1, 19, 1, 1),
+(1, 24, 0, 24);
 
 -- --------------------------------------------------------
 
@@ -98,7 +102,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('JLQT2Bp18XmkUb_rlOdrXQAvSfEHBUdj', 1513119502, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUserId\":19,\"currentUserEmail\":\"mario@ucm.es\",\"userImg\":\"Capt Spaulding-01.png\"}');
+('JnT0dxBn7EeS2ZQqbXDLGpNIeFobbr77', 1513195966, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUserId\":24,\"userImg\":\"aa5b2da5c7ae5d70dd03837d0ee7cd46\"}'),
+('Sq1brhkPujkXEcs0Am9HhnxV3pO4HTTP', 1513174661, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUserId\":19,\"currentUserEmail\":\"mario@ucm.es\",\"userImg\":\"d7ec16cf43d6cb10e32bf673c29a2ad4\"}');
 
 -- --------------------------------------------------------
 
@@ -122,9 +127,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `email`, `password`, `name`, `gender`, `dateOfBirth`, `image`, `points`) VALUES
-(1, 'marce93p@gmail.com', '1234', 'Marcelino Pérez', 'male', '1993-06-30', 'a1bcf25e23c17bc02a50c5ff9c02f80a', 0),
+(1, 'marce93p@gmail.com', '1234', 'Marcelino Pérez', 'male', '1993-06-30', '35b63474abbd3a896e5acce19ccf83e0', 0),
 (19, 'mario@ucm.es', 'pass', 'Mario Rodríguez Salinero', 'male', '1994-01-14', 'Capt Spaulding-01.png', 0),
-(23, 'marzia@astolfi.com', '1234', 'Marzia Astolfi', 'female', '1994-06-04', 'd7ec16cf43d6cb10e32bf673c29a2ad4', 0);
+(23, 'marzia@astolfi.com', '1234', 'Marzia Astolfi', 'female', '1994-06-04', 'd7ec16cf43d6cb10e32bf673c29a2ad4', 0),
+(24, 'jorge@gmail.com', '1234', 'Jose Luis', 'male', '2017-12-12', 'aa5b2da5c7ae5d70dd03837d0ee7cd46', 0);
 
 -- --------------------------------------------------------
 
@@ -136,13 +142,6 @@ CREATE TABLE `user_answer` (
   `id_answer` int(10) UNSIGNED NOT NULL,
   `id_user` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `user_answer`
---
-
-INSERT INTO `user_answer` (`id_answer`, `id_user`) VALUES
-(1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -199,19 +198,19 @@ ALTER TABLE `user_answer`
 -- AUTO_INCREMENT de la tabla `answer`
 --
 ALTER TABLE `answer`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT de la tabla `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Restricciones para tablas volcadas
