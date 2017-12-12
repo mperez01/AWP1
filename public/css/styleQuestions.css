@@ -32,6 +32,17 @@ li {
     text-align: center;
 }
 
-.nuevaPregunta{
+li.anadir{
+    margin: auto;
+    margin-top: 0.5%;
+    width: 50%;
+    background-color: rgb(138, 228, 138);
+    border-radius: 20px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-color: darkgreen;
+}
 
+.inputAnswer{
+    width:89%;
 }

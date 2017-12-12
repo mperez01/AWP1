@@ -26,18 +26,28 @@
         <div>
             <p><%=answers[0].questName%></p>
         </div>
-        <%answers.forEach(ans=>{%>
-            <div class="preguntasAleatorias">
-                <ul>
-                    <li>
-                        <form method="POST" action="">
+        <form method="POST" action="">
+            <ul>
+                <div >
+                    
+                    <%answers.forEach(ans=>{%>
+                        <li class="preguntasAleatorias">
                             <input type="hidden" name="question_id" value="<%=ans.ansId%>">
-                            <input class="pregunta" type="submit" value="<%=ans.ansText%>">
-                        </form>
-                    </li>
-                </ul>
-            </div>
-            <% }); %>
+                            <input class="pregunta" name="answerRadio" type="radio" value="<%=ans.ansText%>"><%=ans.ansText%>
+                        </li>
+                    <% }); %>
+                    <div>
+                        <li class="anadir">
+                            <input class="pregunta" name="answerRadio" type="radio">Otra: 
+                            <input name="taskText" type="text" class="inputAnswer">
+                        </li>
+                    </div>
+                        
+                </div>  
+            </ul>
+            <input class="boton" type="submit" value="Responder">
+        </form>    
+            
     </div>
 </body>
 
