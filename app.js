@@ -474,6 +474,7 @@ app.get("/questions", identificacionRequerida, (request, response) => {
                     console.error(err);
                 }
                 else {
+                    //Maximo de preguntas a mostrar
                     response.render("questions", { user: usr, questions: qst });
                 }
             })
@@ -487,14 +488,7 @@ app.get("/addQuestion", identificacionRequerida, (request, response) => {
         if (err) {
             console.error(err);
         } else {
-            daoQ.getQuestions((err, qst) => {
-                if (err) {
-                    console.error(err);
-                }
-                else {
-                    response.render("add_questions", { user: usr });
-                }
-            })
+            response.render("add_questions", { user: usr });
         }
     });
 })
@@ -520,12 +514,10 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
                         if (err) {
                             console.error(err);
                         } else {
-                            daoQ.getQuestions((err, qst) => {
-                                if (err) { console.error(err); }
-                                else {
-                                    response.redirect("/questions");
-                                }
-                            })
+                            if (err) { console.error(err); }
+                            else {
+                                response.redirect("/questions");
+                            }
                         }
                     });
                 }
@@ -604,41 +596,37 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
 app.post("/ans_question", identificacionRequerida, (request, response) => {
 
     let answerId = -1;
-    console.log("answerId despues de añadir = "+ answerId)
+    console.log("answerId despues de añadir = " + answerId)
 
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
-        if (err) {console.error(err);
+        if (err) {
+            console.error(err);
         } else {
-            daoQ.getQuestions((err, qst) => {
-                if (err) {console.error(err);}
-                else {
-                    //BUSCAR MANERA DE NO TENER ESTE IF ELSE
-                    /** Para así no tener que llamar dos veces a addUserAnswer
-                     * aunqeu funciona bien
-                     */
-                    if (request.body.ansText !== '') {
-                        daoQ.addAnswer(request.body.questionId, request.body.ansText, (err, answerId) => {
+            //BUSCAR MANERA DE NO TENER ESTE IF ELSE
+            /** Para así no tener que llamar dos veces a addUserAnswer
+             * aunqeu funciona bien
+             */
+            if (request.body.ansText !== '') {
+                daoQ.addAnswer(request.body.questionId, request.body.ansText, (err, answerId) => {
+                    if (err) { console.error(err); }
+                    else {
+                        daoQ.addUserAnswer(answerId, request.session.currentUserId, (err) => {
                             if (err) { console.error(err); }
                             else {
-                                daoQ.addUserAnswer(answerId, request.session.currentUserId, (err) => {
-                                    if (err) {console.error(err);}
-                                    else{
-                                        response.redirect("/questions");
-                                    }
-                                })
-                            }
-                        })
-                    }
-                    else {
-                        daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
-                            if (err) {console.error(err);}
-                            else{
                                 response.redirect("/questions");
                             }
                         })
                     }
-                }
-            })
+                })
+            }
+            else {
+                daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
+                    if (err) { console.error(err); }
+                    else {
+                        response.redirect("/questions");
+                    }
+                })
+            }
         }
     });
 

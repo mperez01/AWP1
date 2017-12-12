@@ -15,7 +15,7 @@ class DAOQuestions {
                 callback(err, undefined);
                 return;
             }
-            connection.query("SELECT * FROM questions",
+            connection.query("SELECT * FROM questions ORDER BY RAND() LIMIT 5",
                 function (err, questions) {
                     connection.release();
                     if (err) { callback(err, undefined); return; }

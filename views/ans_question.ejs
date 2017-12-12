@@ -34,7 +34,7 @@
                         <input name="questionId" type="hidden" value="<%=answers[0].questId%>">
                     <%answers.forEach(ans=>{%>
                         <li class="preguntasAleatorias">
-                            <input class="pregunta" name="ansId" type="radio" value="<%=ans.ansId%>">
+                            <input name="ansId" type="hidden" value="<%=ans.ansId%>">
                             <input class="pregunta" name="answerRadio" type="radio">
                             <%=ans.ansText%>
                         </li>
