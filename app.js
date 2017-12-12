@@ -499,7 +499,7 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
     let allAnswers = request.body.answers;
     let answer = allAnswers.split("\n");
     let num = answer.length;
-    console.log("Numero de preguntas" + num);
+    
     // VALIDACIÓN!!!
     request.checkBody("question", "La pregunta está vacía").notEmpty();
     request.checkBody("answers", "Respuestas está vacío").notEmpty();
