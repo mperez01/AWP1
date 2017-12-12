@@ -536,16 +536,10 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
                     daoU.getUserData(request.session.currentUserId, (err, usr) => {
                         if (err) {
                             console.error(err);
-                        } else {
-                            daoQ.getQuestions((err, qst) => {
-                                if (err) { console.error(err); }
-                                else {
-                                    response.render("questions", {
-                                        user: usr, questions: qst,
-                                        errores: result.mapped(), usuario: addQuestIncorrecto
-                                    });
-                                }
-                            })
+                        }
+                        else {
+                            response.render("add_questions", {user: usr,errores: result.mapped(), usuario: addQuestIncorrecto
+                            });
                         }
                     });
                 }
