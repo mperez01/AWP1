@@ -596,7 +596,6 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
 app.post("/ans_question", identificacionRequerida, (request, response) => {
 
     let answerId = -1;
-    console.log("answerId despues de añadir = " + answerId)
 
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
@@ -620,6 +619,7 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                 })
             }
             else {
+                console.log("ANS ID ES = " + request.body.ansId);
                 daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
                     if (err) { console.error(err); }
                     else {

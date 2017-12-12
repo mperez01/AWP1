@@ -31,11 +31,10 @@
         <form method="POST" action="/ans_question">
             <ul>
                 <div>
-                        <input name="questionId" type="hidden" value="<%=answers[0].questId%>">
+                    <input name="questionId" type="hidden" value="<%=answers[0].questId%>">
                     <%answers.forEach(ans=>{%>
                         <li class="preguntasAleatorias">
-                            <input name="ansId" type="hidden" value="<%=ans.ansId%>">
-                            <input class="pregunta" name="answerRadio" type="radio">
+                            <input class="pregunta" name="ansId" type="radio" value='<%=ans.ansId%>'>
                             <%=ans.ansText%>
                         </li>
                         <% }); %>
