@@ -108,12 +108,39 @@ class DAOQuestions {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
             connection.query("SELECT questions.id as questId, answer.id as ansId, answer.text as ansText, questions.text as questName " +
-            "FROM `questions` JOIN answer WHERE questions.id = answer.id_question AND questions.id=?", 
-            [questionId],
+                "FROM `questions` JOIN answer WHERE questions.id = answer.id_question AND questions.id=?",
+                [questionId],
                 function (err, anwers) {
                     connection.release();
                     if (err) { callback(err); return; }
-                    callback(err,anwers);
+                    callback(err, anwers);
+                })
+        })
+    }
+
+    addAnswer(questionsId, answerText, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            connection.query("INSERT INTO answer (id_question, text)" +
+                " VALUES (?, ?)", [questionsId, answerText],
+                function (err, answer) {
+                    if (err) { callback(err); return; }
+                    console.log("AÑADIDO");
+                    console.log("AÑADIDO con ID = " + answer.insertId);
+                    callback(null, answer.insertId);
+                    connection.release();
+                })
+        })
+    }
+
+    addUserAnswer(id_answer, id_user, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            connection.query("INSERT INTO user_answer (id_answer, id_user)" +
+                " VALUES (?, ?)", [id_answer, id_user],
+                (err) => {
+                    connection.release();
+                    callback(err);
                 })
         })
     }

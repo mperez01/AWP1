@@ -24,32 +24,34 @@
     </div>
     <div class="solicitudes">
         <div>
-            <p><%=answers[0].questName%></p>
+            <p>
+                <%=answers[0].questName%>
+            </p>
         </div>
-        <form method="POST" action="">
+        <form method="POST" action="/ans_question">
             <ul>
-                <div >
-                    
+                <div>
+                        <input name="questionId" type="hidden" value="<%=answers[0].questId%>">
                     <%answers.forEach(ans=>{%>
                         <li class="preguntasAleatorias">
-                            <input type="hidden" name="question_id" value="<%=ans.ansId%>">
-                            <input class="pregunta" name="answerRadio" type="radio" value="<%=ans.ansText%>"> <%=ans.ansText%>
+                            <input class="pregunta" name="ansId" type="radio" value="<%=ans.ansId%>">
+                            <input class="pregunta" name="answerRadio" type="radio">
+                            <%=ans.ansText%>
                         </li>
-                    <% }); %>
-                    <div>
-                        <li class="preguntasAleatorias">
-                            <div class=anadir>
-                            <input class="pregunta" name="answerRadio" type="radio"> Otra: 
-                            <input name="taskText" type="text" class="rellenar">
-                        </div>
-                        </li>
-                    </div>
-                        
-                </div>  
+                        <% }); %>
+                            <div>
+                                <li class="preguntasAleatorias">
+                                    <div class=anadir>
+                                        <input class="pregunta" name="answerRadio" type="radio"> Otra:
+                                        <input name="ansText" type="text" class="rellenar">
+                                    </div>
+                                </li>
+                            </div>
+                </div>
             </ul>
             <input class="boton" type="submit" value="Responder">
-        </form>    
-            
+        </form>
+
     </div>
 </body>
 

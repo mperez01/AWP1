@@ -591,7 +591,6 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
         if (err) {
             console.error(err);
         } else {
-            console.log("quest.id = " + request.query.question_id);
             daoQ.getAnswers(request.query.question_id, (err, ans) => {
                 if (err) { console.error(err); }
                 else {
@@ -600,4 +599,47 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
             })
         }
     });
+})
+
+app.post("/ans_question", identificacionRequerida, (request, response) => {
+
+    let answerId = -1;
+    console.log("answerId despues de añadir = "+ answerId)
+
+    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+        if (err) {console.error(err);
+        } else {
+            daoQ.getQuestions((err, qst) => {
+                if (err) {console.error(err);}
+                else {
+                    //BUSCAR MANERA DE NO TENER ESTE IF ELSE
+                    /** Para así no tener que llamar dos veces a addUserAnswer
+                     * aunqeu funciona bien
+                     */
+                    if (request.body.ansText !== '') {
+                        daoQ.addAnswer(request.body.questionId, request.body.ansText, (err, answerId) => {
+                            if (err) { console.error(err); }
+                            else {
+                                daoQ.addUserAnswer(answerId, request.session.currentUserId, (err) => {
+                                    if (err) {console.error(err);}
+                                    else{
+                                        response.redirect("/questions");
+                                    }
+                                })
+                            }
+                        })
+                    }
+                    else {
+                        daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
+                            if (err) {console.error(err);}
+                            else{
+                                response.redirect("/questions");
+                            }
+                        })
+                    }
+                }
+            })
+        }
+    });
+
 })
