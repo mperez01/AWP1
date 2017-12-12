@@ -583,3 +583,24 @@ app.get("/quest_menu", identificacionRequerida, (request, response) => {
     });
 
 })
+
+app.get("/ans_question", identificacionRequerida, (request, response) => {
+
+    response.status(200);
+    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+        if (err) {
+            console.error(err);
+        } else {
+            daoQ.getAnswers(request.query.question_id, (err, ans) => {
+                if (err) { console.error(err); }
+                else {
+                    console.log("answers[0].questions.text = " + ans[0].questions.text);
+                    console.log("LLEGAMOS A GETANSWERS")
+                    console.log("quest = " + qst);
+                    console.log("quest.id = " + request.query.question_id);
+                    response.render("ans_question", { user: usr, answers: ans });
+                }
+            })
+        }
+    });
+})

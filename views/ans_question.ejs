@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title> Preguntas - FaceBluff </title>
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <link rel="stylesheet" href="css/styleQuestions.css" media="screen">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div class="top">
+        <img id="LogoImg" src="img/Logo.png" alt="logo">
+        <div class="botonesArriba">
+            <a href="/my_profile">Perfil</a>
+            <a href="/friends">Amigos</a>
+            <a href="/questions">Preguntas</a>
+            <a href="/logout">Desconectar</a>
+            <label>
+                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
+                <%= user.points %>
+            </label>
+        </div>
+    </div>
+    <div class="solicitudes">
+        <div>
+            <p><%=answers[0].questions.text%></p>
+        </div>
+        <%answers.forEach(ans=>{%>
+            <div class="preguntasAleatorias">
+                <ul>
+                    <li>
+                        <form method="POST" action="">
+                            <input type="hidden" name="question_id" value="<%=ans.id%>">
+                            <input class="pregunta" type="submit" value="<%=ans.text%>">
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <% }); %>
+    </div>
+</body>
+
+</html>

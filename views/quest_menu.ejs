@@ -30,7 +30,9 @@
         <% if (!answered) { %>
             <div>
                 <p class="mensaje">No has contestado a esta pregunta.</p>
+                <form method="GET" action="/ans_question">
                 <input class="boton" type="submit" value="Contestar pregunta">
+                </form>
             </div>
             <% } else { %>
                 <div>

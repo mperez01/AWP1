@@ -103,6 +103,21 @@ class DAOQuestions {
             connection.release();
         })
     }
+
+    getAnswers(questionId, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            connection.query("SELECT * " +
+            "FROM `questions` JOIN answer WHERE questions.id = answer.id_question AND questions.id=?", 
+            [questionId],
+                function (err, anwers) {
+                    connection.release();
+                    if (err) { callback(err); return; }
+                    console.log("Question  = " + anwers[0]);
+                    callback(err,anwers);
+                })
+        })
+    }
 }
 module.exports = {
     DAOQuestions: DAOQuestions
