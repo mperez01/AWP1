@@ -33,13 +33,15 @@
                     <%answers.forEach(ans=>{%>
                         <li class="preguntasAleatorias">
                             <input type="hidden" name="question_id" value="<%=ans.ansId%>">
-                            <input class="pregunta" name="answerRadio" type="radio" value="<%=ans.ansText%>"><%=ans.ansText%>
+                            <input class="pregunta" name="answerRadio" type="radio" value="<%=ans.ansText%>"> <%=ans.ansText%>
                         </li>
                     <% }); %>
                     <div>
-                        <li class="anadir">
-                            <input class="pregunta" name="answerRadio" type="radio">Otra: 
-                            <input name="taskText" type="text" class="inputAnswer">
+                        <li class="preguntasAleatorias">
+                            <div class=anadir>
+                            <input class="pregunta" name="answerRadio" type="radio"> Otra: 
+                            <input name="taskText" type="text" class="rellenar">
+                        </div>
                         </li>
                     </div>
                         

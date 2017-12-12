@@ -3,19 +3,6 @@ li {
 
 }
 
-.preguntasAleatorias{
-    text-align: left;
-    background-color: rgb(236, 207, 154);
-    margin: auto;
-    font-family: sans-serif;
-    border-radius: 20px;
-    box-sizing: border-box;
-    border: 1px solid black;
-    font-size: 20px;
-    width: 50%;
-    margin-top: 0.5%;
-}
-
 .pregunta {
     color: rgb(233, 58, 201);
     border: none;
@@ -32,17 +19,23 @@ li {
     text-align: center;
 }
 
-li.anadir{
+.preguntasAleatorias{
+    text-align: left;
     margin: auto;
-    margin-top: 0.5%;
-    width: 50%;
-    background-color: rgb(138, 228, 138);
+    font-family: sans-serif;
     border-radius: 20px;
     box-sizing: border-box;
     border: 1px solid black;
-    border-color: darkgreen;
+    font-size: 20px;
+    width: 50%;
+    margin-top: 0.5%;
+    background-color: rgb(236, 207, 154);
 }
 
-.inputAnswer{
-    width:89%;
+.anadir{
+    border-radius: 20px;
+    box-sizing: border-box;
+    height: 30px;
+    padding-right: 10px;
+    background-color: rgb(138, 228, 138);
 }
