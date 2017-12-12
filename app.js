@@ -523,9 +523,7 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
                             daoQ.getQuestions((err, qst) => {
                                 if (err) { console.error(err); }
                                 else {
-                                    console.log("Estamos aquí??");
                                     response.redirect("/questions");
-                                    console.log("Estamos aquí de nuevo????");
                                 }
                             })
                         }

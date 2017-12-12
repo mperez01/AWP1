@@ -8,11 +8,12 @@ li {
     background-color: rgb(236, 207, 154);
     margin: auto;
     font-family: sans-serif;
-    border-radius: 10px;
+    border-radius: 20px;
     box-sizing: border-box;
     border: 1px solid black;
     font-size: 20px;
     width: 50%;
+    margin-top: 0.5%;
 }
 
 .pregunta {
@@ -25,6 +26,10 @@ li {
 
 .pregunta:hover {
     color:rgb(177, 2, 136);
+}
+
+.mensaje {
+    text-align: center;
 }
 
 .nuevaPregunta{

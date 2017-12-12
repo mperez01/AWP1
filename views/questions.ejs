@@ -26,26 +26,26 @@
         <div>
             <p>Preguntas seleccionadas aleatoriamente</p>
         </div>
-        <div class="preguntasAleatorias">
-            <ul>
-                <%questions.forEach(question=>{%>
+        <%questions.forEach(question=>{%>
+            <div class="preguntasAleatorias">
+                <ul>
                     <li>
                         <form method="GET" action="/quest_menu">
                             <input type="hidden" name="question_id" value="<%=question.id%>">
                             <input class="pregunta" type="submit" value="<%=question.text%>">
                         </form>
                     </li>
-                    <% }); %>
-            </ul>
-        </div>
-        <div class="nuevaPregunta">
-            <p>¡Añade tus preguntas!</p>
-            <div>
-                <form method="GET" action="/addQuestion">
-                    <input class="boton" type="submit" value="Crear nueva pregunta">
-                </form>
+                </ul>
             </div>
-        </div>
+            <% }); %>
+                <div class="nuevaPregunta">
+                    <p>¡Añade tus preguntas!</p>
+                    <div>
+                        <form method="GET" action="/addQuestion">
+                            <input class="boton" type="submit" value="Crear nueva pregunta">
+                        </form>
+                    </div>
+                </div>
     </div>
 </body>
 
