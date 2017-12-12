@@ -24,15 +24,15 @@
     </div>
     <div class="solicitudes">
         <div>
-            <p><%=answers[0].questions.text%></p>
+            <p><%=answers[0].questName%></p>
         </div>
         <%answers.forEach(ans=>{%>
             <div class="preguntasAleatorias">
                 <ul>
                     <li>
                         <form method="POST" action="">
-                            <input type="hidden" name="question_id" value="<%=ans.id%>">
-                            <input class="pregunta" type="submit" value="<%=ans.text%>">
+                            <input type="hidden" name="question_id" value="<%=ans.ansId%>">
+                            <input class="pregunta" type="submit" value="<%=ans.ansText%>">
                         </form>
                     </li>
                 </ul>

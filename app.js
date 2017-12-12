@@ -591,13 +591,10 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
         if (err) {
             console.error(err);
         } else {
+            console.log("quest.id = " + request.query.question_id);
             daoQ.getAnswers(request.query.question_id, (err, ans) => {
                 if (err) { console.error(err); }
                 else {
-                    console.log("answers[0].questions.text = " + ans[0].questions.text);
-                    console.log("LLEGAMOS A GETANSWERS")
-                    console.log("quest = " + qst);
-                    console.log("quest.id = " + request.query.question_id);
                     response.render("ans_question", { user: usr, answers: ans });
                 }
             })

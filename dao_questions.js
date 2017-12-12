@@ -107,13 +107,12 @@ class DAOQuestions {
     getAnswers(questionId, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            connection.query("SELECT * " +
+            connection.query("SELECT questions.id as questId, answer.id as ansId, answer.text as ansText, questions.text as questName " +
             "FROM `questions` JOIN answer WHERE questions.id = answer.id_question AND questions.id=?", 
             [questionId],
                 function (err, anwers) {
                     connection.release();
                     if (err) { callback(err); return; }
-                    console.log("Question  = " + anwers[0]);
                     callback(err,anwers);
                 })
         })
