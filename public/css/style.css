@@ -1,6 +1,7 @@
 body {
     font-family: "GloriaHallelujah";
     margin: 0px;
+    margin-bottom: 1%;
     background-image: url(../img/Fondo.jpg);
      background-repeat: repeat-x;
 }

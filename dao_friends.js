@@ -155,7 +155,7 @@ class DAOFriends {
                 function (err, friend) {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
-                    else {
+                    else if (friend[0] !== undefined) {
                         let edad = null;
                         let date = null;
                         /* Fecha nacimiento */
@@ -177,10 +177,12 @@ class DAOFriends {
                             var year = friend[0].dateOfBirth.getFullYear();
                             date = `${year}-${month}-${day}`;
                         }
-                        let obj = { name: friend[0].name, gender: friend[0].gender, 
+                        let obj = {id: friend[0].user_id, name: friend[0].name, gender: friend[0].gender, 
                             dateOfBirth: date, points: friend[0].points, 
                             image: friend[0].image, age: edad, status: friend[0].status};
                         callback(err, obj);
+                    } else {
+                        callback(err, undefined);
                     }
                 }
             );

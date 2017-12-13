@@ -98,9 +98,9 @@ class DAOQuestions {
                                 if (err) { callback(err); return; }
                             })
                     })
+                    callback();
+                    connection.release();
                 })
-            callback();
-            connection.release();
         })
     }
 

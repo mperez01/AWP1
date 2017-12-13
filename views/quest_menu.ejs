@@ -5,6 +5,7 @@
     <title> Pregunta - Facebluff </title>
     <link rel="stylesheet" href="css/style.css" media="screen">
     <link rel="stylesheet" href="css/styleQuestions.css" media="screen">
+    <link rel="stylesheet" href="css/styleFriends.css" media="screen">
     <meta charset="utf-8" />
 </head>
 
@@ -41,6 +42,46 @@
                 </div>
             <% } %>
         
+    </div>
+    <div class="guessQuest">
+        <% /* if (friends.lenght > 0){  */%>
+            <div>
+                <p class="mensajeGuess">Los siguientes amigos han contestado a esta pregunta:</p>
+            </div>
+            <ul>
+                <% /* friends.forEach(friend => { %>
+                    <li>
+                        <div class="listAmigo">
+                            <div class="userData">
+                                <img class="fotoAmigo" name="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil" value=<%friend.image%> >
+                                <form method="GET" action="/friendProfile">
+                                    <input type="hidden" name="friendId" value="<%=friend.user_id%>">
+                                    <input class="nombre" type="submit" value="<%= friend.name %>">
+                                </form>
+                            </div>
+
+                            <% /* if (No has intentado adivinar) { %>
+                                <form method="GET" action="/ans_guess">
+                                    <input type="hidden" name="friendId" value=<%=friend.user_id %> >
+                                    <input type="hidden" name="question_id" value=<%=quest.id%> >
+                                    <input class="botonAmigo" value="Adivinar" type="submit">
+                                </form>
+                                <% /* } else if (Ya has intentado y fallado) { */%>
+                                    <% /* OJO! NO <P> que es parrafo y salta linea */%> 
+                                    <p class="fallo"> Has fallado</p>
+                                <% /* } else if (ya has intentado y acertado) { */%>
+                                    <p class="acierto"> Has acertado</p>
+                                    <% /* }  */ %>
+                        </div>
+                    </li>
+                    <% /* }); */ %>
+            </ul>
+
+            <% /* } else { */%>
+                <div>
+                    <p class="mensajeGuess">Ningún amigo ha contestado aún.</p>
+                </div>
+                <% /* } */ %>
     </div>
 </body>
 

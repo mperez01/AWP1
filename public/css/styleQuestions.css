@@ -15,10 +15,6 @@ li {
     color:rgb(177, 2, 136);
 }
 
-.mensaje {
-    text-align: center;
-}
-
 .preguntasAleatorias{
     text-align: left;
     margin: auto;
@@ -37,4 +33,31 @@ li {
     box-sizing: border-box;
     padding-right: 10px;
     background-color: rgb(138, 228, 138);
+}
+
+.guessQuest {
+
+}
+
+.fallo {
+    text-align: right;
+    margin-right: 20%;
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.acierto {
+    text-align: right;
+    margin-right: 20%;
+    color: green;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.mensajeGuess {
+    font-family: sans-serif;
+    text-align: left;
+    margin-left: 10%;
+    margin-top: 3%;
 }

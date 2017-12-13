@@ -432,6 +432,7 @@ app.post("/sendFriendRequest", identificacionRequerida, (request, response) => {
 })
 
 app.get("/friendProfile", identificacionRequerida, (request, response) => {
+
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
@@ -441,11 +442,17 @@ app.get("/friendProfile", identificacionRequerida, (request, response) => {
             el estado con el usuario actualmente logeado */
             daoF.getStatusFriend(request.query.friendId, request.session.currentUserId, (err, frd) => {
                 if (err) { console.error(err); }
-                else {
+                /*Para controlar que si el usuario logeado modifica la url, se compruebe
+                * que el usuario id del amigo/persona al que quiere ir existe o no*/
+                if (frd !== undefined) {
                     response.render("friend_profile", {
                         user: usr,
                         friend: frd,
                     });
+                } else {
+                    console.error("Este usuario no existe");
+                    response.setFlash("Este usuario no existe");
+                    response.redirect("/friends");
                 }
             })
         }
@@ -557,13 +564,28 @@ app.get("/quest_menu", identificacionRequerida, (request, response) => {
         } else {
             daoQ.getParticularQuestion(request.query.question_id, (err, qst) => {
                 if (err) { console.error(err); }
-                else {
+                //Comprobamos que no se intente acceer por URL a una pregunta que no exista
+                if (qst !== undefined) {
                     daoQ.isAnsweredByUser(request.session.currentUserId, request.query.question_id, (err, ans) => {
                         if (err) { console.error(err); }
                         else {
+                            /* Comprobar que AMIGOS han contestado
+                            y si usuario ha intentado adivinar, de haberlo intentado si bien o mal
+                            
+                            daoQ.getGuessFriendsQuestion(friendId, userId, questionId, callback)
+                            
+                                Tabla nueva: user_guess  ( o como se quiera )   
+                            Aquí podríamos devolver entonces, user_guess.id_answer (id de la respuesta dada por el usuario)
+                            si user_guess.id_answer es NULL, no contestado
+                            y comprobar si corresponde con user_ans.id_answer del usuario
+                            tambien devolver todo el perfil de amigo, con friendId facil
+
+                            */
                             response.render("quest_menu", { user: usr, quest: qst, answered: ans });
                         }
                     })
+                } else {
+                    response.redirect("/questions");
                 }
             })
         }
@@ -580,9 +602,12 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
         } else {
             daoQ.getAnswers(request.query.question_id, (err, ans) => {
                 if (err) { console.error(err); }
-                else {
+                //Para que no explote si se modifica direccion por URL
+                //OJO ans debe tener al menos una respuesta para que esto funcione
+                if (ans[0] !== undefined)
                     response.render("ans_question", { user: usr, answers: ans });
-                }
+                else
+                    response.redirect("/questions");
             })
         }
     });
@@ -614,7 +639,6 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                 })
             }
             else {
-                console.log("ANS ID ES = " + request.body.ansId);
                 daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
                     if (err) { console.error(err); }
                     else {
