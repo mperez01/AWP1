@@ -3,7 +3,6 @@ body {
     margin: 0px;
     background-image: url(../img/Fondo.jpg);
      background-repeat: repeat-x;
-     padding-bottom: 10px;
 }
 
 @font-face {
@@ -121,3 +120,15 @@ div.login > p, div.perfil > p, div.solicitudes > div > p {
     width: 25px;
     margin-right: 8px;
 }
+footer {
+    font-family: sans-serif;
+    display: block;
+    position: absolute;
+    font-size: 14px;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #f2f4f6;
+    color: #6a7c8f;
+}
+

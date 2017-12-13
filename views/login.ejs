@@ -31,22 +31,31 @@
             </form>
         </div>
         <% let errorMsg = getFlash(); %>
-        <% if (errorMsg) { %>
-            <div class="error">
-                <%= errorMsg %>
-            </div>
-        <% } %>
-        <% if (errores.email) { %>
-            <div class="error">
-                <%= errores.email.msg %>
-            </div>
-        <% } %>
-        <% if (errores.pass) { %>
-            <div class="error">
-                <%= errores.pass.msg %>
-            </div>
-        <% } %>
+            <% if (errorMsg) { %>
+                <div class="error">
+                    <%= errorMsg %>
+                </div>
+                <% } %>
+                    <% if (errores.email) { %>
+                        <div class="error">
+                            <%= errores.email.msg %>
+                        </div>
+                        <% } %>
+                            <% if (errores.pass) { %>
+                                <div class="error">
+                                    <%= errores.pass.msg %>
+                                </div>
+                                <% } %>
     </div>
+    <footer>
+        <div>Marcelino Pérez Durán y Mario Rodríguez Salinero 
+            <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+                <img alt="Licencia de Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+            </a>
+        </div>
+        <div>Este obra está bajo una
+            <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">licencia de Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional</a>.</div>
+    </footer>
 </body>
 
 </html>
