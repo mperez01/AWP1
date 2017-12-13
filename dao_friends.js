@@ -156,7 +156,30 @@ class DAOFriends {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
                     else {
-                        callback(err, friend[0]);
+                        let edad = null;
+                        let date = null;
+                        /* Fecha nacimiento */
+                        if (friend[0].dateOfBirth != null) {
+                            let moment = require ("moment");
+                            let hoy = moment();
+                            var fechaNacimiento = moment(new Date(friend[0].dateOfBirth));
+                            edad = hoy.diff(fechaNacimiento, "years");
+    
+                            var month = friend[0].dateOfBirth.getMonth() + 1; //months from 1-12
+                            var day = friend[0].dateOfBirth.getDate();
+                             
+                            if(day < '10') {
+                                day = `0${day}`;
+                            }
+                            if(month < '10') {
+                                month = `0${month}`;
+                            }
+                            var year = friend[0].dateOfBirth.getFullYear();
+                            date = `${year}-${month}-${day}`;
+                        }
+                        let obj = { name: friend[0].name, gender: friend[0].gender, 
+                            dateOfBirth: date, points: friend[0].points, image: friend[0].image, age: edad};
+                        callback(err, obj);
                     }
                 }
             );

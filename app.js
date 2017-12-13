@@ -454,9 +454,7 @@ app.get("/friendProfile", identificacionRequerida, (request, response) => {
 
 app.post("/deleteFriend", identificacionRequerida, (request, response) => {
     daoF.discardFriend(request.body.friendId, request.session.currentUserId, (err => {
-        if (err) {
-            console.error(err);
-        }
+        if (err) { console.error(err); }
         else {
             response.setFlash("Amigo eliminado");
             response.redirect("/friends");
