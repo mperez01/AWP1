@@ -565,6 +565,7 @@ app.get("/quest_menu", identificacionRequerida, (request, response) => {
                             y si usuario ha intentado adivinar, de haberlo intentado si bien o mal
                             
                             daoQ.getGuessFriendsQuestion(friendId, userId, questionId, callback)
+                            
                                 Tabla nueva: user_guess  ( o como se quiera )   
                             Aquí podríamos devolver entonces, user_guess.id_answer (id de la respuesta dada por el usuario)
                             si user_guess.id_answer es NULL, no contestado
