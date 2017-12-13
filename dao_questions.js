@@ -145,16 +145,19 @@ class DAOQuestions {
         })
     }
 
-    getFriendsAnswer(id_user,callback){
+    getFriendsAnswer(id_user,questionId,callback){
         this.pool.getConnection((err,connection)=>{
             if(err){callback(err);return;}
-            connection.query("SELECT * FROM relationship r, user_answer JOIN answer ON id=id_answer"+ 
-            "WHERE id_user!=? AND ((r.user_one_id=? AND r.user_two_id=id_user) OR (r.user_one_id=id_user AND r.user_two_id=?))",
-            [id_user,id_user,id_user],
-            (err)=>{
+            connection.query("SELECT answer.id AS answerId, user_answer.id_user AS userId FROM relationship r, user_answer JOIN answer ON id=id_answer "+ 
+            "WHERE id_user!=? AND ((r.user_one_id=? AND r.user_two_id=id_user) OR (r.user_one_id=id_user AND r.user_two_id=?)) AND id_question=?",
+            [id_user,id_user,id_user, questionId],
+            function(err,answer){
                 connection.release();
-                callback(err);
-            });
+                if(err){callback(err);return;}
+                else{
+                    callback(null, answer);
+                }
+            })
         })
     }
     userAnswerActions(id_user, callback){
