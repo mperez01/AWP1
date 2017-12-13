@@ -2,10 +2,10 @@
 -- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 12-12-2017 a las 21:13:10
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 13-12-2017 a las 13:06:19
 -- Versión del servidor: 10.1.28-MariaDB
--- Versión de PHP: 7.1.11
+-- Versión de PHP: 7.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -42,7 +42,8 @@ INSERT INTO `answer` (`id`, `id_question`, `text`) VALUES
 (55, 15, '1\r'),
 (56, 15, '2\r'),
 (57, 15, '3\r'),
-(58, 15, '4');
+(58, 15, '4'),
+(59, 15, 'Holi');
 
 -- --------------------------------------------------------
 
@@ -103,7 +104,8 @@ CREATE TABLE `sessions` (
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
 ('JnT0dxBn7EeS2ZQqbXDLGpNIeFobbr77', 1513195966, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUserId\":24,\"userImg\":\"aa5b2da5c7ae5d70dd03837d0ee7cd46\"}'),
-('Sq1brhkPujkXEcs0Am9HhnxV3pO4HTTP', 1513174661, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUserId\":19,\"currentUserEmail\":\"mario@ucm.es\",\"userImg\":\"d7ec16cf43d6cb10e32bf673c29a2ad4\"}');
+('Sq1brhkPujkXEcs0Am9HhnxV3pO4HTTP', 1513174661, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUserId\":19,\"currentUserEmail\":\"mario@ucm.es\",\"userImg\":\"d7ec16cf43d6cb10e32bf673c29a2ad4\"}'),
+('ZHo94bXlUS-t_qRAOEKRnws6Zj5_rmgB', 1513249011, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUserId\":19,\"currentUserEmail\":\"mario@ucm.es\",\"userImg\":\"Capt Spaulding-01.png\"}');
 
 -- --------------------------------------------------------
 
@@ -130,7 +132,8 @@ INSERT INTO `user` (`user_id`, `email`, `password`, `name`, `gender`, `dateOfBir
 (1, 'marce93p@gmail.com', '1234', 'Marcelino Pérez', 'male', '1993-06-30', '35b63474abbd3a896e5acce19ccf83e0', 0),
 (19, 'mario@ucm.es', 'pass', 'Mario Rodríguez Salinero', 'male', '1994-01-14', 'Capt Spaulding-01.png', 0),
 (23, 'marzia@astolfi.com', '1234', 'Marzia Astolfi', 'female', '1994-06-04', 'd7ec16cf43d6cb10e32bf673c29a2ad4', 0),
-(24, 'jorge@gmail.com', '1234', 'Jose Luis', 'male', '2017-12-12', 'aa5b2da5c7ae5d70dd03837d0ee7cd46', 0);
+(24, 'jorge@gmail.com', '1234', 'Jose Luis', 'male', '2017-12-12', 'aa5b2da5c7ae5d70dd03837d0ee7cd46', 0),
+(25, 'sabela@ucm.es', 'pass', 'Sabela García', 'female', '1996-04-18', 'd507c264354c599eff93e421f3013431', 0);
 
 -- --------------------------------------------------------
 
@@ -141,6 +144,26 @@ INSERT INTO `user` (`user_id`, `email`, `password`, `name`, `gender`, `dateOfBir
 CREATE TABLE `user_answer` (
   `id_answer` int(10) UNSIGNED NOT NULL,
   `id_user` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `user_answer`
+--
+
+INSERT INTO `user_answer` (`id_answer`, `id_user`) VALUES
+(55, 25),
+(59, 19);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `user_guess`
+--
+
+CREATE TABLE `user_guess` (
+  `user_id_answer` int(10) UNSIGNED NOT NULL,
+  `user_id_guess` int(10) UNSIGNED NOT NULL,
+  `correct` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -191,6 +214,13 @@ ALTER TABLE `user_answer`
   ADD KEY `id_user` (`id_user`);
 
 --
+-- Indices de la tabla `user_guess`
+--
+ALTER TABLE `user_guess`
+  ADD KEY `user_id_answer` (`user_id_answer`),
+  ADD KEY `user_id_guess` (`user_id_guess`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -198,7 +228,7 @@ ALTER TABLE `user_answer`
 -- AUTO_INCREMENT de la tabla `answer`
 --
 ALTER TABLE `answer`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT de la tabla `questions`
@@ -210,7 +240,7 @@ ALTER TABLE `questions`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Restricciones para tablas volcadas
@@ -242,6 +272,13 @@ ALTER TABLE `relationship`
 ALTER TABLE `user_answer`
   ADD CONSTRAINT `user_answer_ibfk_1` FOREIGN KEY (`id_answer`) REFERENCES `answer` (`id`),
   ADD CONSTRAINT `user_answer_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`user_id`);
+
+--
+-- Filtros para la tabla `user_guess`
+--
+ALTER TABLE `user_guess`
+  ADD CONSTRAINT `user_guess_ibfk_1` FOREIGN KEY (`user_id_answer`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_guess_ibfk_2` FOREIGN KEY (`user_id_guess`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
