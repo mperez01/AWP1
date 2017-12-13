@@ -157,6 +157,17 @@ class DAOQuestions {
             });
         })
     }
+    userAnswerActions(id_user, callback){
+        this.pool.getConnection((err,connection)=>{
+            if(err){callback(err);return;}
+            connection.query("SELECT * FROM user_guess RIGHT JOIN user ON user_id_guess=user_id"+ 
+                "WHERE user_id=?",[id_user],
+            (err)=>{
+                connection.release();
+                callback(err);
+            });
+        })
+    }
 }
 module.exports = {
     DAOQuestions: DAOQuestions

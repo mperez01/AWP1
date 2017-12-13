@@ -569,10 +569,16 @@ app.get("/quest_menu", identificacionRequerida, (request, response) => {
                     daoQ.isAnsweredByUser(request.session.currentUserId, request.query.question_id, (err, ans) => {
                         if(err){console.error(err);}
                         else{
-                            daoQ.getFriendsAnswer(request.session.currentUserId, (err,frd)=>{
+                            daoQ.getFriendsAnswer(request.session.currentUserId,/*Añadir el id_answer*/ (err,frd)=>{
                                 if (err) { console.error(err); }
                                 else {
-                                    response.render("quest_menu", { user: usr, quest: qst, answered: ans, friend: frd});
+                                    daoQ.userAnswerActions(request.session.currentUserId,(err,frd)=>{
+                                        if (err) { console.error(err); }
+                                        else{
+                                            response.render("quest_menu", { user: usr, quest: qst, answered: ans, friend: frd});
+                                        }
+                                    })
+                                    
                                 }
                             })
                             
