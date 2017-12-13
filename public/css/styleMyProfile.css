@@ -40,3 +40,18 @@ p.datos {
 .botonEliminar:hover {
     font-weight: bold;
 }
+
+.perfil>a{
+    margin: auto;
+display: block;
+font-family: "GloriaHallelujah";
+font-size: 140%;
+border-radius: 10px;
+background-color: #B404AE;
+color: white;
+font-weight: bold;
+margin-top: 7%;
+width: 20%;
+text-decoration: none;
+text-align: center;
+}

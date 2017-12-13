@@ -43,7 +43,7 @@
             </p>
             <p class="datos"><%= user.points%> puntos</p>
         </div>
-        <input class="boton" type="submit" value="Modificar perfil" onclick="window.location.href='/modify_profile'" >
+        <a href="/modify_profile" > Modificar perfil</a>
     </div>
     <% let mensaje = getFlash(); %>
     <% if (mensaje) { %>
