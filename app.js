@@ -186,6 +186,7 @@ app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
                                     console.error(err);
                                 } else {
                                     request.session.currentUserId = id;
+                                    request.session.currentUserEmail = request.body.email;
                                     response.redirect("/my_profile");
                                 }
                             })
