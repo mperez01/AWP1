@@ -144,6 +144,19 @@ class DAOQuestions {
                 })
         })
     }
+
+    getFriendsAnswer(id_user, id_answer,callback){
+        this.pool.getConnection((err,connection)=>{
+            if(err){callback(err);return;}
+            connection.query("SELECT * FROM relationship r, user_answer JOIN answer ON id=?"+ 
+            "WHERE id_user!=? AND ((r.user_one_id=? AND r.user_two_id=id_user) OR (r.user_one_id=id_user AND r.user_two_id=?))",
+            [id_answer,id_user,id_user,id_user],
+            (err)=>{
+                connection.release();
+                callback(err);
+            });
+        })
+    }
 }
 module.exports = {
     DAOQuestions: DAOQuestions
