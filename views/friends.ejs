@@ -38,7 +38,6 @@
         
                                             <form method="GET" action="/friendProfile">
                                                 <input type="hidden" name="friendId" value="<%=friend.user_id%>">
-                                                <input type="hidden" name="friendStatus" value="<%=friend.status%>">
                                                 <input class="nombre" type="submit" value="<%= friend.name %>">
                                             </form>
                                     </div>
@@ -46,7 +45,7 @@
 
                                     <div class="botones">
                                         <form method="POST" action="/addFriend">
-                                            <input type="hidden" name="id" value=<%=friend.user_id%> >
+                                            <input type="hidden" name="friendId" value=<%=friend.user_id%> >
                                             <input class="botonAmigo" value="Añadir" type="submit">
                                         </form>
                                         <form method="POST" action="/discardFriend">
@@ -92,7 +91,6 @@
                                     <img class="fotoAmigo" name="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil" value=<%friend.image%> >
                                     <form method="GET" action="/friendProfile">
                                         <input type="hidden" name="friendId" value="<%=friend.user_id%>">
-                                        <input type="hidden" name="friendStatus" value="<%=friend.status%>">
                                         <input class="nombre" type="submit" value="<%= friend.name %>">
                                     </form>
                                 </div>

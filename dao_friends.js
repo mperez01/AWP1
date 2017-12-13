@@ -17,27 +17,27 @@ class DAOFriends {
      */
 
     sendFriendship(idFriend, userId, callback) {
-        
-                this.pool.getConnection((err, connection) => {
-                    if (err) { callback(err); return; }
-                    let first;
-                    let second;
-                    if (idFriend > userId) {
-                        first = userId;
-                        second = idFriend;
-                    }
-                    else {
-                        first = idFriend;
-                        second = userId;
-                    }
-                    connection.query("INSERT INTO relationship (user_one_id, user_two_id, status, action_user_id)" +
-                        " VALUES (?, ?, 0, ?)", [first, second, userId],
-                        (err) => {
-                            connection.release();
-                            callback(err);
-                        })
+
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            let first;
+            let second;
+            if (idFriend > userId) {
+                first = userId;
+                second = idFriend;
+            }
+            else {
+                first = idFriend;
+                second = userId;
+            }
+            connection.query("INSERT INTO relationship (user_one_id, user_two_id, status, action_user_id)" +
+                " VALUES (?, ?, 0, ?)", [first, second, userId],
+                (err) => {
+                    connection.release();
+                    callback(err);
                 })
-        }
+        })
+    }
 
     getFriendList(user, callback) {
         this.pool.getConnection((err, connection) => {
@@ -120,6 +120,43 @@ class DAOFriends {
                     if (err) { callback(err, undefined); return; }
                     else {
                         callback(err, friend);
+                    }
+                }
+            );
+        })
+    }
+    /**
+     * Dado el id del amigo y del usuario, se realiza una consulta en la base de datos
+     * en la que se devuelve todos los datos del amigo, incluyendo el estado actual con 
+     * el usuario (1 peticion enviada, en espera; 0 aceptada y por tanto, amigo)
+     * 
+     * @param {*} idFriend Id del amigo
+     * @param {*} userId  Id del usuario logeado
+     * @param {*} callback  Devuelve la información del amigo y el estado con el usuario
+     */
+    getStatusFriend(idFriend, userId, callback) {
+
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            let first;
+            let second;
+            if (idFriend > userId) {
+                first = userId;
+                second = idFriend;
+            }
+            else {
+                first = idFriend;
+                second = userId;
+            }
+            connection.query("SELECT *, (SELECT status FROM relationship join user " + 
+            "WHERE relationship.user_one_id=? and relationship.user_two_id=? and USER_ID=?) as status FROM " + 
+            "user WHERE USER_ID=?",
+                [first, second, idFriend, idFriend],
+                function (err, friend) {
+                    connection.release();
+                    if (err) { callback(err, undefined); return; }
+                    else {
+                        callback(err, friend[0]);
                     }
                 }
             );

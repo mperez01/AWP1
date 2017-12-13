@@ -328,7 +328,7 @@ app.post("/discardFriend", identificacionRequerida, (request, response) => {
 })
 
 app.post("/addFriend", identificacionRequerida, (request, response) => {
-    daoF.addFriend(request.body.id, request.session.currentUserId, (err => {
+    daoF.addFriend(request.body.friendId, request.session.currentUserId, (err => {
         if (err) { console.error(err); }
         else {
             response.setFlash("Petición aceptada");
@@ -420,7 +420,7 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
 
 app.post("/sendFriendRequest", identificacionRequerida, (request, response) => {
 
-    daoF.sendFriendship(request.body.id, request.session.currentUserId, (err) => {
+    daoF.sendFriendship(request.body.friendId, request.session.currentUserId, (err) => {
         if (err) {
             console.error(err);
         }
@@ -437,13 +437,14 @@ app.get("/friendProfile", identificacionRequerida, (request, response) => {
             console.error(err);
         }
         else {
-            daoU.getUserData(request.query.friendId, (err, frd) => {
-                if (err) {
-                    console.error(err);
-                } else {
+            /*getStatusFriend devuelve tanto la información del amigo como 
+            el estado con el usuario actualmente logeado */
+            daoF.getStatusFriend(request.query.friendId, request.session.currentUserId, (err, frd) => {
+                if (err) { console.error(err); }
+                else {
                     response.render("friend_profile", {
-                        user: usr, friend: frd,
-                        status: request.query.friendStatus
+                        user: usr,
+                        friend: frd,
                     });
                 }
             })
@@ -499,8 +500,8 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
     let allAnswers = request.body.answers;
     let answer = allAnswers.split("\n");
     let num = answer.length;
-    
-    // VALIDACIÓN!!!
+
+    // HACER VALIDACIÓN!!!
     request.checkBody("question", "La pregunta está vacía").notEmpty();
     request.checkBody("answers", "Respuestas está vacío").notEmpty();
     request.checkBody("question", "La pregunta no puede ser espacio en blanco").whiteSpace();
@@ -538,7 +539,8 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
                             console.error(err);
                         }
                         else {
-                            response.render("add_questions", {user: usr,errores: result.mapped(), usuario: addQuestIncorrecto
+                            response.render("add_questions", {
+                                user: usr, errores: result.mapped(), usuario: addQuestIncorrecto
                             });
                         }
                     });

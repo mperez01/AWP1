@@ -53,17 +53,17 @@
                     <p class="datos">
                         <%= friend.points%> puntos</p>
         </div>
-        <% if(status === '1'){ %>
+        <% if(friend.status === 1){ %>
             <form method="POST" action="/deleteFriend">
                 <input type="hidden" name="friendId" value="<%=friend.user_id%>">
                 <input class="botonEliminar" type="submit" value="Eliminar amigo">
             </form>
-        <%} else if(status === '0'){ %>
-            <form method="POST" action="/discardFriend">
-                <input type="hidden" name="friendId" value="<%=friend.user_id%>">
-                <input class="botonEliminar" type="submit" value="Descartar petición">
-            </form>
-        <% } %>
+            <%} else if(friend.status === 0){ %>
+                <form method="POST" action="/discardFriend">
+                    <input type="hidden" name="friendId" value="<%=friend.user_id%>">
+                    <input class="botonEliminar" type="submit" value="Descartar petición">
+                </form>
+                <% } %>
     </div>
 </body>
 
