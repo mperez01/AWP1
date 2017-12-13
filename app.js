@@ -186,6 +186,7 @@ app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
                                     console.error(err);
                                 } else {
                                     request.session.currentUserId = id;
+                                    request.session.currentUserEmail = request.body.email;
                                     response.redirect("/my_profile");
                                 }
                             })
@@ -321,6 +322,7 @@ app.post("/discardFriend", identificacionRequerida, (request, response) => {
     daoF.discardFriend(request.body.friendId, request.session.currentUserId, (err => {
         if (err) { console.error(err); }
         else {
+            console.log("FRIEND ID en discard " + request.body.friendId);
             response.setFlash("Petición rechazada");
             response.redirect("/friends");
         }
