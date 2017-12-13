@@ -178,7 +178,8 @@ class DAOFriends {
                             date = `${year}-${month}-${day}`;
                         }
                         let obj = { name: friend[0].name, gender: friend[0].gender, 
-                            dateOfBirth: date, points: friend[0].points, image: friend[0].image, age: edad};
+                            dateOfBirth: date, points: friend[0].points, 
+                            image: friend[0].image, age: edad, status: friend[0].status};
                         callback(err, obj);
                     }
                 }
