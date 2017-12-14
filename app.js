@@ -322,7 +322,6 @@ app.post("/discardFriend", identificacionRequerida, (request, response) => {
     daoF.discardFriend(request.body.friendId, request.session.currentUserId, (err => {
         if (err) { console.error(err); }
         else {
-            console.log("FRIEND ID en discard " + request.body.friendId);
             response.setFlash("Petición rechazada");
             response.redirect("/friends");
         }
@@ -643,6 +642,29 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
     });
 })
 
+/**
+ * Fisher-Yates algorithm
+ * 
+ * @param {*} array array to randomize
+ */
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
 
 app.get("/ans_guess", identificacionRequerida, (request, response) => {
     let numDefault = 0;
@@ -657,9 +679,47 @@ app.get("/ans_guess", identificacionRequerida, (request, response) => {
                     daoQ.pickNRandomAnswers(ansd.answer, request.query.question_id, numDefault - 1, (err,qust)=>{
                         if (err) { console.error(err); }
                         else {
+                            /**
+                             * trueAns contiene los valores de la respuesa correcta en el mismo formato que qust (de los
+                             * answers random).
+                             */
+                            let trueAns = {answer: ansd.ansName, answerId: ansd.answer, question: qust[0].question};
+                            qust.push(trueAns);
+                            //shuffle pone los valores existentes en el array en indices aleatorios
+                            qust = shuffle(qust);
                             response.render("guess_friend_question",{correct: ansd, user:usr, question:qust });
                         }
                     })
+                }
+            })
+        }
+    })
+})
+
+app.post("/ans_guess", identificacionRequerida, (request, response) => {
+    let correct = 0;
+    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+        if (err) { console.error(err); }
+        else {
+            let puntos = usr.points;
+            //Comprobamos que la respuesta correcta sea igual a la seleccionada por el usuario
+            if(request.body.ansId === request.body.correctId) {
+                correct = 1;
+                puntos=puntos+50;
+            }
+            else {
+                correct = 0;
+            }
+            daoU.addUserPoints(request.session.currentUserId, puntos, (err) => {
+                if (err) { console.error(err); }
+                else {
+                    daoQ.addGuessAnswer(request.body.ansId, request.session.currentUserId, 
+                        request.body.idFriend, correct, (err) => {
+                        if (err) { console.error(err); }
+                        else {
+                            response.redirect("/questions");
+                        }
+                    });  
                 }
             })
         }

@@ -28,22 +28,19 @@
                 <%=question[0].question%>
             </p>
         </div>
-        <form method="POST" action="/ans_question">
+        <form method="POST" action="/ans_guess">
             <ul>
                 <div>
-                    <li class="preguntasAleatorias">
-                        <input class="pregunta" name="questionId" type="radio" value="<%=correct.questId%>">
-                        <%=correct.ansName%>
-                    </li>
                     <%question.forEach(ans=>{ %>
                         <li class="preguntasAleatorias">
-                            <input class="pregunta" name="ansId" type="radio" value='<%=correct.ansId%>'>
+                            <input class="pregunta" name="ansId" type="radio" value='<%=ans.answerId%>'>
                             <%=ans.answer%>
                         </li>
                         <% }); %>
-
                 </div>
             </ul>
+            <input name="correctId" type="hidden" value='<%=correct.answer %>'>
+            <input name="idFriend" type="hidden" value='<%=correct.friendId%>'>
             <input class="boton" type="submit" value="Responder">
         </form>
 

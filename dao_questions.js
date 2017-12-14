@@ -48,14 +48,15 @@ class DAOQuestions {
                 callback(err, undefined); return;
             }
 
-            connection.query("SELECT DISTINCT a.text as ansName, ua.id_answer as answer, (SELECT num_answ FROM questions where questions.id=?) as num " +
+            connection.query("SELECT DISTINCT a.text as ansName, ua.id_answer as answer, ua.id_user as friendId, (SELECT num_answ FROM questions where questions.id=?) as num " +
             "FROM user_answer ua JOIN answer a on ua.id_answer=a.id " +
             "WHERE ua.id_user=? AND a.id_question=?", [question_id, user_id,question_id],
                 function (err, ans) {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
                     else {
-                        console.log(ans);
+                        console.log("particularAnswer")
+                        console.log(ans)
                         callback(err, ans[0]);
                     }
                 })
@@ -78,6 +79,7 @@ class DAOQuestions {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
                     else {
+                       
                         callback(err, quest);
                     }
                 })
@@ -201,6 +203,18 @@ class DAOQuestions {
                     else {
                         callback(null, answer);
                     }
+                })
+        })
+    }
+
+    addGuessAnswer(id_answer, id_user, id_friend, correct, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            connection.query("INSERT INTO user_guess (id_user, id_friend, id_answer, correct)" +
+                " VALUES (?, ?, ?, ?)", [id_user, id_friend, id_answer, correct],
+                (err) => {
+                    connection.release();
+                    callback(err);
                 })
         })
     }

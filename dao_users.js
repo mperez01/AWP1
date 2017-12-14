@@ -143,6 +143,19 @@ class DAOUsers {
             connection.release();
         })
     }
+
+    addUserPoints(id, points, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            connection.query("UPDATE user SET points=? WHERE user_id=?",
+            [points, id],
+            function (err, resultado) {
+                if (err) { callback(err); return; }
+            })
+            callback(null);
+            connection.release();
+        })
+    }
 }
 
 module.exports = {
