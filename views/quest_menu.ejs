@@ -66,7 +66,6 @@
                                     <% } else if (fr.correct === 1) { %>
                                         <p class="acierto"> Has acertado</p>
                                         <% } else { %>
-                                            <% console.log("Friend id html = " + fr.userId)%>
                                             <form method="GET" action="/ans_guess">
                                                 <input type="hidden" name="friendId" value="<%=fr.userId%>">
                                                 <input type="hidden" name="question_id" value=<%=quest.id%> >

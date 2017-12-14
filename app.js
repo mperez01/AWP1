@@ -495,7 +495,7 @@ app.get("/addQuestion", identificacionRequerida, (request, response) => {
         if (err) {
             console.error(err);
         } else {
-            response.render("add_questions", { user: usr });
+            response.render("add_questions", { user: usr, errores: [], usuario: {} });
         }
     });
 })
@@ -534,7 +534,7 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
         else {
             var addQuestIncorrecto = {
                 question: request.body.question,
-                answers: request.body.answers
+                answers: request.body.answers,
             };
             daoU.getUserData(request.session.currentUserId, (err, usr) => {
                 if (err) {
