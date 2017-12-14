@@ -600,7 +600,7 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
                 //Para que no explote si se modifica direccion por URL
                 //OJO ans debe tener al menos una (o dos) respuesta para que esto funcione
                 if (ans[0] !== undefined)
-                    response.render("ans_question", { user: usr, answers: ans, errores: [], usuario: {}  });
+                    response.render("ans_question", { user: usr, answers: ans, errores: [], usuario: {} });
                 else
                     response.redirect("/questions");
             })
@@ -645,14 +645,14 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                         response.setFlash("'Otra' respuesta no puede ser vacía");
                         response.redirect("/questions");
                     }
-                    else{
+                    else {
                         daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
                             if (err) { console.error(err); }
                             else {
                                 response.setFlash("Respondido");
                                 response.redirect("/questions");
                             }
-                        }) 
+                        })
                     }
                 }
             })
@@ -669,13 +669,12 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                         //Para que no explote si se modifica direccion por URL
                         //OJO ans debe tener al menos una (o dos) respuesta para que esto funcione
                         if (ans[0] !== undefined)
-                            response.render("ans_question", { user: usr, answers: ans, errores: result.mapped(), usuario: ansQuestError  });
+                            response.render("ans_question", { user: usr, answers: ans, errores: result.mapped(), usuario: ansQuestError });
                         else
                             response.redirect("/questions");
                     })
                 }
             });
-
         }
     });
 })
@@ -705,6 +704,7 @@ function shuffle(array) {
 }
 
 app.get("/ans_guess", identificacionRequerida, (request, response) => {
+
     let numDefault = 0;
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) { console.error(err); }
@@ -736,30 +736,41 @@ app.get("/ans_guess", identificacionRequerida, (request, response) => {
 
 app.post("/ans_guess", identificacionRequerida, (request, response) => {
     let correct = 0;
-    daoU.getUserData(request.session.currentUserId, (err, usr) => {
-        if (err) { console.error(err); }
-        else {
-            let puntos = usr.points;
-            //Comprobamos que la respuesta correcta sea igual a la seleccionada por el usuario
-            if (request.body.ansId === request.body.correctId) {
-                correct = 1;
-                puntos = puntos + 50;
-            }
-            else {
-                correct = 0;
-            }
-            daoU.addUserPoints(request.session.currentUserId, puntos, (err) => {
+
+    request.checkBody("ansId", "¡No has seleccionado ninguna respuesta!").notEmpty();
+        if (request.body.ansId !== undefined) {
+            daoU.getUserData(request.session.currentUserId, (err, usr) => {
                 if (err) { console.error(err); }
                 else {
-                    daoQ.addGuessAnswer(request.body.ansId, request.session.currentUserId,
-                        request.body.idFriend, correct, (err) => {
-                            if (err) { console.error(err); }
-                            else {
-                                response.redirect("/questions");
-                            }
-                        });
+                    let puntos = usr.points;
+                    let text = "";
+                    //Comprobamos que la respuesta correcta sea igual a la seleccionada por el usuario
+                    if (request.body.ansId === request.body.correctId) {
+                        correct = 1;
+                        puntos = puntos + 50;
+                        text = "¡Adivinado!"
+                    }
+                    else {
+                        correct = 0;
+                        text = "No has adivinado"
+                    }
+                    daoU.addUserPoints(request.session.currentUserId, puntos, (err) => {
+                        if (err) { console.error(err); }
+                        else {
+                            daoQ.addGuessAnswer(request.body.ansId, request.session.currentUserId,
+                                request.body.idFriend, correct, (err) => {
+                                    if (err) { console.error(err); }
+                                    else {
+                                        response.setFlash(text);
+                                        response.redirect("/questions");
+                                    }
+                                });
+                        }
+                    })
                 }
             })
+        } else {
+            response.setFlash("¡No has seleccionado ninguna respuesta!");
+            response.redirect("/questions");
         }
-    })
 })
