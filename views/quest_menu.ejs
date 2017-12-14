@@ -58,15 +58,18 @@
                                     <input type="hidden" name="friendId" value="<%=fr.userId%>">
                                     <input class="nombre" type="submit" value="<%= fr.name %>">
                                 </form>
-                                <% console.log("guess long  " + guess.length); %>
-                                <% guess.forEach(g => { %>
-                                    <% if (g.friendId === fr.userId && g.correct === 0) {%>
-                                        <p class="fallo"> Has fallado</p>
-                                        <% } else if (g.friendId === fr.userId && g.correct === 1) { %>
-                                            <p class="acierto"> Has acertado</p>
+                                <% if (fr.correct === 0) {%>
+                                    <p class="fallo"> Has fallado</p>
+                                    <% } else if (fr.correct === 1) { %>
+                                        <p class="acierto"> Has acertado</p>
+                                        <% } else { %>
+                                            <form method="GET" action="/ans_guess">
+                                                <input type="hidden" name="friendId" value=<%=friend.userId %> >
+                                                <input type="hidden" name="question_id" value=<%=quest.id%> >
+                                                <input class="botonAmigo" value="Adivinar" type="submit">
+                                            </form>
                                             <% } %>
 
-                                                <% }) %>
 
                             </div>
                         </div>

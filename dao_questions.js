@@ -142,19 +142,22 @@ class DAOQuestions {
                 })
         })
     }
-
+   
     getFriendsAnswer(id_user, questionId, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            connection.query("SELECT answer.id AS answerId, user_answer.id_user AS userId, user.image AS image, user.name AS name " +
-                "FROM relationship r,user, user_answer JOIN answer ON id=id_answer " +
-                "WHERE id_user!=? AND ((r.user_one_id=? AND r.user_two_id=id_user) " +
-                " OR (r.user_one_id=id_user AND r.user_two_id=?)) AND id_question=? AND user.user_id=user_answer.id_user",
-                [id_user, id_user, id_user, questionId],
+            connection.query("SELECT answer.id AS answerId, user_answer.id_user AS userId, u.image AS image, " + 
+            "u.name AS name, (SELECT correct FROM answer a, user_guess JOIN questions " + 
+            " where user_guess.id_user=? and questions.id=? and a.id=user_guess.id_answer and a.id_question=questions.id) as correct " +  
+            " FROM relationship r,user u, user_answer JOIN answer ON id=id_answer " +
+            " WHERE user_answer.id_user!=? AND ((r.user_one_id=? AND r.user_two_id=user_answer.id_user) OR " + 
+            " (r.user_one_id=user_answer.id_user AND r.user_two_id=?)) AND id_question=? AND u.user_id=user_answer.id_user",
+                [id_user, questionId, id_user, id_user, id_user, questionId],
                 function (err, answer) {
                     connection.release();
                     if (err) { callback(err); return; }
                     else {
+                        console.log(answer);
                         callback(null, answer);
                     }
                 })
@@ -165,7 +168,7 @@ class DAOQuestions {
  * -id_user
  * -id_friend
  * -id_answer ---> la pregunta seleccionada.
- */
+ 
     userAnswerActions(user_Id, questId, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
@@ -182,7 +185,7 @@ class DAOQuestions {
                     }
                 })
         })
-    }
+    } */
 }
 module.exports = {
     DAOQuestions: DAOQuestions
