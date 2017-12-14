@@ -25,27 +25,20 @@
     <div class="solicitudes">
         <div>
             <p>
-                <%=answers[0].questName%>
+                <%=answerData[0].questName%>
             </p>
         </div>
         <form method="POST" action="/ans_question">
             <ul>
                 <div>
-                    <input name="questionId" type="hidden" value="<%=answers[0].questId%>">
+                    <input name="questionId" type="hidden" value="<%=answerData[0].questId%>">
                     <%answers.forEach(ans=>{%>
                         <li class="preguntasAleatorias">
-                            <input class="pregunta" name="ansId" type="radio" value='<%=ans.ansId%>'>
+                            <input class="pregunta" name="ansId" type="radio" value='<%=answerData[0].ansId%>'>
                             <%=ans.ansText%>
                         </li>
                         <% }); %>
-                            <div>
-                                <li class="preguntasAleatorias">
-                                    <div class=anadir>
-                                        <input for="forAnsText" class="pregunta" name="ansId" type="radio"> Otra:
-                                        <input name="ansText" type="text" id="forAnsText" class="rellenar">
-                                    </div>
-                                </li>
-                            </div>
+
                 </div>
             </ul>
             <input class="boton" type="submit" value="Responder">

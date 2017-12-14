@@ -58,6 +58,7 @@ li {
 .mensajeGuess {
     font-family: sans-serif;
     text-align: left;
-    margin-left: 10%;
+    width:50%;
+    margin: auto;
     margin-top: 3%;
 }

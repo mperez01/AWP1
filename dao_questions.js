@@ -42,6 +42,44 @@ class DAOQuestions {
         })
     }
 
+    getParticularAnswer(user_id,question_id,callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) {
+                callback(err, undefined); return;
+            }
+            connection.query("SELECT DISTINCT id_answer as answer, id_question as question, questions.text as name FROM user_answer JOIN answer JOIN questions "+
+            "WHERE id_user=? AND id_question=?", [user_id,question_id],
+                function (err, quest) {
+                    connection.release();
+                    if (err) { callback(err, undefined); return; }
+                    else {
+                        callback(err, quest[0]);
+                    }
+                })
+        })
+    }
+/*
+-answer_id que debe estar (cogido en get particular answer)
+-numero de respuestas que debe haber(cogido en questions.num_answ)
+-question_id (para coger sus respectivas respuestas agenciadas a esa pregunta)
+- */
+    pickNRandomAnswers(answer_id, question_id, callback){
+        this.pool.getConnection((err, connection) => {
+            if (err) {
+                callback(err, undefined); return;
+            }
+            connection.query("SELECT DISTINCT id_answer as answer, id_question as question FROM user_answer JOIN answer "+
+            "WHERE id_user=? AND id_question=?", [idAnswer,question_id],
+                function (err, quest) {
+                    connection.release();
+                    if (err) { callback(err, undefined); return; }
+                    else {
+                        callback(err, quest[0]);
+                    }
+                })
+        })
+    }
+
     isAnsweredByUser(user_id, question_id, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) {
