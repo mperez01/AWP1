@@ -59,17 +59,15 @@
                                     <input class="nombre" type="submit" value="<%= fr.name %>">
                                 </form>
 
-                                <p>AnswerID del amigo (la correcta) <%=fr.answerId%></p>
-
                                 <% if (fr.correct === 0) {%>
-                                    <p class="fallo"> Has fallado</p>
+                                    <tag class="textoAdivina"><span class="fallo"> Has fallado</span></tag>
                                     <% } else if (fr.correct === 1) { %>
-                                        <p class="acierto"> Has acertado</p>
+                                        <tag class="textoAdivina"><span class="acierto"> Has acertado </span></tag>
                                         <% } else { %>
                                             <form method="GET" action="/ans_guess">
                                                 <input type="hidden" name="friendId" value="<%=fr.userId%>">
                                                 <input type="hidden" name="question_id" value=<%=quest.id%> >
-                                                <input class="botonAmigo" value="Adivinar" type="submit">
+                                                <tag class="botonAd"><input class="botonAmigo" value="Adivinar" type="submit"></tag>
                                             </form>
                                             <% } %>
 

@@ -40,19 +40,23 @@ li {
 }
 
 .fallo {
-    text-align: right;
-    margin-right: 20%;
     color: red;
+}
+
+.acierto {
+    color: green;
+}
+
+.textoAdivina {
+    text-align: right;
+    /*margin-right: 20%;*/
+    width: 500px;
     font-weight: bold;
     font-size: 20px;
 }
 
-.acierto {
-    text-align: right;
-    margin-right: 20%;
-    color: green;
-    font-weight: bold;
-    font-size: 20px;
+.botonAd {
+    margin-left: 390px;
 }
 
 .mensajeGuess {

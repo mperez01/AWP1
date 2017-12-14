@@ -737,7 +737,6 @@ app.get("/ans_guess", identificacionRequerida, (request, response) => {
 app.post("/ans_guess", identificacionRequerida, (request, response) => {
     let correct = 0;
 
-    request.checkBody("ansId", "¡No has seleccionado ninguna respuesta!").notEmpty();
         if (request.body.ansId !== undefined) {
             daoU.getUserData(request.session.currentUserId, (err, usr) => {
                 if (err) { console.error(err); }
