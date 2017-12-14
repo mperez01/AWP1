@@ -40,48 +40,45 @@
                 <div>
                     <p class="mensaje">Ya has contestado a esta pregunta.</p>
                 </div>
-            <% } %>
-        
+                <% } %>
+
     </div>
     <div class="guessQuest">
-        <% /* if (friends.lenght > 0){  */%>
+        <% if (friend.length > 0){ %>
             <div>
                 <p class="mensajeGuess">Los siguientes amigos han contestado a esta pregunta:</p>
             </div>
             <ul>
-                <% /* friends.forEach(friend => { %>
+                <% friend.forEach(fr => { %>
                     <li>
                         <div class="listAmigo">
                             <div class="userData">
-                                <img class="fotoAmigo" name="imagen" src="/imagenUsuario/<%=friend.image%>" alt="fotoPerfil" value=<%friend.image%> >
+                                <img class="fotoAmigo" name="imagen" src="/imagenUsuario/<%=fr.image%>" alt="fotoPerfil" value=<%friend.image%> >
                                 <form method="GET" action="/friendProfile">
-                                    <input type="hidden" name="friendId" value="<%=friend.user_id%>">
-                                    <input class="nombre" type="submit" value="<%= friend.name %>">
+                                    <input type="hidden" name="friendId" value="<%=fr.userId%>">
+                                    <input class="nombre" type="submit" value="<%= fr.name %>">
                                 </form>
-                            </div>
+                                <% console.log("guess long  " + guess.length); %>
+                                <% guess.forEach(g => { %>
+                                    <% if (g.friendId === fr.userId && g.correct === 0) {%>
+                                        <p class="fallo"> Has fallado</p>
+                                        <% } else if (g.friendId === fr.userId && g.correct === 1) { %>
+                                            <p class="acierto"> Has acertado</p>
+                                            <% } %>
 
-                            <% /* if (No has intentado adivinar) { %>
-                                <form method="GET" action="/ans_guess">
-                                    <input type="hidden" name="friendId" value=<%=friend.user_id %> >
-                                    <input type="hidden" name="question_id" value=<%=quest.id%> >
-                                    <input class="botonAmigo" value="Adivinar" type="submit">
-                                </form>
-                                <% /* } else if (Ya has intentado y fallado) { */%>
-                                    <% /* OJO! NO <P> que es parrafo y salta linea */%> 
-                                    <p class="fallo"> Has fallado</p>
-                                <% /* } else if (ya has intentado y acertado) { */%>
-                                    <p class="acierto"> Has acertado</p>
-                                    <% /* }  */ %>
+                                                <% }) %>
+
+                            </div>
                         </div>
                     </li>
-                    <% /* }); */ %>
+                    <% });%>
             </ul>
 
-            <% /* } else { */%>
+            <% } else { %>
                 <div>
                     <p class="mensajeGuess">Ningún amigo ha contestado aún.</p>
                 </div>
-                <% /* } */ %>
+                <% } %>
     </div>
 </body>
 

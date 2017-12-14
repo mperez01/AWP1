@@ -123,12 +123,10 @@ class DAOQuestions {
             if (err) { callback(err); return; }
             connection.query("INSERT INTO answer (id_question, text)" +
                 " VALUES (?, ?)", [questionsId, answerText],
-                function (err, answer) {
-                    if (err) { callback(err); return; }
-                    console.log("AÑADIDO");
-                    console.log("AÑADIDO con ID = " + answer.insertId);
-                    callback(null, answer.insertId);
+                function (err, addAnswer) {
                     connection.release();
+                    if (err) { callback(err); return; }
+                    callback(null, addAnswer.insertId);
                 })
         })
     }
@@ -145,30 +143,44 @@ class DAOQuestions {
         })
     }
 
-    getFriendsAnswer(id_user,questionId,callback){
-        this.pool.getConnection((err,connection)=>{
-            if(err){callback(err);return;}
-            connection.query("SELECT answer.id AS answerId, user_answer.id_user AS userId FROM relationship r, user_answer JOIN answer ON id=id_answer "+ 
-            "WHERE id_user!=? AND ((r.user_one_id=? AND r.user_two_id=id_user) OR (r.user_one_id=id_user AND r.user_two_id=?)) AND id_question=?",
-            [id_user,id_user,id_user, questionId],
-            function(err,answer){
-                connection.release();
-                if(err){callback(err);return;}
-                else{
-                    callback(null, answer);
-                }
-            })
+    getFriendsAnswer(id_user, questionId, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            connection.query("SELECT answer.id AS answerId, user_answer.id_user AS userId, user.image AS image, user.name AS name " +
+                "FROM relationship r,user, user_answer JOIN answer ON id=id_answer " +
+                "WHERE id_user!=? AND ((r.user_one_id=? AND r.user_two_id=id_user) " +
+                " OR (r.user_one_id=id_user AND r.user_two_id=?)) AND id_question=? AND user.user_id=user_answer.id_user",
+                [id_user, id_user, id_user, questionId],
+                function (err, answer) {
+                    connection.release();
+                    if (err) { callback(err); return; }
+                    else {
+                        callback(null, answer);
+                    }
+                })
         })
     }
-    userAnswerActions(id_user, callback){
-        this.pool.getConnection((err,connection)=>{
-            if(err){callback(err);return;}
-            connection.query("SELECT * FROM user_guess RIGHT JOIN user ON user_id_guess=user_id "+ 
-                "WHERE user_id=?",[id_user],
-            (err)=>{
-                connection.release();
-                callback(err);
-            });
+    /**
+ * user_guess:
+ * -id_user
+ * -id_friend
+ * -id_answer ---> la pregunta seleccionada.
+ */
+    userAnswerActions(user_Id, questId, callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) { callback(err); return; }
+            connection.query("SELECT DISTINCT ug.correct as correct, ua.id_user as friendId, ug.id_answer as ansGuessId, ua.id_answer as ansTrueId " +
+                " FROM user_guess ug JOIN user_answer ua JOIN questions " +
+                " WHERE ug.id_friend = ua.id_user and ug.id_user=? AND questions.id=?"
+                [user_Id, questId],
+                function (err, ansAct) {
+                    connection.release();
+                    if (err) { callback(err); return; }
+                    else {
+                        console.log(ansAct);
+                        callback(err, ansAct);
+                    }
+                })
         })
     }
 }

@@ -560,27 +560,25 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
 app.get("/quest_menu", identificacionRequerida, (request, response) => {
 
     response.status(200);
+    let questionId = request.query.question_id;
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
         } else {
-            daoQ.getParticularQuestion(request.query.question_id, (err, qst) => {
+            daoQ.getParticularQuestion(questionId, (err, qst) => {
                 if (err) { console.error(err); }
                 //Comprobamos que no se intente acceer por URL a una pregunta que no exista
                 if (qst !== undefined) {
-                    daoQ.isAnsweredByUser(request.session.currentUserId, request.query.question_id, (err, ans) => {
+                    daoQ.isAnsweredByUser(request.session.currentUserId, questionId, (err, ans) => {
                         if(err){console.error(err);}
                         else{
-                            daoQ.getFriendsAnswer(request.session.currentUserId,request.query.question_id, (err,frd)=>{
+                            daoQ.getFriendsAnswer(request.session.currentUserId,questionId, (err,frd)=>{
                                 if (err) { console.error(err); }
                                 else {
-                                    frd.forEach(fr =>{
-                                        console.log("AnsweR: " + fr.answerId);
-                                    });
-                                    daoQ.userAnswerActions(request.session.currentUserId,(err,frd)=>{
+                                    daoQ.userAnswerActions(request.session.currentUserId, questionId,(err, gss)=>{
                                         if (err) { console.error(err); }
-                                        else{
-                                            response.render("quest_menu", { user: usr, quest: qst, answered: ans, friend: frd});
+                                        else{                                            
+                                            response.render("quest_menu", { user: usr, quest: qst, answered: ans, friend: frd, guess: gss});
                                         }
                                     })
                                     
