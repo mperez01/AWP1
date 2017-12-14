@@ -58,6 +58,9 @@
                                     <input type="hidden" name="friendId" value="<%=fr.userId%>">
                                     <input class="nombre" type="submit" value="<%= fr.name %>">
                                 </form>
+
+                                <p>AnswerID del amigo (la correcta) <%=fr.answerId%></p>
+
                                 <% if (fr.correct === 0) {%>
                                     <p class="fallo"> Has fallado</p>
                                     <% } else if (fr.correct === 1) { %>

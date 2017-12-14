@@ -157,7 +157,6 @@ class DAOQuestions {
                     connection.release();
                     if (err) { callback(err); return; }
                     else {
-                        console.log(answer);
                         callback(null, answer);
                     }
                 })

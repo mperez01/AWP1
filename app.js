@@ -570,15 +570,14 @@ app.get("/quest_menu", identificacionRequerida, (request, response) => {
                 //Comprobamos que no se intente acceer por URL a una pregunta que no exista
                 if (qst !== undefined) {
                     daoQ.isAnsweredByUser(request.session.currentUserId, questionId, (err, ans) => {
-                        if(err){console.error(err);}
-                        else{
-                            daoQ.getFriendsAnswer(request.session.currentUserId,questionId, (err,frd)=>{
+                        if (err) { console.error(err); }
+                        else {
+                            daoQ.getFriendsAnswer(request.session.currentUserId, questionId, (err, frd) => {
                                 if (err) { console.error(err); }
                                 else {
-                                    response.render("quest_menu", { user: usr, quest: qst, answered: ans, friend: frd});
+                                    response.render("quest_menu", { user: usr, quest: qst, answered: ans, friend: frd });
                                 }
                             })
-                            
                         }
                     })
                 } else {
@@ -600,7 +599,7 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
             daoQ.getAnswers(request.query.question_id, (err, ans) => {
                 if (err) { console.error(err); }
                 //Para que no explote si se modifica direccion por URL
-                //OJO ans debe tener al menos una respuesta para que esto funcione
+                //OJO ans debe tener al menos una (o dos) respuesta para que esto funcione
                 if (ans[0] !== undefined)
                     response.render("ans_question", { user: usr, answers: ans });
                 else
@@ -614,6 +613,8 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
 
     let answerId = -1;
 
+    //CONTROL DE VALIDACIÓN!!
+    
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
@@ -636,12 +637,7 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                 })
             }
             else {
-                daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
-                    if (err) { console.error(err); }
-                    else {
-                        response.redirect("/questions");
-                    }
-                })
+                response.redirect("/questions");
             }
         }
     });
