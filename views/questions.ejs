@@ -38,6 +38,12 @@
                 </ul>
             </div>
             <% }); %>
+            <% let errorMsg = getFlash(); %>
+            <% if (errorMsg) { %>
+                <div class="error">
+                    <%= errorMsg %>
+                </div>
+                <% } %>
                 <div class="nuevaPregunta">
                     <p>¡Añade tus preguntas!</p>
                     <div>

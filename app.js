@@ -600,7 +600,7 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
                 //Para que no explote si se modifica direccion por URL
                 //OJO ans debe tener al menos una (o dos) respuesta para que esto funcione
                 if (ans[0] !== undefined)
-                    response.render("ans_question", { user: usr, answers: ans });
+                    response.render("ans_question", { user: usr, answers: ans, errores: [], usuario: {}  });
                 else
                     response.redirect("/questions");
             })
@@ -613,41 +613,69 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
     let answerId = -1;
 
     //CONTROL DE VALIDACIÓN!!
+    request.checkBody("ansId", "¡No has seleccionado ninguna respuesta!").notEmpty();
+    request.getValidationResult().then((result) => {
+        if (result.isEmpty()) {
+            daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    //BUSCAR MANERA DE NO TENER ESTE IF ELSE
+                    /** Para así no tener que llamar dos veces a addUserAnswer
+                     * aunqeu funciona bien
+                     * newAnsId
+                     */
 
-    daoU.getUserData(request.session.currentUserId, (err, usr) => {
-        if (err) {
-            console.error(err);
-        } else {
-            //BUSCAR MANERA DE NO TENER ESTE IF ELSE
-            /** Para así no tener que llamar dos veces a addUserAnswer
-             * aunqeu funciona bien
-             * newAnsId
-             */
-            console.log("ANSid de otro " + request.body.ansId);
-
-            //Undefined para controlar que esta señalando la que no devuelve nada
-            //otra, y que no sea '' para que no sea un valor vacío
-            if (request.body.ansId === undefined && request.body.ansText !== '') {
-                daoQ.addAnswer(request.body.questionId, request.body.ansText, (err, answerId) => {
-                    if (err) { console.error(err); }
-                    else {
-                        daoQ.addUserAnswer(answerId, request.session.currentUserId, (err) => {
+                    //ON es lo que devuelve si no hay ningun ID pero esta seleccionado, en este caso OTRO
+                    if (request.body.ansId === 'on' && request.body.ansText !== '') {
+                        daoQ.addAnswer(request.body.questionId, request.body.ansText, (err, answerId) => {
                             if (err) { console.error(err); }
                             else {
-                                response.redirect("/questions");
+                                daoQ.addUserAnswer(answerId, request.session.currentUserId, (err) => {
+                                    if (err) { console.error(err); }
+                                    else {
+                                        response.setFlash("Respondido");
+                                        response.redirect("/questions");
+                                    }
+                                })
                             }
                         })
                     }
-                })
-            }
-            else {
-                daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
-                    if (err) { console.error(err); }
-                    else {
+                    else if (request.body.ansId === 'on' && request.body.ansText === '') {
+                        response.setFlash("'Otra' respuesta no puede ser vacía");
                         response.redirect("/questions");
                     }
-                })
-            }
+                    else{
+                        daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
+                            if (err) { console.error(err); }
+                            else {
+                                response.setFlash("Respondido");
+                                response.redirect("/questions");
+                            }
+                        }) 
+                    }
+                }
+            })
+        } else {
+            var ansQuestError = {
+                ansId: request.body.ansId
+            };
+            daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    daoQ.getAnswers(request.body.questionId, (err, ans) => {
+                        if (err) { console.error(err); }
+                        //Para que no explote si se modifica direccion por URL
+                        //OJO ans debe tener al menos una (o dos) respuesta para que esto funcione
+                        if (ans[0] !== undefined)
+                            response.render("ans_question", { user: usr, answers: ans, errores: result.mapped(), usuario: ansQuestError  });
+                        else
+                            response.redirect("/questions");
+                    })
+                }
+            });
+
         }
     });
 })

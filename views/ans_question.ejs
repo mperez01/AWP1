@@ -50,7 +50,11 @@
             </ul>
             <input class="boton" type="submit" value="Responder">
         </form>
-
+        <% if (errores.ansId) { %>
+            <div class="error">
+                <%= errores.ansId.msg %>
+            </div>
+            <% } %>
     </div>
 </body>
 
