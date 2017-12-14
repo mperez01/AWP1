@@ -614,7 +614,7 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
     let answerId = -1;
 
     //CONTROL DE VALIDACIÓN!!
-    
+
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
@@ -641,20 +641,27 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
             }
         }
     });
+})
 
-    app.get("/ans_guess",identificacionRequerida,(request,response)=>{
-        daoU.getUserData(request.session.currentUserId, (err, usr) => {
-            if (err) { console.error(err); }
-            else{
-                daoQ.getParticularAnswer(request.query.friendId,request.query.question_id,(err,ansd)=>{
-                    if (err) { console.error(err); }
-                    else{
-                        response.render("guess_friend_question",{answerData: ansd, user:usr});
-                    }
-                })
-            }
-        })
-        
+
+app.get("/ans_guess", identificacionRequerida, (request, response) => {
+    let numDefault = 0;
+    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+        if (err) { console.error(err); }
+        else{
+            daoQ.getParticularAnswer(request.query.friendId,request.query.question_id,(err,ansd)=>{
+                if (err) { console.error(err); }
+                else{
+                    //Tomamos el numero de respuestas que tenia la pregunta por primera vez
+                    numDefault = ansd.num;
+                    daoQ.pickNRandomAnswers(ansd.answer, request.query.question_id, numDefault - 1, (err,qust)=>{
+                        if (err) { console.error(err); }
+                        else {
+                            response.render("guess_friend_question",{correct: ansd, user:usr, question:qust });
+                        }
+                    })
+                }
+            })
+        }
     })
-
 })

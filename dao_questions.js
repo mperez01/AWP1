@@ -47,13 +47,16 @@ class DAOQuestions {
             if (err) {
                 callback(err, undefined); return;
             }
-            connection.query("SELECT DISTINCT id_answer as answer, id_question as question, questions.text as name FROM user_answer JOIN answer JOIN questions "+
-            "WHERE id_user=? AND id_question=?", [user_id,question_id],
-                function (err, quest) {
+
+            connection.query("SELECT DISTINCT a.text as ansName, ua.id_answer as answer, (SELECT num_answ FROM questions where questions.id=?) as num " +
+            "FROM user_answer ua JOIN answer a on ua.id_answer=a.id " +
+            "WHERE ua.id_user=? AND a.id_question=?", [question_id, user_id,question_id],
+                function (err, ans) {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
                     else {
-                        callback(err, quest[0]);
+                        console.log(ans);
+                        callback(err, ans[0]);
                     }
                 })
         })
@@ -63,18 +66,19 @@ class DAOQuestions {
 -numero de respuestas que debe haber(cogido en questions.num_answ)
 -question_id (para coger sus respectivas respuestas agenciadas a esa pregunta)
 - */
-    pickNRandomAnswers(answer_id, question_id, callback){
+    pickNRandomAnswers(answer_id, question_id, num , callback){
         this.pool.getConnection((err, connection) => {
             if (err) {
                 callback(err, undefined); return;
             }
-            connection.query("SELECT DISTINCT id_answer as answer, id_question as question FROM user_answer JOIN answer "+
-            "WHERE id_user=? AND id_question=?", [idAnswer,question_id],
+            connection.query("SELECT answer.text as answer, answer.id as answerId, questions.text as question FROM `questions` JOIN answer " +
+            "where questions.id = answer.id_question and questions.id = ? and answer.id != ? " +
+            "ORDER BY RAND() LIMIT ?", [question_id, answer_id, num],
                 function (err, quest) {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
                     else {
-                        callback(err, quest[0]);
+                        callback(err, quest);
                     }
                 })
         })
