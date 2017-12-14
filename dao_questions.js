@@ -151,7 +151,7 @@ class DAOQuestions {
             " and a.id=user_guess.id_answer and a.id_question=questions.id and user_guess.id_friend=user_answer.id_user) as correct " +
             " FROM relationship r,user u, user_answer JOIN answer ON id=id_answer WHERE user_answer.id_user!=? AND " + 
             "((r.user_one_id=? AND r.user_two_id=user_answer.id_user) OR (r.user_one_id=user_answer.id_user AND r.user_two_id=?)) " +
-             "AND id_question=? AND u.user_id=user_answer.id_user",
+             "AND id_question=? AND u.user_id=user_answer.id_user and r.status=1",
                 [id_user, questionId, id_user, id_user, id_user, questionId],
                 function (err, answer) {
                     connection.release();
