@@ -576,13 +576,6 @@ app.get("/quest_menu", identificacionRequerida, (request, response) => {
                                 if (err) { console.error(err); }
                                 else {
                                     response.render("quest_menu", { user: usr, quest: qst, answered: ans, friend: frd});
-                                    /*daoQ.userAnswerActions(request.session.currentUserId, questionId,(err, gss)=>{
-                                        if (err) { console.error(err); }
-                                        else{                                            
-                                            response.render("quest_menu", { user: usr, quest: qst, answered: ans, friend: frd, guess: gss});
-                                        }
-                                    })*/
-                                    
                                 }
                             })
                             

@@ -146,12 +146,12 @@ class DAOQuestions {
     getFriendsAnswer(id_user, questionId, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            connection.query("SELECT answer.id AS answerId, user_answer.id_user AS userId, u.image AS image, " + 
-            "u.name AS name, (SELECT correct FROM answer a, user_guess JOIN questions " + 
-            " where user_guess.id_user=? and questions.id=? and a.id=user_guess.id_answer and a.id_question=questions.id) as correct " +  
-            " FROM relationship r,user u, user_answer JOIN answer ON id=id_answer " +
-            " WHERE user_answer.id_user!=? AND ((r.user_one_id=? AND r.user_two_id=user_answer.id_user) OR " + 
-            " (r.user_one_id=user_answer.id_user AND r.user_two_id=?)) AND id_question=? AND u.user_id=user_answer.id_user",
+            connection.query( "SELECT answer.id AS answerId, user_answer.id_user AS userId, u.image AS image, u.name AS name, " + 
+            "(SELECT correct FROM answer a, user_guess JOIN questions where user_guess.id_user=? and questions.id=? " + 
+            " and a.id=user_guess.id_answer and a.id_question=questions.id and user_guess.id_friend=user_answer.id_user) as correct " +
+            " FROM relationship r,user u, user_answer JOIN answer ON id=id_answer WHERE user_answer.id_user!=? AND " + 
+            "((r.user_one_id=? AND r.user_two_id=user_answer.id_user) OR (r.user_one_id=user_answer.id_user AND r.user_two_id=?)) " +
+             "AND id_question=? AND u.user_id=user_answer.id_user",
                 [id_user, questionId, id_user, id_user, id_user, questionId],
                 function (err, answer) {
                     connection.release();
@@ -163,29 +163,6 @@ class DAOQuestions {
                 })
         })
     }
-    /**
- * user_guess:
- * -id_user
- * -id_friend
- * -id_answer ---> la pregunta seleccionada.
- 
-    userAnswerActions(user_Id, questId, callback) {
-        this.pool.getConnection((err, connection) => {
-            if (err) { callback(err); return; }
-            connection.query("SELECT DISTINCT ug.correct as correct, ua.id_user as friendId, ug.id_answer as ansGuessId, ua.id_answer as ansTrueId " +
-                " FROM user_guess ug JOIN user_answer ua JOIN questions " +
-                " WHERE ug.id_friend = ua.id_user and ug.id_user=? AND questions.id=?"
-                [user_Id, questId],
-                function (err, ansAct) {
-                    connection.release();
-                    if (err) { callback(err); return; }
-                    else {
-                        console.log(ansAct);
-                        callback(err, ansAct);
-                    }
-                })
-        })
-    } */
 }
 module.exports = {
     DAOQuestions: DAOQuestions
