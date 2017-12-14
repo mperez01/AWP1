@@ -642,4 +642,19 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
         }
     });
 
+    app.get("/ans_guess",identificacionRequerida,(request,response)=>{
+        daoU.getUserData(request.session.currentUserId, (err, usr) => {
+            if (err) { console.error(err); }
+            else{
+                daoQ.getParticularAnswer(request.query.friendId,request.query.question_id,(err,ansd)=>{
+                    if (err) { console.error(err); }
+                    else{
+                        response.render("guess_friend_question",{answerData: ansd, user:usr});
+                    }
+                })
+            }
+        })
+        
+    })
+
 })
