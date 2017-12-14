@@ -621,8 +621,13 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
             //BUSCAR MANERA DE NO TENER ESTE IF ELSE
             /** Para así no tener que llamar dos veces a addUserAnswer
              * aunqeu funciona bien
+             * newAnsId
              */
-            if (request.body.ansText !== '') {
+            console.log("ANSid de otro " + request.body.ansId);
+
+            //Undefined para controlar que esta señalando la que no devuelve nada
+            //otra, y que no sea '' para que no sea un valor vacío
+            if (request.body.ansId === undefined && request.body.ansText !== '') {
                 daoQ.addAnswer(request.body.questionId, request.body.ansText, (err, answerId) => {
                     if (err) { console.error(err); }
                     else {
@@ -636,7 +641,12 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                 })
             }
             else {
-                response.redirect("/questions");
+                daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
+                    if (err) { console.error(err); }
+                    else {
+                        response.redirect("/questions");
+                    }
+                })
             }
         }
     });
@@ -649,45 +659,45 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
  */
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
-  
+
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
-  
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-  
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
     }
-  
+
     return array;
-  }
+}
 
 app.get("/ans_guess", identificacionRequerida, (request, response) => {
     let numDefault = 0;
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) { console.error(err); }
-        else{
-            daoQ.getParticularAnswer(request.query.friendId,request.query.question_id,(err,ansd)=>{
+        else {
+            daoQ.getParticularAnswer(request.query.friendId, request.query.question_id, (err, ansd) => {
                 if (err) { console.error(err); }
-                else{
+                else {
                     //Tomamos el numero de respuestas que tenia la pregunta por primera vez
                     numDefault = ansd.num;
-                    daoQ.pickNRandomAnswers(ansd.answer, request.query.question_id, numDefault - 1, (err,qust)=>{
+                    daoQ.pickNRandomAnswers(ansd.answer, request.query.question_id, numDefault - 1, (err, qust) => {
                         if (err) { console.error(err); }
                         else {
                             /**
                              * trueAns contiene los valores de la respuesa correcta en el mismo formato que qust (de los
                              * answers random).
                              */
-                            let trueAns = {answer: ansd.ansName, answerId: ansd.answer, question: qust[0].question};
+                            let trueAns = { answer: ansd.ansName, answerId: ansd.answer, question: qust[0].question };
                             qust.push(trueAns);
                             //shuffle pone los valores existentes en el array en indices aleatorios
                             qust = shuffle(qust);
-                            response.render("guess_friend_question",{correct: ansd, user:usr, question:qust });
+                            response.render("guess_friend_question", { correct: ansd, user: usr, question: qust });
                         }
                     })
                 }
@@ -703,23 +713,23 @@ app.post("/ans_guess", identificacionRequerida, (request, response) => {
         else {
             let puntos = usr.points;
             //Comprobamos que la respuesta correcta sea igual a la seleccionada por el usuario
-            if(request.body.ansId === request.body.correctId) {
+            if (request.body.ansId === request.body.correctId) {
                 correct = 1;
-                puntos=puntos+50;
+                puntos = puntos + 50;
             }
             else {
                 correct = 0;
             }
-            daoU.addUserPoints(request.session.currentUserId, puntos, (err) => {
+            daoU.addUserPoints(request.session.currentUserId, puntos, (err) => {
                 if (err) { console.error(err); }
                 else {
-                    daoQ.addGuessAnswer(request.body.ansId, request.session.currentUserId, 
+                    daoQ.addGuessAnswer(request.body.ansId, request.session.currentUserId,
                         request.body.idFriend, correct, (err) => {
-                        if (err) { console.error(err); }
-                        else {
-                            response.redirect("/questions");
-                        }
-                    });  
+                            if (err) { console.error(err); }
+                            else {
+                                response.redirect("/questions");
+                            }
+                        });
                 }
             })
         }

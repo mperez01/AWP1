@@ -55,8 +55,6 @@ class DAOQuestions {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
                     else {
-                        console.log("particularAnswer")
-                        console.log(ans)
                         callback(err, ans[0]);
                     }
                 })
@@ -79,7 +77,6 @@ class DAOQuestions {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
                     else {
-                       
                         callback(err, quest);
                     }
                 })
