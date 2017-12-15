@@ -60,7 +60,8 @@ app.use(expressValidator({
             return num.length >= 2;
         },
         ansEmpty: function(param) {
-            return param;
+            console.log("Param en val + " + param);
+            return param === true;
         }
     }
 }));
@@ -634,12 +635,13 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
     if (request.body.ansId === 'on' && request.body.ansText === '') {
         otherNotEmpty = false;
     }
+    console.log("Ansid = " + request.body.ansId + " anst text = " + request.body.ansText  );
+    console.log(otherNotEmpty);
 
     //CONTROL DE VALIDACIÓN!!
     request.checkBody("ansId", "¡No has seleccionado ninguna respuesta!").notEmpty();
-    request.checkParams("otherNotEmpty", "Otra respuesta no puede ser vacía").ansEmpty();
     request.getValidationResult().then((result) => {
-        if (result.isEmpty()) {
+        if (result.isEmpty() && otherNotEmpty) {
             daoU.getUserData(request.session.currentUserId, (err, usr) => {
                 if (err) {
                     console.error(err);
@@ -690,8 +692,10 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                         if (err) { console.error(err); }
                         //Para que no explote si se modifica direccion por URL
                         //OJO ans debe tener al menos una (o dos) respuesta para que esto funcione
-                        if (ans[0] !== undefined)
+                        if (ans[0] !== undefined) {
+                            response.setFlash("Otra respuesta no puede ser vacía");
                             response.render("ans_question", { user: usr, answers: ans, errores: result.mapped(), usuario: ansQuestError });
+                        }
                         else
                             response.redirect("/questions");
                     })
@@ -703,6 +707,7 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
 
 /**
  * Fisher-Yates algorithm
+ * https://github.com/Daplie/knuth-shuffle
  * 
  * @param {*} array array to randomize
  */

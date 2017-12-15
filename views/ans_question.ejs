@@ -50,6 +50,12 @@
             </ul>
             <input class="boton" type="submit" value="Responder">
         </form>
+        <% let errorMsg = getFlash(); %>
+            <% if (errorMsg) { %>
+                <div class="error">
+                    <%= errorMsg %>
+                </div>
+                <% } %>
         <% if (errores.ansId) { %>
             <div class="error">
                 <%= errores.ansId.msg %>
