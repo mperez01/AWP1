@@ -853,8 +853,8 @@ app.get("/images/:id", (request, response) => {
 });
   
   // Pantalla página no encontrada
-  app.use(function(req, response, next) {
+  app.use(function(req, response) {
       response.status(404);
-      response.render("404", {errores: undefined, session: req.session, pagina: "404"});
+      response.render("404");
       response.end();
   });
