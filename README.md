@@ -48,4 +48,8 @@ Los puntos pueden usarse para subir fotos/imagenes al perfil
 ### Referencias
 [Algorithm Fisher-Yates](https://github.com/Daplie/knuth-shuffle)
 
+[GloriaHallelujah.ttf](http://www.kimberlygeswein.com/)
+
+[Imágenes de usuario](https://hopstarter.deviantart.com/art/Halloween-Avatars-643096849)
+
 
