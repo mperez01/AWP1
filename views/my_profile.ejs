@@ -47,20 +47,21 @@
             <a href="/modify_profile" > Modificar perfil</a>
             <a href="/upload_img">Subir imágen</a>
         </div>
-    </div>
-    <% let mensaje = getFlash(); %>
-    <% if (mensaje) { %>
-        <div class="error">
-            <%= mensaje %>
-        </div>
-    <% } %>
-    <div>
-        <%images.forEach(image=>{%>
-            <div class="imagenes">
-                    <img class="image" name="imagen" src="/images/<%=image.image%>" alt="fotoPerfil">
-                    <p><%= image.description%></p>
+    
+        <% let mensaje = getFlash(); %>
+        <% if (mensaje) { %>
+            <div class="error">
+                <%= mensaje %>
             </div>
-        <%})%>
+        <% } %>
+            <%if(images.length!=0){%>
+                <p>Tus imágenes</p>
+                <%images.forEach(image=>{%>
+                    <div class="imagenes">
+                        <img class="image" name="imagen" src="/images/<%=image.image%>" alt="fotoPerfil">
+                        <div><p><%= image.description%></p></div>
+                    </div>
+                <%})}%>
     </div>
 
 </body>
