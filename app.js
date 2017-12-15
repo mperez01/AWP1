@@ -59,10 +59,6 @@ app.use(expressValidator({
             let num = param.split("\n");
             return num.length >= 2;
         },
-        ansEmpty: function(param) {
-            console.log("Param en val + " + param);
-            return param === true;
-        }
     }
 }));
 
@@ -532,7 +528,6 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
     request.checkBody("answers", "Las respuestas no pueden ser espacio en blanco").whiteSpace();
     request.checkBody("answers", "Debes introducir al menos dos respuestas").min2ans();
     request.getValidationResult().then((result) => {
-        console.log(result)
         if (result.isEmpty()) {
             daoQ.addQuestion(request.session.currentUserId, request.body.question, answer, num, (err) => {
                 if (err) {
@@ -635,8 +630,6 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
     if (request.body.ansId === 'on' && request.body.ansText === '') {
         otherNotEmpty = false;
     }
-    console.log("Ansid = " + request.body.ansId + " anst text = " + request.body.ansText  );
-    console.log(otherNotEmpty);
 
     //CONTROL DE VALIDACIÓN!!
     request.checkBody("ansId", "¡No has seleccionado ninguna respuesta!").notEmpty();

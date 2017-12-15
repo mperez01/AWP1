@@ -65,19 +65,14 @@ width:80%;
 }
 
 .imagenes{
-    margin:auto;
-    position:relative;
-    display:flex;
-    width: 50%;
-    margin-top:5%;
+    margin-bottom: 5%;
+}
+.descripcion{
+    text-align: center;
+
 }
 .image{
-    height: 30%;
-    width: 30%;
-}
-
-.descripcion{
-    vertical-align: middle;
-    margin-left:5%;
-    display: table-cell;
+    display: block;
+    margin: auto;
+    width: 40%;
 }

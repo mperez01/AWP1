@@ -56,10 +56,10 @@
         <% } %>
             <%if(images.length!=0){%>
                 <p>Tus imágenes</p>
-                <%images.forEach(image=>{%>
+                <%images.forEach(image=>{ %>
                     <div class="imagenes">
-                        <img class="image" name="imagen" src="/images/<%=image.image%>" alt="fotoPerfil">
-                        <div class="descripcion"><p><%= image.description%></p></div>
+                        <img class="image" name="imagen" src="/images/<%=image.image%>" alt='<%=image.description%>'>
+                        <p class="descripcion"><%= image.description%></p>
                     </div>
                 <%})}%>
     </div>
