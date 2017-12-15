@@ -80,34 +80,43 @@ let daoF = new daoFriends.DAOFriends(pool);
 let daoQ = new daoQuestions.DAOQuestions(pool);
 let daoI = new daoImages.DAOImages(pool);
 
+app.listen(config.port, (err) => {
+    if (err) {
+        console.error("No se pudo inicializar el servidor: " + err.message);
+    } else {
+        console.log("Servidor arrancado en el puerto " + config.port);
+    }
+});
+
 function identificacionRequerida(request, response, next) {
 
     if (request.session.currentUserId !== undefined) {
         response.locals.user_id = request.session.currentUserId;
         next();
     } else {
+        response.status(300);
         response.redirect("/login.html");
+        response.end();
     }
 }
 
 app.get("/", (request, response) => {
+    response.status(300);
     response.redirect("/login.html");
+    response.end();
 });
 
-app.listen(3000, (err) => {
-    if (err) {
-        console.error("No se pudo inicializar el servidor: " + err.message);
-    } else {
-        console.log("Servidor arrancado en el puerto 3000");
-    }
-});
 
 app.get("/login.html", (request, response) => {
     //Si el usuario esta logeado ya en el sistema, impedimos que vaya a la vista login
     if (request.session.currentUserId === undefined) {
+        response.status(200);
         response.render("login", { errores: [], usuario: {} });
+        response.end();
     } else {
+        response.status(300);
         response.redirect("/my_profile");
+        response.end();
     }
 });
 
@@ -120,18 +129,23 @@ app.post("/login", (request, response) => {
         if (result.isEmpty()) {
             daoU.isUserCorrect(request.body.email, request.body.pass, (err, id) => {
                 if (err) {
-                    console.error(err);
+                    response.status(300);
                     response.redirect("/login.html");
+                    response.end();
                 }
                 else {
                     if (id > 0) {
                         request.session.currentUserId = id;
                         request.session.currentUserEmail = request.body.email;
+                        response.status(300);
                         response.redirect("/my_profile");
+                        response.end();
                     }
                     else {
                         response.setFlash("Dirección de correo electronico y/o contraseña no válidos");
+                        response.status(300);
                         response.redirect("/login.html");
+                        response.end();
                     }
                 }
             })
@@ -140,14 +154,18 @@ app.post("/login", (request, response) => {
                 pass: request.body.pass,
                 email: request.body.email,
             };
+            response.status(200);
             response.render("login", { errores: result.mapped(), usuario: usuarioIncorrecto });
+            response.end();
         }
     });
 });
 
 app.get("/logout", (request, response) => {
     request.session.destroy();
+    response.status(300);
     response.redirect("/login.html");
+    response.end();
 });
 app.get("/imagenUsuario/:id", (request, response) => {
     response.sendFile(path.join(__dirname, "profile_imgs", request.params.id));
@@ -156,10 +174,13 @@ app.get("/imagenUsuario/:id", (request, response) => {
 app.get("/imagenUsuario", (request, response) => {
     response.status(200);
     response.sendFile(__dirname + '/public/img/NoProfile.png');
+    response.end();
 });
 
 app.get("/new_user.html", (request, response) => {
+    response.status(200);
     response.render("new_user", { errores: [], usuario: {} });
+    response.end();
 })
 
 app.post("/new_user", uploadProfilePicture.single("uploadedfile"), (request, response) => {
@@ -194,13 +215,17 @@ app.post("/new_user", uploadProfilePicture.single("uploadedfile"), (request, res
                                 } else {
                                     request.session.currentUserId = id;
                                     request.session.currentUserEmail = request.body.email;
+                                    response.status(300);
                                     response.redirect("/my_profile");
+                                    response.end();
                                 }
                             })
                     }
                     else {
                         response.setFlash("Dirección de correo electrónico en uso");
+                        response.status(300);
                         response.redirect("/new_user.html");
+                        response.end();
                     }
                 }
             })
@@ -211,13 +236,14 @@ app.post("/new_user", uploadProfilePicture.single("uploadedfile"), (request, res
                 name: request.body.name,
                 gender: request.body.gender,
             };
+            response.status(200);
             response.render("new_user", { errores: result.mapped(), usuario: usuarioIncorrecto });
+            response.end();
         }
     });
 })
 
 app.get("/my_profile", identificacionRequerida, (request, response) => {
-    response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
@@ -226,7 +252,9 @@ app.get("/my_profile", identificacionRequerida, (request, response) => {
                 if (err) {
                     console.error(err);
                 } else {
+                    response.status(200);
                     response.render("my_profile", { user: usr,images:img });
+                    response.end();
                 }
             })
         }
@@ -236,12 +264,13 @@ app.get("/my_profile", identificacionRequerida, (request, response) => {
 
 
 app.get("/modify_profile", identificacionRequerida, (request, response) => {
-    response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
         } else {
+            response.status(200);
             response.render("modify_profile", { user: usr, errores: [], usuario: {} });
+            response.end();
         }
     });
 });
@@ -284,13 +313,17 @@ app.post("/modify", identificacionRequerida, uploadProfilePicture.single("upload
                                         request.session.currentUserEmail = request.body.email;
                                     }
                                     response.setFlash("Modificaciones guardadas");
+                                    response.status(300);
                                     response.redirect("/my_profile");
+                                    response.end();
                                 }
                             });
                     }
                     else {
                         response.setFlash("Dirección de correo electrónico en uso");
+                        response.status(300);
                         response.redirect("/modify_profile");
+                        response.end();
                     }
                 }
             });
@@ -305,7 +338,9 @@ app.post("/modify", identificacionRequerida, uploadProfilePicture.single("upload
                 if (err) {
                     console.error(err);
                 } else {
+                    response.status(200);
                     response.render("modify_profile", { user: usr, errores: result.mapped(), usuario: usuarioIncorrecto });
+                    response.end();
                 }
             });
         }
@@ -313,7 +348,6 @@ app.post("/modify", identificacionRequerida, uploadProfilePicture.single("upload
 });
 
 app.get("/friends", identificacionRequerida, (request, response) => {
-
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
@@ -321,10 +355,12 @@ app.get("/friends", identificacionRequerida, (request, response) => {
             daoF.getFriendList(request.session.currentUserId, (err, frd) => {
                 if (err) { console.error(err); }
                 else {
+                    response.status(200);
                     response.render("friends", {
                         user: usr, friends: frd, id: request.session.currentUserId,
                         errores: [], usuario: {}
                     });
+                    response.end();
                 }
             })
         }
@@ -337,7 +373,9 @@ app.post("/discardFriend", identificacionRequerida, (request, response) => {
         if (err) { console.error(err); }
         else {
             response.setFlash("Petición rechazada");
+            response.status(300);
             response.redirect("/friends");
+            response.end();
         }
     }))
 })
@@ -347,7 +385,9 @@ app.post("/addFriend", identificacionRequerida, (request, response) => {
         if (err) { console.error(err); }
         else {
             response.setFlash("Petición aceptada");
+            response.status(300);
             response.redirect("/friends");
+            response.end();
         }
     })
     )
@@ -393,10 +433,12 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
                                                 }
                                             })
                                         })
+                                        response.status(200);
                                         response.render("search", {
                                             user: usr, list: list,
                                             id: request.session.currentUserId, nombre: request.query.nombre
                                         });
+                                        response.end();
                                     }
                                 })
                             }
@@ -404,7 +446,9 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
                     } else {
                         //Mensaje flash aqui
                         response.setFlash(`Ningún resultado para: ${request.query.nombre} `);
+                        response.status(300);
                         response.redirect("/friends");
+                        response.end();
                     }
                 }
             }
@@ -421,10 +465,12 @@ app.get("/searchName", identificacionRequerida, (request, response) => {
                         if (err) {
                             console.error(err);
                         } else {
+                            response.status(200);
                             response.render("friends", {
                                 user: usr, friends: frd, id: request.session.currentUserId,
                                 errores: result.mapped(), busqueda: busquedaIncorrecta
                             });
+                            response.end();
                         }
                     })
                 }
@@ -441,7 +487,9 @@ app.post("/sendFriendRequest", identificacionRequerida, (request, response) => {
         }
         else {
             response.setFlash("Petición enviada");
+            response.status(300);
             response.redirect("/friends");
+            response.end();
         }
     })
 })
@@ -473,7 +521,9 @@ app.get("/friendProfile", identificacionRequerida, (request, response) => {
                             } else {
                                 console.error("Este usuario no existe");
                                 response.setFlash("Este usuario no existe");
+                                response.status(300);
                                 response.redirect("/friends");
+                                response.end();
                             }
                         }
                 })
@@ -488,13 +538,14 @@ app.post("/deleteFriend", identificacionRequerida, (request, response) => {
         if (err) { console.error(err); }
         else {
             response.setFlash("Amigo eliminado");
+            response.status(300);
             response.redirect("/friends");
+            response.end();
         }
     }))
 })
 
 app.get("/questions", identificacionRequerida, (request, response) => {
-    response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
@@ -505,7 +556,9 @@ app.get("/questions", identificacionRequerida, (request, response) => {
                 }
                 else {
                     //Maximo de preguntas a mostrar
+                    response.status(200);
                     response.render("questions", { user: usr, questions: qst });
+                    response.end();
                 }
             })
         }
@@ -513,18 +566,18 @@ app.get("/questions", identificacionRequerida, (request, response) => {
 })
 
 app.get("/addQuestion", identificacionRequerida, (request, response) => {
-    response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
         } else {
+            response.status(200);
             response.render("add_questions", { user: usr, errores: [], usuario: {} });
+            response.end();
         }
     });
 })
 
 app.post("/addQuestion", identificacionRequerida, (request, response) => {
-    response.status(200);
 
     let allAnswers = request.body.answers;
     let answer = allAnswers.split("\n");
@@ -548,7 +601,9 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
                         } else {
                             if (err) { console.error(err); }
                             else {
+                                response.status(300);
                                 response.redirect("/questions");
+                                response.end();
                             }
                         }
                     });
@@ -569,9 +624,11 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
                             console.error(err);
                         }
                         else {
+                            response.status(200);
                             response.render("add_questions", {
                                 user: usr, errores: result.mapped(), usuario: addQuestIncorrecto
                             });
+                            response.end();
                         }
                     });
                 }
@@ -598,13 +655,17 @@ app.get("/quest_menu", identificacionRequerida, (request, response) => {
                             daoQ.getFriendsAnswer(request.session.currentUserId, questionId, (err, frd) => {
                                 if (err) { console.error(err); }
                                 else {
+                                    response.status(200);
                                     response.render("quest_menu", { user: usr, quest: qst, answered: ans, friend: frd });
+                                    response.end();
                                 }
                             })
                         }
                     })
                 } else {
+                    response.status(300);
                     response.redirect("/questions");
+                    response.end();
                 }
             })
         }
@@ -614,7 +675,6 @@ app.get("/quest_menu", identificacionRequerida, (request, response) => {
 
 app.get("/ans_question", identificacionRequerida, (request, response) => {
 
-    response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
@@ -623,10 +683,16 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
                 if (err) { console.error(err); }
                 //Para que no explote si se modifica direccion por URL
                 //OJO ans debe tener al menos una (o dos) respuesta para que esto funcione
-                if (ans[0] !== undefined)
+                if (ans[0] !== undefined) {
+                    response.status(200);
                     response.render("ans_question", { user: usr, answers: ans, errores: [], usuario: {} });
-                else
+                    response.end();
+                }
+                else {
+                    response.status(300);
                     response.redirect("/questions");
+                    response.end();
+                }
             })
         }
     });
@@ -663,7 +729,9 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                                     if (err) { console.error(err); }
                                     else {
                                         response.setFlash("Respondido");
+                                        response.status(300);
                                         response.redirect("/questions");
+                                        response.end();
                                     }
                                 })
                             }
@@ -674,7 +742,9 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                             if (err) { console.error(err); }
                             else {
                                 response.setFlash("Respondido");
+                                response.status(300);
                                 response.redirect("/questions");
+                                response.end();
                             }
                         })
                     }
@@ -696,10 +766,15 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                         //OJO ans debe tener al menos una (o dos) respuesta para que esto funcione
                         if (ans[0] !== undefined) {
                             response.setFlash("Otra respuesta no puede ser vacía");
+                            response.status(200);
                             response.render("ans_question", { user: usr, answers: ans, errores: result.mapped(), usuario: ansQuestError });
+                            response.end();
                         }
-                        else
+                        else {
+                            response.status(300);
                             response.redirect("/questions");
+                            response.end();
+                        }
                     })
                 }
             });
@@ -754,7 +829,9 @@ app.get("/ans_guess", identificacionRequerida, (request, response) => {
                             qust.push(trueAns);
                             //shuffle pone los valores existentes en el array en indices aleatorios
                             qust = shuffle(qust);
+                            response.status(200);
                             response.render("guess_friend_question", { correct: ansd, user: usr, question: qust });
+                            response.end();
                         }
                     })
                 }
@@ -790,7 +867,9 @@ app.post("/ans_guess", identificacionRequerida, (request, response) => {
                                     if (err) { console.error(err); }
                                     else {
                                         response.setFlash(text);
+                                        response.status(300);
                                         response.redirect("/questions");
+                                        response.end();
                                     }
                                 });
                         }
@@ -804,18 +883,18 @@ app.post("/ans_guess", identificacionRequerida, (request, response) => {
 })
 
 app.get("/upload_img", identificacionRequerida, (request, response) => {
-    response.status(200);
     daoU.getUserData(request.session.currentUserId, (err, usr) => {
         if (err) {
             console.error(err);
         } else {
+            response.status(200);
             response.render("upload_img", { user: usr});
+            response.end();
         }
     });
 });
 
 app.post("/add_img", identificacionRequerida,uploadImage.single("uploadedfile"),(request,response)=>{
-    response.status(200);
     var img;
     let text="";
     if (request.file) { // Si se ha subido un fichero
@@ -833,7 +912,9 @@ app.post("/add_img", identificacionRequerida,uploadImage.single("uploadedfile"),
                             if(err){console.error(err)}
                             else{
                                 response.setFlash(text);
+                                response.status(300);
                                 response.redirect("/my_profile");
+                                response.end();
                             }
                         })
                     };
@@ -842,7 +923,9 @@ app.post("/add_img", identificacionRequerida,uploadImage.single("uploadedfile"),
     } else {
         text="Imagen no subida.."
         response.setFlash(text);
+        response.status(300);
         response.redirect("/my_profile");
+        response.end();
     }
 
 })
@@ -850,11 +933,12 @@ app.post("/add_img", identificacionRequerida,uploadImage.single("uploadedfile"),
 app.get("/images/:id", (request, response) => {
     response.sendFile(path.join(__dirname, "images", request.params.id));
     request.session.userImg = request.params.id;
+    response.end();
 });
   
   // Pantalla página no encontrada
-  app.use(function(req, response) {
+  app.use(function(request, response) {
       response.status(404);
-      response.render("404");
+      response.render("404", { url: request.url});
       response.end();
   });

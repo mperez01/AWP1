@@ -9,16 +9,7 @@
 </head>
 
 <body>
-    <div class="top">
-        <img id="LogoImg" src="img/Logo.png" alt="logo">
-        <div class="botonesArriba">
-            <a href="/my_profile">Perfil</a>
-            <a href="/friends">Amigos</a>
-            <a href="/questions">Preguntas</a>
-            <a href="/logout">Desconectar</a>
-            <label><img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil"> <%= user.points %> </label>
-        </div>
-    </div>
+        <%- include("headerIn") %>
 
     <div class="login">
         <p>Modificar usuario</p>
@@ -42,23 +33,23 @@
                     <label class="datoSexo">
                             <% if(user.gender !== null){ %>
                                 <% if(user.gender==="male"){ %>
-                                    <input type="radio" name="gender" value="male" checked> Masculino
+                                    <input type="radio" id="formMale"name="gender" value="male" checked> <label for="formMale">Masculino</label>
                                     
-                                    <input type="radio" name="gender" value="female"> Femenino 
+                                    <input type="radio" id="formFemale" name="gender" value="female"> <label for="formFemale">Femenino</label> 
                                     
-                                    <input type="radio" name="gender" value="other"> Otro
+                                    <input type="radio" id="formOther" name="gender" value="other"> <label for="formOther">Otro</label>
                                 <% } else if(user.gender==="female"){ %>
-                                    <input type="radio" name="gender" value="male"> Masculino
+                                    <input type="radio" id="formMale"name="gender" value="male"> <label for="formMale">Masculino</label>
                                     
-                                    <input type="radio" name="gender" value="female" checked> Femenino 
+                                    <input type="radio" id="formFemale" name="gender" value="female" checked> <label for="formFemale">Femenino</label> 
                                     
-                                    <input type="radio" name="gender" value="other"> Otro
+                                    <input type="radio" id="formOther" name="gender" value="other"> <label for="formOther">Otro</label>
                                 <% } else { %>
-                                    <input type="radio" name="gender" value="male"> Masculino
+                                    <input type="radio" id="formMale"name="gender" value="male"> <label for="formMale">Masculino</label>
                                     
-                                    <input type="radio" name="gender" value="female"> Femenino 
+                                    <input type="radio" id="formFemale" name="gender" value="female"> <label for="formFemale">Femenino</label> 
                                     
-                                    <input type="radio" name="gender" value="other" checked> Otro
+                                    <input type="radio" id="formOther" name="gender" value="other" checked> <label for="formOther">Otro</label>
                                 <% } %>
                             <% } %>
                     </label>

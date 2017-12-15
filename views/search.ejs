@@ -9,19 +9,7 @@
 </head>
 
 <body>
-    <div class="top">
-        <img id="LogoImg" src="img/Logo.png" alt="logo">
-        <div class="botonesArriba">
-            <a href="/my_profile">Perfil</a>
-            <a href="/friends">Amigos</a>
-            <a href="/questions">Preguntas</a>
-            <a href="/logout">Desconectar</a>
-            <label>
-                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
-                <%= user.points %>
-            </label>
-        </div>
-    </div>
+        <%- include("headerIn") %>
     <div class="solicitudes">
         <div>
             <p>Resultado de búsqueda "

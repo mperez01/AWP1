@@ -9,19 +9,7 @@
 </head>
 
 <body>
-    <div class="top">
-        <img id="LogoImg" src="img/Logo.png" alt="logo">
-        <div class="botonesArriba">
-            <a href="/my_profile">Perfil</a>
-            <a href="/friends">Amigos</a>
-            <a href="/questions">Preguntas</a>
-            <a href="/logout">Desconectar</a>
-            <label>
-                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
-                <%= user.points %>
-            </label>
-        </div>
-    </div>
+        <%- include("headerIn") %>
     <div class="solicitudes">
         <div>
             <p>
@@ -33,8 +21,8 @@
                 <div>
                     <%question.forEach(ans=>{ %>
                         <li class="preguntasAleatorias">
-                            <input class="pregunta" name="ansId" type="radio" value='<%=ans.answerId%>'>
-                            <%=ans.answer%>
+                            <input class="pregunta" id='<%=ans.answerId%>' name="ansId" type="radio" value='<%=ans.answerId%>'>
+                            <label for='<%=ans.answerId%>'><%=ans.answer%></label>
                         </li>
                         <% }); %>
                 </div>

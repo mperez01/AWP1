@@ -9,50 +9,37 @@
 </head>
 
 <body>
-    <div class="top">
-        <img id="LogoImg" src="img/Logo.png" alt="logo">
-        <div class="botonesArriba">
-            <a href="/my_profile">Perfil</a>
-            <a href="/friends">Amigos</a>
-            <a href="/questions">Preguntas</a>
-            <a href="/logout">Desconectar</a>
-            <label>
-                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
-                <%= user.points %>
-            </label>
-        </div>
-
-        <div class="login">
+    <%- include("headerIn") %>
+        <div>
+            <div class="login">
             <p>Subir fotos</p>
         </div>
-    </div>
-    </div>
-    <div>
-        <%if(user.points<100){%>
-            <div class="error">
-                <p>No se puede subir una nueva imagen ya que necesita de al menos 100 puntos para subir una imagen</p>
-                <p>Para conseguir puntos, adivine las preguntas de otros usuarios!</p>
-                <p>Tiene
-                    <%=user.points%> puntos</p>
-                <a href="/my_profile" class="boton">Volver a mi perfil</a>
-            </div>
-            <%}else{%>
-                
-                <div class="recuadro">
-                    <form method="POST" action="/add_img" enctype="multipart/form-data">
-                        <div>
-                            <label for="img"> Imagen: </label>
-                            <input class="datoImagen" id="img" name="uploadedfile" type="file" accept="image/*">
-                        </div>
-                        <div>
-                            <label for="formDescripcion"> Descripción de la imagen: </label>
-                            <input class="textField" type="text" name="description" id="formDescripcion">
-                        </div>
-                            <input class="boton" type="submit" value="Subir imagen">
-                    </form>
+        <div>
+            <%if(user.points<100){%>
+                <div class="error">
+                    <p>No se puede subir una nueva imagen ya que necesita de al menos 100 puntos para subir una imagen</p>
+                    <p>Para conseguir puntos, adivine las preguntas de otros usuarios!</p>
+                    <p>Tiene
+                        <%=user.points%> puntos</p>
+                    <a href="/my_profile" class="boton">Volver a mi perfil</a>
                 </div>
-                <%}%>
-    </div>
+                <%}else{%>
+
+                    <div class="recuadro">
+                        <form method="POST" action="/add_img" enctype="multipart/form-data">
+                            <div>
+                                <label for="img"> Imagen: </label>
+                                <input class="datoImagen" id="img" name="uploadedfile" type="file" accept="image/*">
+                            </div>
+                            <div>
+                                <label for="formDescripcion"> Descripción de la imagen: </label>
+                                <input class="textField" type="text" name="description" id="formDescripcion">
+                            </div>
+                            <input class="boton" type="submit" value="Subir imagen">
+                        </form>
+                    </div>
+                    <%}%>
+        </div>
 </body>
 
 </html>

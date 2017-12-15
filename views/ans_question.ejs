@@ -9,19 +9,7 @@
 </head>
 
 <body>
-    <div class="top">
-        <img id="LogoImg" src="img/Logo.png" alt="logo">
-        <div class="botonesArriba">
-            <a href="/my_profile">Perfil</a>
-            <a href="/friends">Amigos</a>
-            <a href="/questions">Preguntas</a>
-            <a href="/logout">Desconectar</a>
-            <label>
-                <img class="iconoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
-                <%= user.points %>
-            </label>
-        </div>
-    </div>
+        <%- include("headerIn") %>
     <div class="solicitudes">
         <div>
             <p>
@@ -34,15 +22,15 @@
                     <input name="questionId" type="hidden" value="<%=answers[0].questId%>">
                     <%answers.forEach(ans=>{%>
                         <li class="preguntasAleatorias">
-                            <input class="pregunta" name="ansId" type="radio" value='<%=ans.ansId%>'>
-                            <%=ans.ansText%>
+                            <input class="pregunta" id="<%=ans.ansId%>" name="ansId" type="radio" value='<%=ans.ansId%>'>
+                            <label for="<%=ans.ansId%>"><%=ans.ansText%></label>
                         </li>
                         <% }); %>
                             <div>
                                 <li class="preguntasAleatorias">
                                     <div class=anadir>
-                                        <input for="forAnsText" class="pregunta" name="ansId" type="radio"> Otra:
-                                        <input name="ansText" type="text" id="forAnsText" class="rellenar">
+                                        <input id="forAnsText" class="pregunta" name="ansId" type="radio"> <label for="forAnsText">Otra:</label>
+                                        <input name="ansText" type="text" class="rellenar">
                                     </div>
                                 </li>
                             </div>

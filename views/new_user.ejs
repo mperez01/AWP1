@@ -9,84 +9,78 @@
 </head>
 
 <body>
-    <div class="top">
-        <img id="LogoImg" src="img/Logo.png" alt="logo">
-        <div class="botonesArriba">
-            <a href="/login.html">Entrar</a>
-            <a href="/new_user.html">Nuevo Usuario</a>
+    <%- include("headerOut") %>
+
+        <div class="login">
+            <p>Nuevo usuario</p>
+            <div class="recuadro">
+                <form method="POST" action="/new_user" enctype="multipart/form-data">
+                    <!-- Contenido del formulario -->
+                    <div>
+                        <label for="formEmail">Email </label>
+                        <input class="rellenar" type="email" name="email" id="formEmail">
+                    </div>
+                    <div>
+                        <label for="formContraseña">Contraseña </label>
+                        <input class="rellenar" type="password" name="password" id="formContraseña">
+                    </div>
+                    <div>
+                        <label for="formNombre"> Nombre completo </label>
+                        <input class="rellenar" type="text" name="name" id="formNombre">
+                    </div>
+                    <div>
+                        <label> Sexo </label>
+                        <label class="datoSexo">
+                                <input type="radio" id="formMale"name="gender" value="male"> <label for="formMale">Masculino</label>
+                                    
+                                <input type="radio" id="formFemale" name="gender" value="female"> <label for="formFemale">Femenino</label> 
+                                
+                                <input type="radio" id="formOther" name="gender" value="other"> <label for="formOther">Otro</label>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="formFecha"> Fecha de nacimiento </label>
+                        <input class="datoFecha" type="date" name="date" id="formFecha">
+                    </div>
+                    <div>
+                        <label for="formImg"> Imagen de perfil </label>
+                        <input class="datoImagen" name="uploadedfile" type="file" id="formImg">
+                    </div>
+                    <input class="boton" type="submit" value="Crear usuario">
+                </form>
+            </div>
+            <% let errorMsg = getFlash(); %>
+                <% if (errorMsg) { %>
+                    <div class="error">
+                        <%= errorMsg %>
+                    </div>
+                    <% } %>
+                        <% if (errores.email) { %>
+                            <div class="error">
+                                <%= errores.email.msg %>
+                            </div>
+                            <% } %>
+                                <% if (errores.password) { %>
+                                    <div class="error">
+                                        <%= errores.password.msg %>
+                                    </div>
+                                    <% } %>
+                                        <% if (errores.name) { %>
+                                            <div class="error">
+                                                <%= errores.name.msg %>
+                                            </div>
+                                            <% } %>
+                                                <% if (errores.gender) { %>
+                                                    <div class="error">
+                                                        <%= errores.gender.msg %>
+                                                    </div>
+                                                    <% } %>
+                                                        <% if (errores.date) { %>
+                                                            <div class="error">
+                                                                <%= errores.date.msg %>
+                                                            </div>
+                                                            <% } %>
         </div>
-    </div>
-
-    <div class="login">
-        <p>Nuevo usuario</p>
-        <div class="recuadro">
-            <form method="POST" action="/new_user" enctype="multipart/form-data">
-                <!-- Contenido del formulario -->
-                <div>
-                    <label for="formEmail">Email </label>
-                    <input class="rellenar" type="email" name="email" id="formEmail">
-                </div>
-                <div>
-                    <label for="formContraseña">Contraseña </label>
-                    <input class="rellenar" type="password" name="password" id="formContraseña">
-                </div>
-                <div>
-                    <label for="formNombre"> Nombre completo </label>
-                    <input class="rellenar" type="text" name="name" id="formNombre" >
-                </div>
-                <div>
-                    <label> Sexo </label>
-                    <label class="datoSexo">
-                    <input type="radio" name="gender" value="male" > Masculino
-
-                    <input type="radio" name="gender" value="female"> Femenino 
-
-                    <input type="radio" name="gender" value="other"> Otro
-                    </label>
-                </div>
-                <div>
-                    <label for="formFecha"> Fecha de nacimiento </label>
-                    <input class="datoFecha" type="date" name="date" id="formFecha">
-                </div>
-                <div>
-                    <label for="formImg"> Imagen de perfil </label>
-                    <input class="datoImagen" name="uploadedfile" type="file" id="formImg">
-                </div>
-                <input class="boton" type="submit" value="Crear usuario">
-            </form>
-        </div>
-        <% let errorMsg = getFlash(); %>
-        <% if (errorMsg) { %>
-            <div class="error">
-                <%= errorMsg %>
-            </div>
-        <% } %>
-        <% if (errores.email) { %>
-            <div class="error">
-                <%= errores.email.msg %>
-            </div>
-        <% } %>
-        <% if (errores.password) { %>
-            <div class="error">
-                <%= errores.password.msg %>
-            </div>
-        <% } %>
-        <% if (errores.name) { %>
-            <div class="error">
-                <%= errores.name.msg %>
-            </div>
-        <% } %>
-        <% if (errores.gender) { %>
-            <div class="error">
-                <%= errores.gender.msg %>
-            </div>
-        <% } %>
-        <% if (errores.date) { %>
-            <div class="error">
-                <%= errores.date.msg %>
-            </div>
-        <% } %>
-    </div>
 </body>
 
 </html>
