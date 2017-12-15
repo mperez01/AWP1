@@ -26,13 +26,14 @@ class DAOImages {
         })
     }
 
-    addImage(userId,text,img, callback) {
+    addImage(userId,img,text, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            connection.query("INSERT INTO user_images (user_id, image,text)" +
-                " VALUES (?, ?, ?)", [userId, img, text],(err)=> {
-                    callback();
+            connection.query("INSERT INTO user_images (user_id, image,description)" +
+                " VALUES (?, ?, ?)", [userId, img, text],
+                (err)=> {
                     connection.release();
+                    callback(err);
                 })
             });
         }
