@@ -30,14 +30,16 @@
         <%}else{%>´
             <div>
                 <form method="POST" action="/add_img" enctype="multipart/form-data">
-                    <div>
-                        <label for="img"> Imagen: </label>
-                        <input class="datoImagen" id="img" name="uploadedfile" type="file" accept="image/*">
-                    </div>
-                    <div>
-                        <label for="formDescripcion"> Descripción de la imagen: </label>
-                        <input type="text" name="description" id="formDescripcion">
-                    </div>
+                    <div class="recuadro">
+                        <div>
+                            <label for="img"> Imagen: </label>
+                            <input class="datoImagen" id="img" name="uploadedfile" type="file" accept="image/*">
+                        </div>
+                        <div>
+                            <label for="formDescripcion"> Descripción de la imagen: </label>
+                            <input class="textField"type="text" name="description" id="formDescripcion">
+                        </div>
+                    </div>                    
                     <div>
                         <input class="boton" type="submit" value="Subir imagen">
                     </div>

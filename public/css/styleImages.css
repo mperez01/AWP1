@@ -19,3 +19,14 @@
     text-decoration: none;
     text-align: center;
 }
+
+.subir{
+    text-align: center;
+    margin:auto;
+    margin-bottom: 3%;
+    width:50%
+}
+
+.textField{
+    width: 65%;
+}
