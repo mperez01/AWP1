@@ -805,6 +805,7 @@ app.post("/add_img", identificacionRequerida,upload.single("uploadedfile"),(requ
                         daoU.addUserPoints(request.session.currentUserId, puntos, (err) => {
                             if(err){console.error(err)}
                             else{
+                                response.setFlash(text);
                                 response.redirect("/my_profile");
                             }
                         })
@@ -812,7 +813,9 @@ app.post("/add_img", identificacionRequerida,upload.single("uploadedfile"),(requ
                 });
             }})
     } else {
-        /*Volver al perfil lanzando un mensaje de error ya que no se ha subido la imagen. */
+        text="Imagen no subida.."
+        response.setFlash(text);
+        response.redirect("/my_profile");
     }
 
 })
