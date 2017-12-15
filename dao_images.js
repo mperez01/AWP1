@@ -15,7 +15,7 @@ class DAOImages {
                 callback(err, undefined);
                 return;
             }
-            connection.query("SELECT * FROM user_images WHERE user_id=?",[user_id],
+            connection.query("SELECT image, description FROM user_images WHERE user_id=?",[user_id],
                 function (err, images) {
                     connection.release();
                     if (err) { callback(err, undefined); return; }

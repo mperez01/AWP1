@@ -63,3 +63,14 @@ margin:auto;
 margin-top:5%;
 width:70%;
 }
+
+.imagenes{
+    margin:auto;
+    position:relative;
+    display:flex;
+    width: 50%;
+}
+.image{
+    height: 30%;
+    width: 30%;
+}

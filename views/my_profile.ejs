@@ -54,6 +54,14 @@
             <%= mensaje %>
         </div>
     <% } %>
+    <div>
+        <%images.forEach(image=>{%>
+            <div class="imagenes">
+                    <img class="image" name="imagen" src="/images/<%=image.image%>" alt="fotoPerfil">
+                    <p><%= image.description%></p>
+            </div>
+        <%})%>
+    </div>
 
 </body>
 

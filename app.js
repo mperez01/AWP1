@@ -18,7 +18,8 @@ const expressValidator = require("express-validator");
 
 const ficherosEstaticos = path.join(__dirname, "public");
 const app = express();
-const upload = multer({ dest: path.join(__dirname, "profile_imgs") });
+const uploadProfilePicture = multer({ dest: path.join(__dirname, "profile_imgs") });
+const uploadImage = multer({dest: path.join(__dirname, "images")});
 //siempre debe estar
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -157,7 +158,7 @@ app.get("/new_user.html", (request, response) => {
     response.render("new_user", { errores: [], usuario: {} });
 })
 
-app.post("/new_user", upload.single("uploadedfile"), (request, response) => {
+app.post("/new_user", uploadProfilePicture.single("uploadedfile"), (request, response) => {
     //request.checkBody("name", "Nombre de usuario no válido").matches(/^[A-Z0-9]*$/i);
     request.checkBody("name", "Nombre de usuario vacío").notEmpty();
     request.checkBody("name", "Nombre no puede ser menor que 1 ni mayor que 50 caracteres").isLength({ min: 0, max: 50 });
@@ -217,8 +218,15 @@ app.get("/my_profile", identificacionRequerida, (request, response) => {
         if (err) {
             console.error(err);
         } else {
-            response.render("my_profile", { user: usr });
+            daoI.getUserImages(request.session.currentUserId,(err,img)=>{
+                if (err) {
+                    console.error(err);
+                } else {
+                    response.render("my_profile", { user: usr,images:img });
+                }
+            })
         }
+        
     });
 });
 
@@ -234,7 +242,7 @@ app.get("/modify_profile", identificacionRequerida, (request, response) => {
     });
 });
 
-app.post("/modify", identificacionRequerida, upload.single("uploadedfile"), (request, response) => {
+app.post("/modify", identificacionRequerida, uploadProfilePicture.single("uploadedfile"), (request, response) => {
     request.checkBody("name", "Nombre de usuario vacío").notEmpty();
     request.checkBody("name", "Nombre no puede ser menor que 1 ni mayor que 50 caracteres").isLength({ min: 0, max: 50 });
     request.checkBody("name", "Nombre no puede ser espacio en blanco").whiteSpace();
@@ -787,7 +795,7 @@ app.get("/upload_img", identificacionRequerida, (request, response) => {
     });
 });
 
-app.post("/add_img", identificacionRequerida,upload.single("uploadedfile"),(request,response)=>{
+app.post("/add_img", identificacionRequerida,uploadImage.single("uploadedfile"),(request,response)=>{
     response.status(200);
     var img;
     let text="";
@@ -819,3 +827,8 @@ app.post("/add_img", identificacionRequerida,upload.single("uploadedfile"),(requ
     }
 
 })
+
+app.get("/images/:id", (request, response) => {
+    response.sendFile(path.join(__dirname, "images", request.params.id));
+    request.session.userImg = request.params.id;
+});
