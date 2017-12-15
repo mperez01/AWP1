@@ -58,7 +58,8 @@
                                     <input type="hidden" name="friendId" value="<%=fr.userId%>">
                                     <input class="nombre" type="submit" value="<%= fr.name %>">
                                 </form>
-
+                            </div>
+                            <div>
                                 <% if (fr.correct === 0) {%>
                                     <tag class="textoAdivina"><span class="fallo"> Has fallado</span></tag>
                                     <% } else if (fr.correct === 1) { %>
@@ -70,9 +71,7 @@
                                                 <tag class="botonAd"><input class="botonAmigo" value="Adivinar" type="submit"></tag>
                                             </form>
                                             <% } %>
-
-
-                            </div>
+                            </div>                            
                         </div>
                     </li>
                     <% });%>
