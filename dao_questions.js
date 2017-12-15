@@ -42,15 +42,15 @@ class DAOQuestions {
         })
     }
 
-    getParticularAnswer(user_id,question_id,callback) {
+    getParticularAnswer(user_id, question_id, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) {
                 callback(err, undefined); return;
             }
 
             connection.query("SELECT DISTINCT a.text as ansName, ua.id_answer as answer, ua.id_user as friendId, (SELECT num_answ FROM questions where questions.id=?) as num " +
-            "FROM user_answer ua JOIN answer a on ua.id_answer=a.id " +
-            "WHERE ua.id_user=? AND a.id_question=?", [question_id, user_id,question_id],
+                "FROM user_answer ua JOIN answer a on ua.id_answer=a.id " +
+                "WHERE ua.id_user=? AND a.id_question=?", [question_id, user_id, question_id],
                 function (err, ans) {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
@@ -60,19 +60,19 @@ class DAOQuestions {
                 })
         })
     }
-/*
--answer_id que debe estar (cogido en get particular answer)
--numero de respuestas que debe haber(cogido en questions.num_answ)
--question_id (para coger sus respectivas respuestas agenciadas a esa pregunta)
-- */
-    pickNRandomAnswers(answer_id, question_id, num , callback){
+    /*
+    -answer_id que debe estar (cogido en get particular answer)
+    -numero de respuestas que debe haber(cogido en questions.num_answ)
+    -question_id (para coger sus respectivas respuestas agenciadas a esa pregunta)
+    - */
+    pickNRandomAnswers(answer_id, question_id, num, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) {
                 callback(err, undefined); return;
             }
             connection.query("SELECT answer.text as answer, answer.id as answerId, questions.text as question FROM `questions` JOIN answer " +
-            "where questions.id = answer.id_question and questions.id = ? and answer.id != ? " +
-            "ORDER BY RAND() LIMIT ?", [question_id, answer_id, num],
+                "where questions.id = answer.id_question and questions.id = ? and answer.id != ? " +
+                "ORDER BY RAND() LIMIT ?", [question_id, answer_id, num],
                 function (err, quest) {
                     connection.release();
                     if (err) { callback(err, undefined); return; }
@@ -132,15 +132,18 @@ class DAOQuestions {
                 " VALUES (?, ?, ?)", [userId, question, num],
                 function (err, questions) {
                     if (err) { callback(err); return; }
-                    answers.forEach(a => {
+                    answers.forEach((a, index, array) => {
                         connection.query("INSERT INTO answer (id_question, text)" +
                             " VALUES (?, ?)", [questions.insertId, a],
                             function (err, resultado) {
                                 if (err) { callback(err); return; }
                             })
+                            //de este modo se envia el callback justo despues de terminar y no antes
+                        if (index===array.length-1) {
+                            callback();
+                            connection.release();
+                        }
                     })
-                    callback();
-                    connection.release();
                 })
         })
     }
@@ -183,16 +186,16 @@ class DAOQuestions {
                 })
         })
     }
-   
+
     getFriendsAnswer(id_user, questionId, callback) {
         this.pool.getConnection((err, connection) => {
             if (err) { callback(err); return; }
-            connection.query( "SELECT answer.id AS answerId, user_answer.id_user AS userId, u.image AS image, u.name AS name, " + 
-            "(SELECT correct FROM answer a, user_guess JOIN questions where user_guess.id_user=? and questions.id=? " + 
-            " and a.id=user_guess.id_answer and a.id_question=questions.id and user_guess.id_friend=user_answer.id_user) as correct " +
-            " FROM relationship r,user u, user_answer JOIN answer ON id=id_answer WHERE user_answer.id_user!=? AND " + 
-            "((r.user_one_id=? AND r.user_two_id=user_answer.id_user) OR (r.user_one_id=user_answer.id_user AND r.user_two_id=?)) " +
-             "AND id_question=? AND u.user_id=user_answer.id_user and r.status=1",
+            connection.query("SELECT answer.id AS answerId, user_answer.id_user AS userId, u.image AS image, u.name AS name, " +
+                "(SELECT correct FROM answer a, user_guess JOIN questions where user_guess.id_user=? and questions.id=? " +
+                " and a.id=user_guess.id_answer and a.id_question=questions.id and user_guess.id_friend=user_answer.id_user) as correct " +
+                " FROM relationship r,user u, user_answer JOIN answer ON id=id_answer WHERE user_answer.id_user!=? AND " +
+                "((r.user_one_id=? AND r.user_two_id=user_answer.id_user) OR (r.user_one_id=user_answer.id_user AND r.user_two_id=?)) " +
+                "AND id_question=? AND u.user_id=user_answer.id_user and r.status=1",
                 [id_user, questionId, id_user, id_user, id_user, questionId],
                 function (err, answer) {
                     connection.release();
