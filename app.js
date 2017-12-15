@@ -54,6 +54,13 @@ app.use(expressValidator({
         //comprobamos que param no es solo espacios en blanco
         whiteSpace: function (param) {
             return param.trim().length > 0;
+        } ,
+        min2ans: function(param) {
+            let num = param.split("\n");
+            return num.length >= 2;
+        },
+        ansEmpty: function(param) {
+            return param;
         }
     }
 }));
@@ -522,7 +529,9 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
     request.checkBody("answers", "Respuestas está vacío").notEmpty();
     request.checkBody("question", "La pregunta no puede ser espacio en blanco").whiteSpace();
     request.checkBody("answers", "Las respuestas no pueden ser espacio en blanco").whiteSpace();
+    request.checkBody("answers", "Debes introducir al menos dos respuestas").min2ans();
     request.getValidationResult().then((result) => {
+        console.log(result)
         if (result.isEmpty()) {
             daoQ.addQuestion(request.session.currentUserId, request.body.question, answer, num, (err) => {
                 if (err) {
@@ -621,9 +630,14 @@ app.get("/ans_question", identificacionRequerida, (request, response) => {
 app.post("/ans_question", identificacionRequerida, (request, response) => {
 
     let answerId = -1;
+    let otherNotEmpty = true;
+    if (request.body.ansId === 'on' && request.body.ansText === '') {
+        otherNotEmpty = false;
+    }
 
     //CONTROL DE VALIDACIÓN!!
     request.checkBody("ansId", "¡No has seleccionado ninguna respuesta!").notEmpty();
+    request.checkParams("otherNotEmpty", "Otra respuesta no puede ser vacía").ansEmpty();
     request.getValidationResult().then((result) => {
         if (result.isEmpty()) {
             daoU.getUserData(request.session.currentUserId, (err, usr) => {
@@ -651,10 +665,6 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
                             }
                         })
                     }
-                    else if (request.body.ansId === 'on' && request.body.ansText === '') {
-                        response.setFlash("'Otra' respuesta no puede ser vacía");
-                        response.redirect("/questions");
-                    }
                     else {
                         daoQ.addUserAnswer(request.body.ansId, request.session.currentUserId, (err) => {
                             if (err) { console.error(err); }
@@ -668,7 +678,9 @@ app.post("/ans_question", identificacionRequerida, (request, response) => {
             })
         } else {
             var ansQuestError = {
-                ansId: request.body.ansId
+                ansId: request.body.ansId,
+                ansText: request.body.ansText,
+                otherNotEmpty: otherNotEmpty
             };
             daoU.getUserData(request.session.currentUserId, (err, usr) => {
                 if (err) {

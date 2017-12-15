@@ -40,6 +40,16 @@
             </form>
         </div>
     </div>
+    <% if (errores.question) { %>
+        <div class="error">
+            <%= errores.question.msg %>
+        </div>
+        <% } %>
+            <% if (errores.answers) { %>
+                <div class="error">
+                    <%= errores.answers.msg %>
+                </div>
+                <% } %>
 </body>
 
 </html>
