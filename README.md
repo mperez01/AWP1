@@ -1,4 +1,4 @@
-![alt text](https://github.com/mperez01/Facebluff/blob/master/public/img/Logo.png "Facebluff")
+![](https://github.com/mperez01/Facebluff/blob/master/public/img/Logo.png "Facebluff")
 # Descripción
 
 Facebluff. Red social para la asignatura de Aplicaciones Web de la Universidad Complutense de Madrid
