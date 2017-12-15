@@ -22,7 +22,7 @@
     <div class="perfil">
         <p>Tu perfil</p>
 
-        <div>
+        <div class="userData">
             <img class="fotoPerfil" src="/imagenUsuario/<%=user.image%>" alt="fotoPerfil">
             <p class="nombre"><%= user.name %></p>
             <% if (user.dateOfBirth !== null) { %>
@@ -43,7 +43,10 @@
             </p>
             <p class="datos"><%= user.points%> puntos</p>
         </div>
-        <a href="/modify_profile" > Modificar perfil</a>
+        <div class="botonesAbajo">
+            <a href="/modify_profile" > Modificar perfil</a>
+            <a href="/upload_img">Subir imágen</a>
+        </div>
     </div>
     <% let mensaje = getFlash(); %>
     <% if (mensaje) { %>

@@ -28,20 +28,15 @@ class DAOImages {
 
     addImage(userId,text,img, callback) {
         this.pool.getConnection((err, connection) => {
-            connection.release();
             if (err) { callback(err); return; }
-            //¿como introducimos las opciones?
             connection.query("INSERT INTO user_images (user_id, image,text)" +
-                " VALUES (?, ?, ?)", [userId, img, text],
-                function (err, images) {
-                    if (err) { callback(err); return; }
-                    
-                    })
+                " VALUES (?, ?, ?)", [userId, img, text],(err)=> {
                     callback();
                     connection.release();
-        })
+                })
+            });
+        }
     }
-}
 
 module.exports = {
     DAOImages: DAOImages

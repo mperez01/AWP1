@@ -8,6 +8,7 @@ const config = require("./config");
 const daoUsers = require("./dao_users");
 const daoFriends = require("./dao_friends");
 const daoQuestions = require("./dao_questions");
+const daoImages = require("./dao_images");
 const mysqlSession = require("express-mysql-session");
 const session = require("express-session");
 const multer = require("multer");
@@ -72,6 +73,7 @@ app.use((request, response, next) => {
 let daoU = new daoUsers.DAOUsers(pool);
 let daoF = new daoFriends.DAOFriends(pool);
 let daoQ = new daoQuestions.DAOQuestions(pool);
+let daoI = new daoImages.DAOImages(pool);
 
 function identificacionRequerida(request, response, next) {
 
@@ -772,4 +774,45 @@ app.post("/ans_guess", identificacionRequerida, (request, response) => {
             response.setFlash("¡No has seleccionado ninguna respuesta!");
             response.redirect("/questions");
         }
+})
+
+app.get("/upload_img", identificacionRequerida, (request, response) => {
+    response.status(200);
+    daoU.getUserData(request.session.currentUserId, (err, usr) => {
+        if (err) {
+            console.error(err);
+        } else {
+            response.render("upload_img", { user: usr});
+        }
+    });
+});
+
+app.post("/add_img", identificacionRequerida,upload.single("uploadedfile"),(request,response)=>{
+    response.status(200);
+    var img;
+    let text="";
+    if (request.file) { // Si se ha subido un fichero
+        img = request.file.filename;
+        daoU.getUserData(request.session.currentUserId, (err, usr) => {
+            if (err) { console.error(err); }
+            else {
+                let puntos=usr.points;
+                daoI.addImage(request.session.currentUserId,img,request.body.description,(err)=>{
+                    if(err){console.error(err)}
+                    else{
+                        text = "Imagen subida correctamente"
+                        puntos=puntos-100;
+                        daoU.addUserPoints(request.session.currentUserId, puntos, (err) => {
+                            if(err){console.error(err)}
+                            else{
+                                response.redirect("/my_profile");
+                            }
+                        })
+                    };
+                });
+            }})
+    } else {
+        /*Volver al perfil lanzando un mensaje de error ya que no se ha subido la imagen. */
+    }
+
 })

@@ -8,7 +8,7 @@
     float: left;
 }
 
-.perfil > div  {
+.userData  {
     margin-left: 30%;
     text-align: left;
 }
@@ -41,8 +41,8 @@ p.datos {
     font-weight: bold;
 }
 
-.perfil>a{
-    margin: auto;
+.perfil>div>a{
+margin: auto;
 display: block;
 font-family: "GloriaHallelujah";
 font-size: 140%;
@@ -54,4 +54,12 @@ margin-top: 7%;
 width: 20%;
 text-decoration: none;
 text-align: center;
+}
+
+.botonesAbajo{
+display:flex;
+position:relative;
+margin:auto;
+margin-top:5%;
+width:70%;
 }
