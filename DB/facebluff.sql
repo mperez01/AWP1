@@ -112,7 +112,16 @@ CREATE TABLE `user_guess` (
   `id_answer` int(10) UNSIGNED DEFAULT NULL,
   `correct` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `user_images`
+--´
+CREATE TABLE `user_images` (
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `image` varchar(100) NOT NULL,
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 --
 -- Índices para tablas volcadas
 --
@@ -167,6 +176,12 @@ ALTER TABLE `user_guess`
   ADD KEY `id_user` (`id_user`),
   ADD KEY `id_friend` (`id_friend`),
   ADD KEY `id_answer` (`id_answer`);
+
+--
+-- Indices de la tabla `user_images`
+--
+ALTER TABLE `user_images`
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -230,6 +245,12 @@ ALTER TABLE `user_guess`
   ADD CONSTRAINT `user_guess_ibfk_3` FOREIGN KEY (`id_answer`) REFERENCES `answer` (`id`);
 COMMIT;
 
+--
+-- Filtros para la tabla `user_images`
+--
+ALTER TABLE `user_images`
+  ADD CONSTRAINT `user_images_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
