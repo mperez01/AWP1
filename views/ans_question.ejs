@@ -55,6 +55,11 @@
                 <%= errores.ansId.msg %>
             </div>
             <% } %>
+            <% if (errores.otherNotEmpty) { %>
+                <div class="error">
+                    <%= errores.otherNotEmpty.msg %>
+                </div>
+                <% } %>
     </div>
 </body>
 
