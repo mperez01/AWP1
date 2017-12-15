@@ -457,19 +457,28 @@ app.get("/friendProfile", identificacionRequerida, (request, response) => {
             el estado con el usuario actualmente logeado */
             daoF.getStatusFriend(request.query.friendId, request.session.currentUserId, (err, frd) => {
                 if (err) { console.error(err); }
-                /*Para controlar que si el usuario logeado modifica la url, se compruebe
-                * que el usuario id del amigo/persona al que quiere ir existe o no*/
-                if (frd !== undefined) {
-                    response.render("friend_profile", {
-                        user: usr,
-                        friend: frd,
-                    });
-                } else {
-                    console.error("Este usuario no existe");
-                    response.setFlash("Este usuario no existe");
-                    response.redirect("/friends");
-                }
-            })
+                else{
+                    daoI.getUserImages(request.query.friendId,(err,img)=>{
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            /*Para controlar que si el usuario logeado modifica la url, se compruebe
+                             * que el usuario id del amigo/persona al que quiere ir existe o no*/
+                            if (frd !== undefined) {
+                                response.render("friend_profile", {
+                                user: usr,
+                                friend: frd,
+                                images:img,
+                            });
+                            } else {
+                                console.error("Este usuario no existe");
+                                response.setFlash("Este usuario no existe");
+                                response.redirect("/friends");
+                            }
+                        }
+                })
+                
+            }})
         }
     });
 })

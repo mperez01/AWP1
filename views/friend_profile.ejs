@@ -64,6 +64,14 @@
                     <input class="botonEliminar" type="submit" value="Descartar petición">
                 </form>
                 <% } %>
+        <%if(images.length!=0){%>
+            <p>Imágenes de <%=friend.name%></p>
+                <%images.forEach(image=>{ %>
+                        <div class="imagenes">
+                            <img class="image" name="imagen" src="/images/<%=image.image%>" alt='<%=image.description%>'>
+                            <p class="descripcion"><%= image.description%></p>
+                        </div>
+                    <%})}%>
     </div>
 </body>
 
