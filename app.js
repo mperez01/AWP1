@@ -111,7 +111,7 @@ app.get("/login.html", (request, response) => {
     //Si el usuario esta logeado ya en el sistema, impedimos que vaya a la vista login
     if (request.session.currentUserId === undefined) {
         response.status(200);
-        response.render("login", { errores: [], usuario: {} });
+        response.render("login", { errores: [], usuario: {}, email: null });
         response.end();
     } else {
         response.status(300);
@@ -154,8 +154,12 @@ app.post("/login", (request, response) => {
                 pass: request.body.pass,
                 email: request.body.email,
             };
+            let email;
+            if(!result.mapped().email) {
+                email = request.body.email;
+            }
             response.status(200);
-            response.render("login", { errores: result.mapped(), usuario: usuarioIncorrecto });
+            response.render("login", { errores: result.mapped(), usuario: usuarioIncorrecto, email: email });
             response.end();
         }
     });
@@ -179,7 +183,7 @@ app.get("/imagenUsuario", (request, response) => {
 
 app.get("/new_user.html", (request, response) => {
     response.status(200);
-    response.render("new_user", { errores: [], usuario: {} });
+    response.render("new_user", { errores: [], usuario: {}, date: {} });
     response.end();
 })
 
@@ -236,8 +240,18 @@ app.post("/new_user", uploadProfilePicture.single("uploadedfile"), (request, res
                 name: request.body.name,
                 gender: request.body.gender,
             };
+            var userDate = {
+                email: null,
+                name: null
+            }
+            if (!result.mapped().email) {
+                userDate.email = request.body.email;
+            }
+            if (!result.mapped().name) {
+                userDate.name = request.body.name;
+            }
             response.status(200);
-            response.render("new_user", { errores: result.mapped(), usuario: usuarioIncorrecto });
+            response.render("new_user", { errores: result.mapped(), usuario: usuarioIncorrecto, date: userDate });
             response.end();
         }
     });
@@ -269,7 +283,7 @@ app.get("/modify_profile", identificacionRequerida, (request, response) => {
             console.error(err);
         } else {
             response.status(200);
-            response.render("modify_profile", { user: usr, errores: [], usuario: {} });
+            response.render("modify_profile", { user: usr, errores: [], usuario: {}, date: {} });
             response.end();
         }
     });
