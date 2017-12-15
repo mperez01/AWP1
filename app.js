@@ -851,3 +851,10 @@ app.get("/images/:id", (request, response) => {
     response.sendFile(path.join(__dirname, "images", request.params.id));
     request.session.userImg = request.params.id;
 });
+  
+  // Pantalla página no encontrada
+  app.use(function(req, response, next) {
+      response.status(404);
+      response.render("404", {errores: undefined, session: req.session, pagina: "404"});
+      response.end();
+  });
