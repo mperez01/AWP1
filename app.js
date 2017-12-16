@@ -613,7 +613,7 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
     request.checkBody("answers", "Debes introducir al menos dos respuestas").min2ans();
     request.getValidationResult().then((result) => {
         if (result.isEmpty() && num >= 2) {
-            daoQ.addQuestion(request.session.currentUserId, request.body.question, answer, num, (err) => {
+            daoQ.addQuestion(request.body.question, answer, num, (err) => {
                 if (err) {
                     console.error(err);
                 } else {

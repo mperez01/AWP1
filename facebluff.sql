@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 14-12-2017 a las 04:02:36
+-- Tiempo de generación: 16-12-2017 a las 15:08:32
 -- Versión del servidor: 10.1.28-MariaDB
 -- Versión de PHP: 7.1.11
 
@@ -42,7 +42,6 @@ CREATE TABLE `answer` (
 
 CREATE TABLE `questions` (
   `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED DEFAULT NULL,
   `text` text NOT NULL,
   `num_answ` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -58,18 +57,6 @@ CREATE TABLE `relationship` (
   `user_two_id` int(10) UNSIGNED DEFAULT NULL,
   `status` tinyint(3) UNSIGNED DEFAULT NULL,
   `action_user_id` int(10) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `sessions`
---
-
-CREATE TABLE `sessions` (
-  `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `expires` int(11) UNSIGNED NOT NULL,
-  `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -112,16 +99,19 @@ CREATE TABLE `user_guess` (
   `id_answer` int(10) UNSIGNED DEFAULT NULL,
   `correct` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `user_images`
---´
+--
+
 CREATE TABLE `user_images` (
   `user_id` int(10) UNSIGNED NOT NULL,
   `image` varchar(100) NOT NULL,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Índices para tablas volcadas
 --
@@ -137,8 +127,7 @@ ALTER TABLE `answer`
 -- Indices de la tabla `questions`
 --
 ALTER TABLE `questions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`) USING BTREE;
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `relationship`
@@ -148,12 +137,6 @@ ALTER TABLE `relationship`
   ADD KEY `user_one_id` (`user_one_id`),
   ADD KEY `user_two_id` (`user_two_id`),
   ADD KEY `action_user_id` (`action_user_id`);
-
---
--- Indices de la tabla `sessions`
---
-ALTER TABLE `sessions`
-  ADD PRIMARY KEY (`session_id`);
 
 --
 -- Indices de la tabla `user`
@@ -191,19 +174,19 @@ ALTER TABLE `user_images`
 -- AUTO_INCREMENT de la tabla `answer`
 --
 ALTER TABLE `answer`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT de la tabla `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Restricciones para tablas volcadas
@@ -214,12 +197,6 @@ ALTER TABLE `user`
 --
 ALTER TABLE `answer`
   ADD CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`id_question`) REFERENCES `questions` (`id`);
-
---
--- Filtros para la tabla `questions`
---
-ALTER TABLE `questions`
-  ADD CONSTRAINT `foreign_userId` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `relationship`
@@ -243,7 +220,6 @@ ALTER TABLE `user_guess`
   ADD CONSTRAINT `user_guess_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`user_id`),
   ADD CONSTRAINT `user_guess_ibfk_2` FOREIGN KEY (`id_friend`) REFERENCES `user` (`user_id`),
   ADD CONSTRAINT `user_guess_ibfk_3` FOREIGN KEY (`id_answer`) REFERENCES `answer` (`id`);
-COMMIT;
 
 --
 -- Filtros para la tabla `user_images`
@@ -251,6 +227,7 @@ COMMIT;
 ALTER TABLE `user_images`
   ADD CONSTRAINT `user_images_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
