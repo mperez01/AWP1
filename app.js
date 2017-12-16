@@ -28,10 +28,10 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 const sessionStore = new MySQLStore({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "facebluff"
+    host:  config.mysqlConfig.host, 
+    user:  config.mysqlConfig.user,
+    password: config.mysqlConfig.password,
+    database: config.mysqlConfig.database,
 });
 
 let pool = mysql.createPool({
