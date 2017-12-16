@@ -2,10 +2,10 @@
   "name": "facebluff",
   "version": "1.0.0",
   "description": "Facebluff, red social para la asignatura de aplicaciones web",
-  "main": "js/app.js",
+  "main": "app.js",
   "scripts": {
     "test": "mocha",
-    "start": "node js/app.js"
+    "start": "node app.js"
   },
   "keywords": [
     "node",
@@ -13,7 +13,7 @@
     "aw"
   ],
   "author": "Mario Rodriguez Salinero y Marcelino Perez Duran",
-  "license": "ISC",
+  "license": "CC-BY-NC-SA-4.0",
   "dependencies": {
     "body-parser": "^1.18.2",
     "ejs": "^2.5.7",

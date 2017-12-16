@@ -1,4 +1,7 @@
 "use strict";
+/* 
+ * GRUPO 606 - Marcelino Pérez y Mario Rodríguez
+ */
 
 const express = require("express");
 const mysql = require("mysql");
