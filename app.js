@@ -598,8 +598,13 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
 
     let allAnswers = request.body.answers;
     let answer = allAnswers.split("\n");
-    let num = answer.length;
 
+    answer.forEach((a,index,array)=> {
+        if(a.trim().length === 0) {
+            array.splice(index, 1);
+        }
+    })
+    let num = answer.length;
     // HACER VALIDACIÓN!!!
     request.checkBody("question", "La pregunta está vacía").notEmpty();
     request.checkBody("answers", "Respuestas está vacío").notEmpty();
@@ -607,7 +612,7 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
     request.checkBody("answers", "Las respuestas no pueden ser espacio en blanco").whiteSpace();
     request.checkBody("answers", "Debes introducir al menos dos respuestas").min2ans();
     request.getValidationResult().then((result) => {
-        if (result.isEmpty()) {
+        if (result.isEmpty() && num >= 2) {
             daoQ.addQuestion(request.session.currentUserId, request.body.question, answer, num, (err) => {
                 if (err) {
                     console.error(err);
@@ -642,6 +647,8 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
                         }
                         else {
                             response.status(200);
+                            if(num < 2)
+                                response.setFlash("Debes introducir al menos dos respuestas no vacías");
                             response.render("add_questions", {
                                 user: usr, errores: result.mapped(), usuario: addQuestIncorrecto
                             });

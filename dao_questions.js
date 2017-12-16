@@ -136,12 +136,12 @@ class DAOQuestions {
                         connection.query("INSERT INTO answer (id_question, text)" +
                             " VALUES (?, ?)", [questions.insertId, a],
                             function (err, resultado) {
+                                connection.release();
                                 if (err) { callback(err); return; }
                             })
                             //de este modo se envia el callback justo despues de terminar y no antes
                         if (index===array.length-1) {
                             callback();
-                            connection.release();
                         }
                     })
                 })

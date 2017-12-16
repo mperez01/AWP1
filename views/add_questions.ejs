@@ -29,6 +29,12 @@
             </form>
         </div>
     </div>
+    <% let errorMsg = getFlash(); %>
+            <% if (errorMsg) { %>
+                <div class="error">
+                    <%= errorMsg %>
+                </div>
+                <% } %>
     <% if (errores.question) { %>
         <div class="error">
             <%= errores.question.msg %>
