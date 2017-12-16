@@ -641,20 +641,13 @@ app.post("/addQuestion", identificacionRequerida, (request, response) => {
                 if (err) {
                     console.error(err);
                 } else {
-                    daoU.getUserData(request.session.currentUserId, (err, usr) => {
-                        if (err) {
-                            console.error(err);
-                        }
-                        else {
-                            response.status(200);
-                            if(num < 2)
-                                response.setFlash("Debes introducir al menos dos respuestas no vacías");
-                            response.render("add_questions", {
-                                user: usr, errores: result.mapped(), usuario: addQuestIncorrecto
+                    response.status(200);
+                    if(num < 2)
+                        response.setFlash("Debes introducir al menos dos respuestas no vacías");
+                        response.render("add_questions", {
+                            user: usr, errores: result.mapped(), usuario: addQuestIncorrecto
                             });
-                            response.end();
-                        }
-                    });
+                        response.end();
                 }
             });
         }
@@ -912,7 +905,7 @@ app.get("/upload_img", identificacionRequerida, (request, response) => {
             console.error(err);
         } else {
             response.status(200);
-            response.render("upload_img", { user: usr});
+            response.render("upload_img", { user: usr,errores: []});
             response.end();
         }
     });
@@ -921,37 +914,55 @@ app.get("/upload_img", identificacionRequerida, (request, response) => {
 app.post("/add_img", identificacionRequerida,uploadImage.single("uploadedfile"),(request,response)=>{
     var img;
     let text="";
-    if (request.file) { // Si se ha subido un fichero
-        img = request.file.filename;
-        daoU.getUserData(request.session.currentUserId, (err, usr) => {
-            if (err) { console.error(err); }
-            else {
-                let puntos=usr.points;
-                daoI.addImage(request.session.currentUserId,img,request.body.description,(err)=>{
-                    if(err){console.error(err)}
-                    else{
-                        text = "Imagen subida correctamente"
-                        puntos=puntos-100;
-                        daoU.addUserPoints(request.session.currentUserId, puntos, (err) => {
+
+    request.checkBody("description","Descripción de la imágen vacía").notEmpty();
+    request.checkBody("description", "La descripción de la imagen no puede ser un espacio en blanco").whiteSpace();
+    request.getValidationResult().then((result) => {
+        if (result.isEmpty()){
+            if (request.file) { // Si se ha subido un fichero
+                img = request.file.filename;
+                daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                    if (err) { console.error(err); }
+                    else {
+                        let puntos=usr.points;
+                        daoI.addImage(request.session.currentUserId,img,request.body.description,(err)=>{
                             if(err){console.error(err)}
                             else{
-                                response.setFlash(text);
-                                response.status(300);
-                                response.redirect("/my_profile");
-                                response.end();
-                            }
-                        })
-                    };
-                });
-            }})
-    } else {
-        text="Imagen no subida.."
-        response.setFlash(text);
-        response.status(300);
-        response.redirect("/my_profile");
-        response.end();
-    }
-
+                                text = "Imagen subida correctamente"
+                                puntos=puntos-100;
+                                daoU.addUserPoints(request.session.currentUserId, puntos, (err) => {
+                                    if(err){console.error(err)}
+                                    else{
+                                        response.setFlash(text);
+                                        response.status(300);
+                                        response.redirect("/my_profile");
+                                        response.end();
+                                    }
+                                })
+                            };
+                        });
+                    }})
+            }
+            else{
+                text="No ha sido posible subir la imagen.. Por favor, inserte una imagen y rellene su descripción."
+                response.setFlash(text);
+                response.status(300);
+                response.redirect("/my_profile");
+                response.end();
+            }
+        }else{
+            daoU.getUserData(request.session.currentUserId, (err, usr) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    response.status(200);
+                    response.render("upload_img", { user: usr, errores: result.mapped()});
+                    response.end();
+                }
+            });
+        }
+        
+    })
 })
 
 app.get("/images/:id", (request, response) => {

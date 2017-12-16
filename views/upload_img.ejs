@@ -25,16 +25,21 @@
                     <a href="/my_profile" class="boton">Volver a mi perfil</a>
                 </div>
                 <%}else{%>
-
                     <div class="recuadro">
                         <form method="POST" action="/add_img" enctype="multipart/form-data">
                             <div>
                                 <label for="img"> Imagen: </label>
                                 <input class="datoImagen" id="img" name="uploadedfile" type="file" accept="image/*">
+                                <% if (errores.uploadedfile) { %>
+                                    <span class="error"> <%= errores.uploadedfile.msg %> </span>
+                                <% } %>
                             </div>
                             <div>
                                 <label for="formDescripcion"> Descripción de la imagen: </label>
                                 <input class="textField" type="text" name="description" id="formDescripcion">
+                                <% if (errores.description) { %>
+                                    <span class="error"> <%= errores.description.msg %> </span>
+                                <% } %>
                             </div>
                             <input class="boton" type="submit" value="Subir imagen">
                         </form>
