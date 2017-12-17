@@ -43,8 +43,10 @@ Al subir imagenes por puntos será necesario incluir una descripción (en caso c
 En el perfil de los usuarios, si son amigos, existirá la posibilidad de eliminarlos, en caso de no tener amistad no existirá ninguna opción. Si un usuario manda una petición de amistad, aquí también aparecerá la opción de descartarla.
 
 ### Diseño de la base de datos
+Toda la base de datos está vacía en su comienzo. Las preguntas aparecen aleatoriamente a medida que los usuarios las creen, mostrando un máximo de 5 en dicha sección.
 
 ![](https://i.imgur.com/05xVTs1.png "entidad-relación")
+
 En la tabla relationship, user_id_one tiene la condición de que su índice debe ser siempre estrictamente menor que user_id_two.
 En la misma tabla, action_user_id guarda el id del último usuario que haya interactuado en la relación (enviar petición de amistad o aceptarla).
 
