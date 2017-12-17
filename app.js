@@ -270,7 +270,7 @@ app.get("/my_profile", identificacionRequerida, (request, response) => {
                     console.error(err);
                 } else {
                     response.status(200);
-                    response.render("my_profile", { user: usr,images:img });
+                    response.render("my_profile", { user: usr, images:img });
                     response.end();
                 }
             })
@@ -918,8 +918,8 @@ app.post("/add_img", identificacionRequerida,uploadImage.single("uploadedfile"),
     request.checkBody("description","Descripción de la imágen vacía").notEmpty();
     request.checkBody("description", "La descripción de la imagen no puede ser un espacio en blanco").whiteSpace();
     request.getValidationResult().then((result) => {
-        if (result.isEmpty()){
-            if (request.file) { // Si se ha subido un fichero
+        if (result.isEmpty() && request.file){
+            //if () { // Si se ha subido un fichero
                 img = request.file.filename;
                 daoU.getUserData(request.session.currentUserId, (err, usr) => {
                     if (err) { console.error(err); }
@@ -942,19 +942,23 @@ app.post("/add_img", identificacionRequerida,uploadImage.single("uploadedfile"),
                             };
                         });
                     }})
-            }
+           /* }
             else{
                 text="No ha sido posible subir la imagen.. Por favor, inserte una imagen y rellene su descripción."
                 response.setFlash(text);
                 response.status(300);
                 response.redirect("/my_profile");
                 response.end();
-            }
+            } */
         }else{
             daoU.getUserData(request.session.currentUserId, (err, usr) => {
                 if (err) {
                     console.error(err);
                 } else {
+                    if (!request.file) {
+                        text="No ha sido posible subir la imagen.. Por favor, inserte una imagen y rellene su descripción."
+                        response.setFlash(text);
+                    }
                     response.status(200);
                     response.render("upload_img", { user: usr, errores: result.mapped()});
                     response.end();

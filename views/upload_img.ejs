@@ -43,6 +43,12 @@
                     </div>
                     <%}%>
         </div>
+        <% let mensaje = getFlash(); %>
+        <% if (mensaje) { %>
+            <div class="error">
+                <%= mensaje %>
+            </div>
+        <% } %>
 </body>
 
 </html>
