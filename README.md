@@ -38,6 +38,10 @@ Un usuario puede ver el perfil de cualquier usuario de la red social Facebluff a
 
 Las preguntas del apartado "preguntas" son accesibles para todos los usuarios de la red una vez se haya creado una nueva pero, como está explicado en líneas anteriores, no se podrá adivinar las preguntas de usuarios que no sean amigos.
 
+Al subir imagenes por puntos será necesario incluir una descripción (en caso contrario no se podrá). De este modo se añadira la descripción al html en alt.
+
+En el perfil de los usuarios, si son amigos, existirá la posibilidad de eliminarlos, en caso de no tener amistad no existirá ninguna opción. Si un usuario manda una petición de amistad, aquí también aparecerá la opción de descartarla.
+
 ### Diseño de la base de datos
 
 ![](https://i.imgur.com/05xVTs1.png "entidad-relación")
