@@ -103,6 +103,10 @@ div.solicitudes > div > p {
     padding-left: 5px;
 }
 
+.rellenar:focus {
+    box-shadow: 0px 0px 10px rgb(59, 89, 219);
+}
+
 .boton , .botonAdd{
     margin: auto;
     display: block;
