@@ -4,7 +4,7 @@ li {
 }
 
 .pregunta {
-    color: rgb(233, 58, 201);
+    color: black;
     border: none;
     background: none;
     font-family: sans-serif;
@@ -12,7 +12,7 @@ li {
 }
 
 .pregunta:hover {
-    color:rgb(177, 2, 136);
+    color:grey;
 }
 
 .preguntasAleatorias{
@@ -25,7 +25,11 @@ li {
     font-size: 20px;
     width: 50%;
     margin-top: 0.5%;
-    background-color: rgb(236, 207, 154);
+    background-color: rgb(214, 199, 169);
+}
+
+.preguntasAleatorias:hover {
+    color: grey;
 }
 
 .anadir{
@@ -33,6 +37,7 @@ li {
     box-sizing: border-box;
     padding-right: 10px;
     background-color: rgb(138, 228, 138);
+    padding: 3px;
 }
 
 .fallo {

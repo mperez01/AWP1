@@ -44,16 +44,20 @@ p.datos {
 .perfil>div>a{
 margin: auto;
 display: block;
-font-family: "GloriaHallelujah";
 font-size: 140%;
 border-radius: 10px;
-background-color: #B404AE;
-color: white;
+background: whitesmoke;
+    color:black;
 font-weight: bold;
 margin-top: 7%;
 width: 20%;
+border: solid 1px black;
 text-decoration: none;
 text-align: center;
+}
+
+.perfil>div>a:hover {
+    background-color: rgb(0,136,188);
 }
 
 .botonesAbajo{

@@ -1,52 +1,62 @@
 body {
-    font-family: "GloriaHallelujah";
+    font-family: "Jura";
     margin: 0px;
     margin-bottom: 1%;
-    background-image: url(../img/Fondo.jpg);
      background-repeat: repeat-x;
 }
 
 @font-face {
-    font-family: "GloriaHallelujah";
-    src: url("../fonts/GloriaHallelujah.ttf");
+    font-family: "Jura";
+    src: url("../fonts/Jura/Jura-Regular.ttf");
 }
 
 div.top {
-    overflow: inherit;
+
+    background: whitesmoke;
+    /*background: rgb(0,172,238);*/
+    /*background: rgb(36,41,46);*/
+    border-bottom: 1px solid black;
+    background-repeat: repeat-x;
 }
 
-.botonesArriba {
-    /*margin-left: 10%;*/
+.botonesArribaIn, .botonesArribaOut {
     margin-top: 0.5%;
     text-align: center;
+    margin-bottom: 11px;
 }
 
-.botonesArriba > label {
-    font-family: "GloriaHallelujah";
+.botonesArribaIn > label, .botonesArribaOut > label {
+    font-family: "Jura";
     text-decoration: none;
-    color: white;
+    color: black;
     font-size: 15px;
 }
 
-.botonesArriba > a {
-
-    font-family: "GloriaHallelujah";
-    font-weight: bold;
-    color: white;
+.botonesArribaIn > a, .botonesArribaOut > a{
+    font-family: "JuraBold";
+    color: black;
     text-decoration: none;
-    padding: 20px;
-    font-size: 120%;
-
+    margin: 15px;
+    padding: 15px;
+    font-size: 100%;
+    margin-right: 10px;
 }
 
-.botonesArriba > a:hover {
-    color: lightgray;
+.botonesArribaIn > a:hover {
+    color: whitesmoke;
+    padding-bottom: 16px;
+    background-color: rgb(0,136,188);
+}
+.botonesArribaOut > a:hover {
+    color: whitesmoke;
+    padding-bottom: 13px;
+    background-color: rgb(0,136,188);
 }
 
 #LogoImg {
-    display: block;
-    margin: auto;
-    width: 550px;
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 150px;
 }
 
 div.login,
@@ -55,23 +65,33 @@ div.login,
 }
 
 label {
-    font-family: sans-serif;
+    font-family: "Jura";
 }
 
 .recuadro {
+
+    /*¿Para que el display?*/
+    display: block;
     margin: auto;
-    background-color: purple;
-    color: white;
+    background-color: whitesmoke;
+    border: 1px solid black;
+    color: black;
     border-radius: 10px;
     width: 550px;
     padding: 40px;
 
 }
 
-div.login > p, div.perfil > p, div.solicitudes > div > p {
+.recuadro > form > div {
+    margin: 10px;
+}
+
+div.login > p,
+div.perfil > p,
+div.solicitudes > div > p {
     text-align: center;
     font-size: 30px;
-    font-weight: bold;
+    font-family: "JuraBold"
 }
 
 .rellenar {
@@ -80,40 +100,33 @@ div.login > p, div.perfil > p, div.solicitudes > div > p {
     box-sizing: border-box;
     border: 1px solid black;
     float: right;
-    margin-top: 4px;
     padding-left: 5px;
 }
 
-.boton {
+.boton , .botonAdd{
     margin: auto;
     display: block;
-    font-family: "GloriaHallelujah";
+    color: black;
+    /*width: auto;
+    height: auto;*/
+    border: 1px solid black;
     font-size: 140%;
     border-radius: 10px;
-    background-color: #B404AE;
-    color: white;
-    font-weight: bold;
+    background: whitesmoke;
+    color: white(200,201,202);
+    padding: 1%;
 }
 
-.recuadro > form > .boton{
+.boton:hover, .botonAdd:hover {
+    background-color: rgb(0,136,188);
+}
+
+.botonAdd {
+    margin-top: 110px;
+}
+
+.recuadro > form > .boton {
     margin-top: 5%;
-}
-
-.perfil > .boton {
-    margin-top: 6%;
-}
-
-.mensaje {
-    font-family: sans-serif;
-    text-align: center;
-}
-
-.error {
-    font-family: sans-serif;
-    text-align: center;
-    font-weight: bold;
-    margin-top: 10px;
-    color: red;
 }
 
 .iconoPerfil {
@@ -121,6 +134,12 @@ div.login > p, div.perfil > p, div.solicitudes > div > p {
     width: 25px;
     margin-right: 8px;
 }
+
+.mensaje {
+    font-family: sans-serif;
+    text-align: center;
+}
+
 footer {
     font-family: sans-serif;
     display: block;
@@ -131,4 +150,12 @@ footer {
     text-align: center;
     background-color: #f2f4f6;
     color: #6a7c8f;
+}
+
+.error {
+    font-family: sans-serif;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+    color: red;
 }
